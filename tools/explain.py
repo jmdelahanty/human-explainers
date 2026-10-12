@@ -24,11 +24,15 @@ import json
 import os
 import posixpath
 import re
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from rig_canvas import render_rig_canvas  # noqa: E402
 
 try:
     import yaml
@@ -44,6 +48,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCES_YAML = ROOT / "sources.yaml"
 LOCK_JSON = ROOT / "sources.lock.json"
 EXPLAINERS_DIR = ROOT / "explainers"
+DATA_DIR = ROOT / "data"
 SITE_DIR = ROOT / "site"
 CONTEXT_DIR = ROOT / "context"
 MANIFEST_JSON = SITE_DIR / "manifest.json"
@@ -76,6 +81,16 @@ def load_sources() -> dict[str, dict[str, Any]]:
     return data["sources"]
 
 
+def load_data_sources() -> dict[str, dict[str, Any]]:
+    """Local, non-git data files (rig configs) that get snapshotted into data/."""
+    data = yaml.safe_load(SOURCES_YAML.read_text())
+    return data.get("data", {}) or {}
+
+
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
 def cmd_lock(_: argparse.Namespace) -> None:
     sources = load_sources()
     lock: dict[str, Any] = {
@@ -84,7 +99,23 @@ def cmd_lock(_: argparse.Namespace) -> None:
         .isoformat()
         .replace("+00:00", "Z"),
         "sources": {},
+        "data": {},
     }
+    for name, spec in load_data_sources().items():
+        base = Path(spec["local_path"])
+        files: dict[str, Any] = {}
+        for rel in spec["files"]:
+            src = base / rel
+            if not src.is_file():
+                sys.exit(f"data source {name}: {src} does not exist")
+            dst = DATA_DIR / name / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(src, dst)
+            files[rel] = {"sha256": _sha256_file(src), "bytes": src.stat().st_size,
+                          "mtime_utc": dt.datetime.fromtimestamp(src.stat().st_mtime, dt.timezone.utc)
+                          .replace(microsecond=0).isoformat().replace("+00:00", "Z")}
+        lock["data"][name] = {"local_path": str(base), "role": spec.get("role", ""), "files": files}
+        print(f"{name:16} snapshot of {len(files)} file(s) from {base}")
     for name, spec in sources.items():
         repo = Path(spec["local_path"])
         commit = _git(repo, "rev-parse", "HEAD").strip()
@@ -122,26 +153,55 @@ class SourceReader:
 
     def __init__(self) -> None:
         self.sources = load_sources()
+        self.data_sources = load_data_sources()
         self.lock = load_lock()
         self._cache: dict[tuple[str, str], list[str]] = {}
 
+    def is_data(self, source: str) -> bool:
+        if source in self.data_sources:
+            return True
+        if source in self.sources:
+            return False
+        raise KeyError(f"unknown source {source!r}; declare it in sources.yaml")
+
     def commit(self, source: str) -> str:
+        if self.is_data(source):
+            return "snapshot"
         return self.lock["sources"][source]["commit"]
 
+    def data_sha256(self, source: str, path: str) -> str:
+        return self.lock["data"][source]["files"][path]["sha256"]
+
     def web(self, source: str) -> str | None:
+        if self.is_data(source):
+            return None
         return self.lock["sources"][source].get("web")
 
     def lines(self, source: str, path: str) -> list[str]:
         key = (source, path)
         if key not in self._cache:
-            repo = Path(self.sources[source]["local_path"])
-            text = _git(repo, "show", f"{self.commit(source)}:{path}")
+            if self.is_data(source):
+                snap = DATA_DIR / source / path
+                if not snap.is_file():
+                    raise FileNotFoundError(f"{snap} missing: run `lock` to snapshot data source {source}")
+                actual = _sha256_file(snap)
+                if actual != self.data_sha256(source, path):
+                    raise ValueError(f"data snapshot {snap} does not match sources.lock.json; run `lock`")
+                text = snap.read_text()
+            else:
+                repo = Path(self.sources[source]["local_path"])
+                text = _git(repo, "show", f"{self.commit(source)}:{path}")
             self._cache[key] = text.split("\n")
             if self._cache[key] and self._cache[key][-1] == "":
                 self._cache[key].pop()
         return self._cache[key]
 
+    def text(self, source: str, path: str) -> str:
+        return "\n".join(self.lines(source, path))
+
     def blob_url(self, source: str, path: str, start: int, end: int) -> str | None:
+        if self.is_data(source):
+            return f"data/{source}/{path}"
         web = self.web(source)
         if not web:
             return None
@@ -271,7 +331,10 @@ def build_excerpt(reader: SourceReader, spec: dict[str, Any]) -> Excerpt:
         start, end = extract_py_symbol(reader, source, path, spec["symbol"])
         kind = "code"
     elif "lines" in spec:
-        start, end = spec["lines"]
+        if spec["lines"] == "all":
+            start, end = 1, len(lines)
+        else:
+            start, end = spec["lines"]
         kind = "markdown" if ext == ".md" else "code"
     else:
         raise ValueError(f"excerpt {spec.get('id')} needs heading, symbol, or lines")
@@ -483,7 +546,19 @@ pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;l
 .excerpt .body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;font-size:.92rem}
 .excerpt .body th,.excerpt .body td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
 .badge{display:inline-block;padding:1px 8px;border-radius:999px;font-weight:600;color:#fff;font-size:.78rem;letter-spacing:.02em}
-.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}
+.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}.badge-data{background:#5f6368}
+svg.rig{width:100%;height:auto;display:block;color:var(--fg);margin:8px 0}
+svg.rig .frame{fill:var(--code);stroke:var(--fg);stroke-width:1.2}
+svg.rig .arena{fill:none;stroke-width:1.6}
+svg.rig .exp{fill-opacity:.12;stroke-width:1.2}
+svg.rig .cam{fill:none;stroke-width:1.2;stroke-dasharray:5 4}
+svg.rig .axis{stroke:currentColor;stroke-width:1.4}
+svg.rig .title{font:600 13px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+svg.rig .small{font:11px ui-monospace,Menlo,Consolas,monospace;fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+svg.rig .axis-label{font:11px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+table.numbers{border-collapse:collapse;font-size:.82rem;display:block;overflow-x:auto;margin:8px 0}
+table.numbers th,table.numbers td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top;white-space:nowrap}
+table.numbers th small{font-weight:400;color:var(--muted)}
 .note{font-size:.9rem;color:var(--muted);margin:-8px 0 14px 2px}
 .diagram{margin:14px 0 6px}.diagram-note{color:var(--muted);font-size:.9rem}
 svg.chain{width:100%;height:auto;display:block;color:var(--fg)}
@@ -535,7 +610,14 @@ def render_excerpt_body(ex: Excerpt, reader: SourceReader, md) -> str:
 def render_excerpt(ex: Excerpt, reader: SourceReader, md) -> str:
     url = reader.blob_url(ex.source, ex.path, ex.start, ex.end)
     lines = f"L{ex.start}–L{ex.end}" if ex.start != ex.end else f"L{ex.start}"
-    link = f'<a href="{url}">view at {reader.commit(ex.source)[:10]}</a>' if url else ""
+    if reader.is_data(ex.source):
+        badge = f'<span class="badge badge-data">data · {html.escape(ex.source)}</span>'
+        shown_path = f"{reader.lock['data'][ex.source]['local_path']}/{ex.path}"
+        link = f'<a href="{url}">snapshot sha256 {reader.data_sha256(ex.source, ex.path)[:10]}</a>'
+    else:
+        badge = f'<span class="badge badge-{ex.source}">{ex.source}</span>'
+        shown_path = ex.path
+        link = f'<a href="{url}">view at {reader.commit(ex.source)[:10]}</a>' if url else ""
     sel = next(iter(ex.selector.items()), None)
     sel_txt = ""
     if sel:
@@ -544,27 +626,43 @@ def render_excerpt(ex: Excerpt, reader: SourceReader, md) -> str:
     note = f'<p class="note">{_inline_md(ex.note)}</p>' if ex.note else ""
     return (
         f'<section class="excerpt" id="{html.escape(ex.id)}">'
-        f'<header><span class="badge badge-{ex.source}">{ex.source}</span>'
-        f'<span class="path">{html.escape(ex.path)}</span><span>{lines}</span>{sel_txt}{link}</header>'
+        f'<header>{badge}'
+        f'<span class="path">{html.escape(shown_path)}</span><span>{lines}</span>{sel_txt}{link}</header>'
         f'<div class="body">{render_excerpt_body(ex, reader, md)}</div></section>{note}'
     )
 
 
-def render_diagram(spec: dict[str, Any], excerpts: dict[str, Excerpt]) -> str:
+def render_diagram(spec: dict[str, Any], excerpts: dict[str, Excerpt], reader: SourceReader) -> str:
     kind = spec["kind"]
     src = excerpts[spec["from"]]
+    inputs = [src]
     if kind == "transform-chain":
         chain = parse_transform_chain(src.text)
         svg = render_transform_chain_svg(chain, spec.get("order"))
     elif kind == "bullet-cards":
         svg = render_bullet_cards(parse_bullet_cards(src.text))
+    elif kind == "rig-canvas":
+        # The canvas JSON and each homography sidecar must be quoted on the page;
+        # the diagram reads those same files in full. Camera id comes from the
+        # sidecar filename `homography_<arena>_<camera_id>.yml` (Citrus naming).
+        homographies: dict[str, str] = {}
+        for hid in spec.get("homographies", []):
+            hx = excerpts[hid]
+            inputs.append(hx)
+            m = re.match(r"^homography_.*_(\d+)\.ya?ml$", posixpath.basename(hx.path))
+            if not m:
+                raise ValueError(f"cannot read camera id from sidecar name {hx.path}")
+            homographies[m.group(1)] = reader.text(hx.source, hx.path)
+        svg = render_rig_canvas(reader.text(src.source, src.path), homographies)
     else:
         raise ValueError(f"unknown diagram kind {kind!r}")
+    cites = ", ".join(
+        f'<a href="#{html.escape(x.id)}">{html.escape(x.id)}</a> ({html.escape(x.source)}: <code>{html.escape(x.path)}</code>)'
+        for x in inputs
+    )
     return (
         f'<figure class="diagram">{svg}'
-        f'<figcaption class="diagram-note">Derived automatically from the excerpt '
-        f'<a href="#{html.escape(src.id)}">{html.escape(src.id)}</a> ({html.escape(src.source)}: '
-        f'<code>{html.escape(src.path)}</code>).</figcaption></figure>'
+        f'<figcaption class="diagram-note">Derived automatically from {cites}.</figcaption></figure>'
     )
 
 
@@ -610,7 +708,7 @@ def build_explainer(
         ctx.append("")
         for item in section["items"]:
             if "diagram" in item:
-                body_parts.append(render_diagram(item["diagram"], excerpts))
+                body_parts.append(render_diagram(item["diagram"], excerpts, reader))
                 continue
             ex = build_excerpt(reader, item)
             if ex.id in excerpts:
@@ -620,6 +718,7 @@ def build_explainer(
             manifest["excerpts"][f"{spec['slug']}:{ex.id}"] = {
                 "source": ex.source,
                 "commit": reader.commit(ex.source),
+                "file_sha256": reader.data_sha256(ex.source, ex.path) if reader.is_data(ex.source) else None,
                 "path": ex.path,
                 "start": ex.start,
                 "end": ex.end,
@@ -627,11 +726,17 @@ def build_explainer(
                 "sha256": ex.sha256,
             }
             url = reader.blob_url(ex.source, ex.path, ex.start, ex.end)
-            ctx.append(
-                f"### {ex.id}\n\nsource: {ex.source} @ {reader.commit(ex.source)}  \n"
-                f"path: {ex.path} (lines {ex.start}-{ex.end})"
-                + (f"  \nurl: {url}" if url else "")
-            )
+            if reader.is_data(ex.source):
+                ctx.append(
+                    f"### {ex.id}\n\nsource: local data snapshot {ex.source}, sha256 {reader.data_sha256(ex.source, ex.path)}  \n"
+                    f"path: {reader.lock['data'][ex.source]['local_path']}/{ex.path} (lines {ex.start}-{ex.end})"
+                )
+            else:
+                ctx.append(
+                    f"### {ex.id}\n\nsource: {ex.source} @ {reader.commit(ex.source)}  \n"
+                    f"path: {ex.path} (lines {ex.start}-{ex.end})"
+                    + (f"  \nurl: {url}" if url else "")
+                )
             if ex.note:
                 ctx.append(f"curator note: {ex.note}")
             ctx.append("")
@@ -669,6 +774,24 @@ def render_index(explainers: list[dict[str, Any]], lock: dict[str, Any], sources
             f"<td><code>{html.escape(info['branch'])}</code></td><td>{html.escape(info['commit_date'][:10])}</td>"
             f"<td>{html.escape('; '.join(flags))}</td></tr>"
         )
+    data_rows = []
+    for name, info in lock.get("data", {}).items():
+        files = "<br>".join(
+            f"<a href='data/{name}/{html.escape(rel)}'><code>{html.escape(rel)}</code></a> <small>{meta['sha256'][:10]}</small>"
+            for rel, meta in info["files"].items()
+        )
+        data_rows.append(
+            f"<tr><td><span class='badge badge-data'>data · {html.escape(name)}</span></td>"
+            f"<td>{html.escape(info.get('role', ''))}</td><td><code>{html.escape(info['local_path'])}</code></td><td>{files}</td></tr>"
+        )
+    data_table = (
+        "<h2>Snapshotted local data</h2><p class='lede'>Rig configuration files that live outside git. "
+        "They are copied verbatim and pinned by sha256 at lock time.</p>"
+        "<table class='lock'><thead><tr><th>Snapshot</th><th>Role</th><th>Original location</th><th>Files</th></tr></thead>"
+        f"<tbody>{''.join(data_rows)}</tbody></table>"
+        if data_rows
+        else ""
+    )
     body = (
         "<h1>Human explainers</h1>"
         "<p class='lede'>Visual explainers generated from the contracts and code that actually run the rigs. "
@@ -676,8 +799,9 @@ def render_index(explainers: list[dict[str, Any]], lock: dict[str, Any], sources
         f"<h2>Explainers</h2><ul>{items}</ul>"
         "<h2>Pinned sources</h2><table class='lock'><thead><tr><th>Source</th><th>Role</th><th>Commit</th>"
         f"<th>Branch</th><th>Date</th><th>Flags</th></tr></thead><tbody>{''.join(rows)}</tbody></table>"
-        "<h2>Agent context bundles</h2><p>The same excerpts, as plain markdown for agents: "
-        + ", ".join(f"<a href='../context/{e['slug']}.md'><code>context/{e['slug']}.md</code></a>" for e in explainers)
+        + data_table
+        + "<h2>Agent context bundles</h2><p>The same excerpts, as plain markdown for agents: "
+        + ", ".join(f"<a href='context/{e['slug']}.md'><code>context/{e['slug']}.md</code></a>" for e in explainers)
         + ".</p>"
     )
     return page_shell("Human explainers", body, lock)
@@ -709,6 +833,9 @@ def cmd_build(_: argparse.Namespace) -> None:
         print(f"built site/{spec['slug']}.html and context/{spec['slug']}.md ({n} excerpts)")
     (SITE_DIR / "index.html").write_text(render_index(explainers, reader.lock, reader.sources))
     (SITE_DIR / ".nojekyll").write_text("")
+    if DATA_DIR.is_dir():
+        shutil.copytree(DATA_DIR, SITE_DIR / "data", dirs_exist_ok=True)
+    shutil.copytree(CONTEXT_DIR, SITE_DIR / "context", dirs_exist_ok=True)
     MANIFEST_JSON.write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"wrote site/index.html and {MANIFEST_JSON.relative_to(ROOT)}")
 
@@ -720,6 +847,15 @@ def cmd_verify(_: argparse.Namespace) -> None:
     manifest = json.loads(MANIFEST_JSON.read_text())
     failures = 0
     seen = set()
+    for name, info in reader.lock.get("data", {}).items():
+        for rel, meta in info["files"].items():
+            snap = DATA_DIR / name / rel
+            if not snap.is_file() or _sha256_file(snap) != meta["sha256"]:
+                print(f"FAIL data {name}/{rel}: snapshot missing or altered")
+                failures += 1
+            orig = Path(info["local_path"]) / rel
+            if orig.is_file() and _sha256_file(orig) != meta["sha256"]:
+                print(f"warn data {name}/{rel}: local original changed since lock (run `lock` to refresh)")
     for spec in load_explainers():
         for section in spec["sections"]:
             for item in section["items"]:

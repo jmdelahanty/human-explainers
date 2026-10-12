@@ -1,0 +1,62 @@
+{
+    "schema_version": "rig_config_v1",
+    "rig_id": "omnifin0",
+    "rig_geometry_revision": 3,
+    "stimulus_display_output_name": "DP-3",
+    "projector_mount_rotation_deg_about_optical_axis": 180,
+    "projector_mount_notes": "Projector body is rotated 180 degrees about its optical axis on this rig.",
+    "display_signal_chain": {
+        "schema_id": "citrus.display_signal_chain",
+        "schema_version": 1,
+        "revision": "omnifin0_display_chain_r2_120hz_pre_240hz_upgrade",
+        "declaration_status": "partial_pending_upgrade",
+        "source": {
+            "host_rig_id": "omnifin0",
+            "gpu_manufacturer": "NVIDIA",
+            "gpu_model": "RTX A6000",
+            "connector_type": "DisplayPort",
+            "xrandr_output_name": "DP-3"
+        },
+        "active_interconnect": {
+            "identity_status": "unknown",
+            "observed_capability_note": "Recent runtime snapshots advertised 1920x1080 at 119.88 Hz and 3840x2160 at 29.97 Hz."
+        },
+        "planned_interconnect": {
+            "installation_status": "not_installed_cable_too_short",
+            "manufacturer": "Cable Matters",
+            "model": "102103",
+            "product_kind": "active_unidirectional_converter_cable",
+            "length_m": 1.8,
+            "source_interface": "DisplayPort 1.4",
+            "sink_interface": "HDMI 2.1",
+            "direction": "displayport_source_to_hdmi_sink"
+        },
+        "sink": {
+            "manufacturer": "BenQ",
+            "model": "X3100i",
+            "connector_type": "HDMI",
+            "input_port": null,
+            "serial_number": null,
+            "firmware_version": null
+        },
+        "intended_operating_mode": {
+            "width_px": 1920,
+            "height_px": 1080,
+            "refresh_rate_hz": 120.0,
+            "refresh_policy": "fixed"
+        }
+    },
+    "photodiode_marker": {
+        "schema_id": "citrus.photodiode_marker",
+        "schema_version": 1,
+        "enabled": false,
+        "placement_status": "awaiting_photodiode_installation_and_patch_commissioning",
+        "coordinate_frame": "final_display_framebuffer_px_top_left",
+        "overlay_stage": "after_canvas_texture_draw_before_swap",
+        "algorithm": "splitmix64_frame_code_v1",
+        "seed": 20260820,
+        "low_rgba": [0, 0, 0, 255],
+        "high_rgba": [255, 255, 255, 255],
+        "patches": []
+    }
+}

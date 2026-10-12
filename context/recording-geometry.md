@@ -160,9 +160,9 @@ on loose string matching.
 
 ### citrus-frame-camera-view
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 32-45)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L32-L45
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L32-L45
 
 ### `camera_view_px`
 
@@ -181,9 +181,9 @@ The camera image coordinate system used by tracking and homography input points.
 
 ### citrus-frame-final-display-canvas
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 63-79)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L63-L79
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L63-L79
 
 ### `final_display_canvas_px`
 
@@ -205,9 +205,9 @@ top-left-oriented GLFW framebuffer pixels.
 
 ### citrus-frame-arena-relative
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 127-153)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L127-L153
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L127-L153
 
 ### `arena_relative_canvas_px`
 
@@ -264,9 +264,9 @@ Rules:
 
 ### citrus-transform-chain
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 212-243)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L212-L243
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L212-L243
 
 ## Current Transform Chain
 
@@ -303,9 +303,9 @@ the correct path for comparing against `experimental_area_center_x_px/y_px`.
 
 ### citrus-camera-to-canvas-mapping
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 155-181)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L155-L181
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L155-L181
 
 ### `camera_view_to_canvas_mapping`
 
@@ -386,9 +386,9 @@ url: https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d
 
 ### citrus-presentation-reflection
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: docs/coordinate_systems.md (lines 81-97)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L81-L97
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L81-L97
 curator note: The logical canvas is not the projected image; this is the one reflection in the chain and it is a compatibility constraint.
 
 ### `final_display_canvas_px` to presented display
@@ -440,9 +440,9 @@ Meaning:
 
 ### citrus-arena-origin-writer
 
-source: citrus @ 185624f534c24be83e60058691cedb1794016179  
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
 path: src/logging/session_logger.cpp (lines 5677-5706)  
-url: https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/logging/session_logger.cpp#L5677-L5706
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/logging/session_logger.cpp#L5677-L5706
 curator note: The writer computes arena_origin_in_canvas as center minus half size, exactly the formula in the contract above.
 
 ```cpp

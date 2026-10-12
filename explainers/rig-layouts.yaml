@@ -1,0 +1,165 @@
+title: Known rig layouts on omnifin0
+question: >-
+  What do the real canvas files say about where each camera, arena, and
+  experimental area sits, and how does a camera pixel land on the canvas?
+
+# Diagrams on this page are drawn from the snapshotted rig files quoted next
+# to them: arena rectangles and experimental areas come straight from the
+# canvas JSON fields, and camera footprints are those files' homography
+# matrices applied in the direction the contracts declare.
+
+sections:
+  - title: Who owns rig, canvas, and arena geometry
+    items:
+      - id: canonical-owners
+        source: agent-contracts
+        path: pancake-orange-citrus/rig_canvas_inventory_contract.md
+        heading: "## Canonical Owners"
+      - id: citrus-rig-config-struct
+        source: citrus
+        path: src/core/rig_config.h
+        lines: [33, 42]
+        anchor: projector_mount_rotation_deg_about_optical_axis
+      - id: omnifin0-rig-config
+        source: omnifin0-rig
+        path: omnifin0_config.json
+        lines: [1, 7]
+        anchor: projector_mount_rotation_deg_about_optical_axis
+      - id: citrus-projector-body-frame
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `projector_body_frame`"
+      - id: citrus-display-output-transform
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `display_output_transform`"
+
+  - title: What a canvas file contains
+    items:
+      - id: citrus-canvas-size-loader
+        source: citrus
+        path: src/core/Canvas.cpp
+        lines: [17, 22]
+        anchor: canvas_width_px
+      - id: citrus-camera-calibration-struct
+        source: citrus
+        path: src/calibration/arena_config.h
+        lines: [110, 131]
+        anchor: arena_center_x_px
+      - id: citrus-arena-origin-accessors
+        source: citrus
+        path: src/calibration/arena_config.h
+        lines: [308, 350]
+        anchor: GetArenaOriginXInCanvasPx
+        note: >-
+          The accessors below are the rule the diagrams use to place each
+          arena: origin = center − size / 2.
+      - id: citrus-homography-sidecar-loader
+        source: citrus
+        path: src/ui/arena_view_ui.cpp
+        lines: [783, 798]
+        anchor: 'fs["homography_matrix"]'
+      - id: citrus-camera-to-canvas-mapping
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `camera_view_to_canvas_mapping`"
+
+  - title: Canvas casper
+    items:
+      - id: casper-canvas-size
+        source: omnifin0-casper
+        path: casper.json
+        lines: [232, 234]
+        anchor: canvas_width_px
+      - id: casper-arena-1
+        source: omnifin0-casper
+        path: casper.json
+        lines: [3, 59]
+        anchor: arena_center_x_px
+        note: Arenas 2 to 4 follow the same shape; the diagram reads all four.
+      - id: casper-h-2010093
+        source: omnifin0-casper
+        path: calibration_artifacts/homography_arena_1_2010093.yml
+        lines: all
+      - id: casper-h-2010094
+        source: omnifin0-casper
+        path: calibration_artifacts/homography_arena_2_2010094.yml
+        lines: all
+      - id: casper-h-2010095
+        source: omnifin0-casper
+        path: calibration_artifacts/homography_arena_3_2010095.yml
+        lines: all
+      - id: casper-h-2010096
+        source: omnifin0-casper
+        path: calibration_artifacts/homography_arena_4_2010096.yml
+        lines: all
+      - diagram:
+          kind: rig-canvas
+          from: casper-arena-1
+          homographies: [casper-h-2010093, casper-h-2010094, casper-h-2010095, casper-h-2010096]
+
+  - title: Canvas shadow
+    items:
+      - id: shadow-canvas-size
+        source: omnifin0-shadow
+        path: shadow.json
+        lines: [568, 570]
+        anchor: canvas_width_px
+      - id: shadow-arena-1
+        source: omnifin0-shadow
+        path: shadow.json
+        lines: [3, 81]
+        anchor: arena_center_x_px
+      - id: shadow-h-2010093
+        source: omnifin0-shadow
+        path: calibration_artifacts/homography_arena_1_2010093.yml
+        lines: all
+      - id: shadow-h-2010094
+        source: omnifin0-shadow
+        path: calibration_artifacts/homography_arena_2_2010094.yml
+        lines: all
+      - id: shadow-h-2010095
+        source: omnifin0-shadow
+        path: calibration_artifacts/homography_arena_3_2010095.yml
+        lines: all
+      - id: shadow-h-2010096
+        source: omnifin0-shadow
+        path: calibration_artifacts/homography_arena_4_2010096.yml
+        lines: all
+      - diagram:
+          kind: rig-canvas
+          from: shadow-arena-1
+          homographies: [shadow-h-2010093, shadow-h-2010094, shadow-h-2010095, shadow-h-2010096]
+
+  - title: Canvas blindfish
+    items:
+      - id: blindfish-canvas-size
+        source: omnifin0-blindfish
+        path: blindfish.json
+        lines: [536, 538]
+        anchor: canvas_width_px
+      - id: blindfish-arena-1
+        source: omnifin0-blindfish
+        path: blindfish.json
+        lines: [3, 73]
+        anchor: arena_center_x_px
+      - id: blindfish-h-2010093
+        source: omnifin0-blindfish
+        path: calibration_artifacts/homography_arena_1_2010093.yml
+        lines: all
+      - id: blindfish-h-2010094
+        source: omnifin0-blindfish
+        path: calibration_artifacts/homography_arena_2_2010094.yml
+        lines: all
+      - id: blindfish-h-2010095
+        source: omnifin0-blindfish
+        path: calibration_artifacts/homography_arena_3_2010095.yml
+        lines: all
+      - id: blindfish-h-2010096
+        source: omnifin0-blindfish
+        path: calibration_artifacts/homography_arena_4_2010096.yml
+        lines: all
+      - diagram:
+          kind: rig-canvas
+          from: blindfish-arena-1
+          homographies: [blindfish-h-2010093, blindfish-h-2010094, blindfish-h-2010095, blindfish-h-2010096]

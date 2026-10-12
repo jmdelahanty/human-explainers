@@ -16,3 +16,39 @@ sources:
   palette:
     local_path: /home/jeremy/palette-stimulus-v5
     role: Analysis pipelines (reads Orange recordings and Citrus H5 into Zarr)
+
+# Local data files that are not under git (Citrus ignores targets/rigs).
+# `lock` copies each file verbatim into data/<name>/ and pins its sha256.
+data:
+  omnifin0-rig:
+    local_path: /home/jeremy/citrus/targets/rigs/omnifin0
+    role: Rig-level config for omnifin0 (projector mount, display output)
+    files:
+      - omnifin0_config.json
+  omnifin0-casper:
+    local_path: /home/jeremy/citrus/targets/rigs/omnifin0/casper
+    role: Canvas "casper" (four circular arenas, one camera each) and its homography sidecars
+    files:
+      - casper.json
+      - calibration_artifacts/homography_arena_1_2010093.yml
+      - calibration_artifacts/homography_arena_2_2010094.yml
+      - calibration_artifacts/homography_arena_3_2010095.yml
+      - calibration_artifacts/homography_arena_4_2010096.yml
+  omnifin0-shadow:
+    local_path: /home/jeremy/citrus/targets/rigs/omnifin0/shadow
+    role: Canvas "shadow" (four circular arenas on a 1920x1080 canvas)
+    files:
+      - shadow.json
+      - calibration_artifacts/homography_arena_1_2010093.yml
+      - calibration_artifacts/homography_arena_2_2010094.yml
+      - calibration_artifacts/homography_arena_3_2010095.yml
+      - calibration_artifacts/homography_arena_4_2010096.yml
+  omnifin0-blindfish:
+    local_path: /home/jeremy/citrus/targets/rigs/omnifin0/blindfish
+    role: Canvas "blindfish" (four rectangular experimental areas)
+    files:
+      - blindfish.json
+      - calibration_artifacts/homography_arena_1_2010093.yml
+      - calibration_artifacts/homography_arena_2_2010094.yml
+      - calibration_artifacts/homography_arena_3_2010095.yml
+      - calibration_artifacts/homography_arena_4_2010096.yml

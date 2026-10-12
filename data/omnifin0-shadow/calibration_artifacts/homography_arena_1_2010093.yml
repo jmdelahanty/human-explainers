@@ -1,0 +1,28 @@
+%YAML:1.0
+---
+artifact_schema_id: "citrus.calibration.homography_candidate"
+artifact_schema_version: 1
+candidate_id: homography_arena_1_2010093_holder_operational_calgrp_2026_09_14T21_14_03Z_shadow_homography_grid_projected_surface_g4
+candidate_set_id: homography_set_holder_operational_calgrp_2026_09_14T21_14_03Z_shadow_homography_grid_projected_surface_g4
+homography_direction: camera_native_px_to_final_display_canvas_px
+target_plane: projected_surface
+pattern_mode: circular_rings
+orientation_validation_status: passed
+orientation_normalization_transform: ""
+configuration_fingerprint: "sha256:acdf5e997e9534a5aacf1a5918dcdd5c39b82083723a1c97e9f8c797d7b590dd"
+source_capture_checksum: "fnv1a64:59a824924a20c5b8"
+fit_quality_schema: "citrus.homography_fit_quality.v2"
+point_count: 81
+inlier_count: 81
+rms_reprojection_error_px: 0.15760693143058349
+max_reprojection_error_px: 0.55931097552812092
+holdout_rms_reprojection_error_px: 0.26288468800299092
+holdout_max_reprojection_error_px: 0.8113809254153006
+homography_matrix: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 0.079491864932271408, -0.00030229498036896943,
+       77.133992465809925, -0.0002757502180579138, -0.080094974712873052,
+       510.53996688386758, -5.5941326802569046e-07,
+       -1.5604039838712963e-07, 1. ]

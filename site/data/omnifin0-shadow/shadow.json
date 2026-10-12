@@ -1,0 +1,571 @@
+{
+    "arenas": {
+        "arena_1": {
+            "active_camera_id": "2010093",
+            "recording_context": {
+                "schema_id": "citrus.parent_recording_context",
+                "schema_version": 2,
+                "recording_type": "behavior",
+                "behavior_mode": "free",
+                "recording_intent": "stimulus_experiment",
+                "data_origin": "acquired"
+            },
+            "arena_region_height_mm": 82.82921600341797,
+            "arena_region_width_mm": 82.82921600341797,
+            "calculated_z_eff_mm": 14.94233512878418,
+            "calibration_pattern_mask_policy": "experimental_area",
+            "calibration_pattern_mode": "circular_rings",
+            "calibration_ring_chirality_marker_radius_scale": 1.2999999523162842,
+            "calibration_ring_count": 4,
+            "calibration_ring_dots_inner": 8,
+            "calibration_ring_dots_outer": 32,
+            "calibration_ring_include_center_dot": true,
+            "calibration_ring_inner_radius_px": 40.0,
+            "calibration_ring_orientation_marker_angle_deg": 0.0,
+            "calibration_ring_orientation_marker_radius_scale": 1.600000023841858,
+            "calibration_ring_outer_radius_px": 140.0,
+            "calibration_ring_show_chirality_marker": false,
+            "calibration_ring_show_orientation_marker": true,
+            "calibration_verification_include_center_dot": true,
+            "calibration_verification_inner_angle_offset_deg": 45.0,
+            "calibration_verification_inner_point_count": 4,
+            "calibration_verification_inner_radius_fraction": 0.3799999952316284,
+            "calibration_verification_outer_angle_offset_deg": 22.5,
+            "calibration_verification_outer_point_count": 8,
+            "calibration_verification_outer_radius_fraction": 0.7799999713897705,
+            "camera_calibrations": [
+                {
+                    "arena_center_x_px": 257,
+                    "arena_center_y_px": 330,
+                    "arena_height_px": 348,
+                    "arena_width_px": 348,
+                    "camera_id": "2010093",
+                    "homography_detector_strategy": "",
+                    "homography_fit_inlier_count": 0,
+                    "homography_fit_max_reprojection_error_px": 0.0,
+                    "homography_fit_method": "",
+                    "homography_fit_point_count": 0,
+                    "homography_fit_quality_available": false,
+                    "homography_fit_rms_reprojection_error_px": 0.0,
+                    "homography_image_path": "Cam2010093_arena1_homography.png",
+                    "native_height_px": 4512,
+                    "native_width_px": 4512,
+                    "pixels_per_mm_camera": 52.731327056884766,
+                    "pixels_per_mm_projector": 4.201416015625,
+                    "real_world_ref_mm": 5.0,
+                    "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010093_arena_1/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                    "scale_models": [
+                        {
+                            "clicked_points_camera_px": [
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                },
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                }
+                            ],
+                            "kind": "projective_local_jacobian_at_target_origin",
+                            "notes": "Loaded from immutable active projected-surface scale pointer",
+                            "pixels_per_mm_camera": 52.731327056884766,
+                            "pixels_per_mm_projector": 4.201416015625,
+                            "real_world_ref_mm": 5.0,
+                            "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010093_arena_1/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                            "status": "accepted",
+                            "target_plane": "projected_surface"
+                        }
+                    ]
+                }
+            ],
+            "config_name": "arena_1",
+            "dish_config": {
+                "biological": {
+                    "adult_eye_height_mm": 8.0,
+                    "larvae_eye_height_mm": 8.0,
+                    "media_type": "E3 embryo medium",
+                    "water_fill_depth_mm": 5.0
+                },
+                "dimensions": {
+                    "diameter_mm": 80.0,
+                    "diffuser_sandwich_mm": 0.0,
+                    "dish_base_thickness_mm": 3.0,
+                    "projector_base_thickness_mm": 4.760000228881836,
+                    "wall_height_mm": 3.0
+                },
+                "dish_name": "palm1",
+                "dish_shape": "circular",
+                "dish_type": 3,
+                "materials": {
+                    "air_refractive_index": 1.0,
+                    "base_material": 1,
+                    "base_refractive_index": 1.4900000095367432,
+                    "diffuser_type": "Paper diffuser",
+                    "dish_material": 1,
+                    "dish_refractive_index": 1.4900000095367432,
+                    "water_refractive_index": 1.3329999446868896
+                },
+                "optics": {
+                    "calculated_with_params_hash": 0.0,
+                    "compression_start_radius_mm": 16.94875144958496,
+                    "snell_window_radius_mm": 16.94875144958496,
+                    "z_eff_adult_mm": 14.94233512878418,
+                    "z_eff_current_mm": 14.94233512878418,
+                    "z_eff_larvae_mm": 14.94233512878418
+                }
+            },
+            "dish_shape": "circular",
+            "dot_radius_px": 5.0,
+            "experimental_area_center_x_px": 173.0,
+            "experimental_area_center_y_px": 173.0,
+            "experimental_area_corner_radius_mm": 11.99231243133545,
+            "experimental_area_corner_radius_px": 50.38469314575195,
+            "experimental_area_height_mm": 80.0,
+            "experimental_area_height_px": 336.11328125,
+            "experimental_area_radius_mm": 40.5,
+            "experimental_area_radius_px": 170.1573486328125,
+            "experimental_area_shape": "CIRCLE",
+            "experimental_area_width_mm": 80.0,
+            "experimental_area_width_px": 336.11328125,
+            "experimental_chamber": "palm1",
+            "grid_cols": 10,
+            "grid_rows": 10,
+            "ipc_frame_trigger_count": 60,
+            "ipc_source_name": "/shm_cam_2010093",
+            "ipc_source_type": "SHAMAN",
+            "ipc_start_trigger": "ON_IPC_FRAME_COUNT",
+            "selected_dish_type": 2,
+            "selected_dish_type_name": "palm1",
+            "shaman_v2_live_state_enabled": true,
+            "shaman_v2_source_name": "/shm_cam_2010093_v2",
+            "tank_design_id": "palm1",
+            "tank_design_spec_filename": "palm1.json"
+        },
+        "arena_2": {
+            "active_camera_id": "2010094",
+            "recording_context": {
+                "schema_id": "citrus.parent_recording_context",
+                "schema_version": 2,
+                "recording_type": "behavior",
+                "behavior_mode": "free",
+                "recording_intent": "stimulus_experiment",
+                "data_origin": "acquired"
+            },
+            "arena_region_height_mm": 83.15770721435547,
+            "arena_region_width_mm": 83.15770721435547,
+            "calculated_z_eff_mm": 14.94233512878418,
+            "calibration_pattern_mask_policy": "experimental_area",
+            "calibration_pattern_mode": "circular_rings",
+            "calibration_ring_chirality_marker_radius_scale": 1.2999999523162842,
+            "calibration_ring_count": 4,
+            "calibration_ring_dots_inner": 8,
+            "calibration_ring_dots_outer": 32,
+            "calibration_ring_include_center_dot": true,
+            "calibration_ring_inner_radius_px": 40.0,
+            "calibration_ring_orientation_marker_angle_deg": 0.0,
+            "calibration_ring_orientation_marker_radius_scale": 1.600000023841858,
+            "calibration_ring_outer_radius_px": 140.0,
+            "calibration_ring_show_chirality_marker": false,
+            "calibration_ring_show_orientation_marker": true,
+            "calibration_verification_include_center_dot": true,
+            "calibration_verification_inner_angle_offset_deg": 45.0,
+            "calibration_verification_inner_point_count": 4,
+            "calibration_verification_inner_radius_fraction": 0.3799999952316284,
+            "calibration_verification_outer_angle_offset_deg": 22.5,
+            "calibration_verification_outer_point_count": 8,
+            "calibration_verification_outer_radius_fraction": 0.7799999713897705,
+            "camera_calibrations": [
+                {
+                    "arena_center_x_px": 715,
+                    "arena_center_y_px": 337,
+                    "arena_height_px": 350,
+                    "arena_width_px": 350,
+                    "camera_id": "2010094",
+                    "homography_detector_strategy": "",
+                    "homography_fit_inlier_count": 0,
+                    "homography_fit_max_reprojection_error_px": 0.0,
+                    "homography_fit_method": "",
+                    "homography_fit_point_count": 0,
+                    "homography_fit_quality_available": false,
+                    "homography_fit_rms_reprojection_error_px": 0.0,
+                    "homography_image_path": "Cam2010094_arena2_homography.png",
+                    "native_height_px": 4512,
+                    "native_width_px": 4512,
+                    "pixels_per_mm_camera": 52.59981155395508,
+                    "pixels_per_mm_projector": 4.2088704109191895,
+                    "real_world_ref_mm": 5.0,
+                    "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010094_arena_2/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                    "scale_models": [
+                        {
+                            "clicked_points_camera_px": [
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                },
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                }
+                            ],
+                            "kind": "projective_local_jacobian_at_target_origin",
+                            "notes": "Loaded from immutable active projected-surface scale pointer",
+                            "pixels_per_mm_camera": 52.59981155395508,
+                            "pixels_per_mm_projector": 4.2088704109191895,
+                            "real_world_ref_mm": 5.0,
+                            "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010094_arena_2/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                            "status": "accepted",
+                            "target_plane": "projected_surface"
+                        }
+                    ]
+                }
+            ],
+            "config_name": "arena_2",
+            "dish_config": {
+                "biological": {
+                    "adult_eye_height_mm": 8.0,
+                    "larvae_eye_height_mm": 8.0,
+                    "media_type": "E3 embryo medium",
+                    "water_fill_depth_mm": 5.0
+                },
+                "dimensions": {
+                    "diameter_mm": 80.0,
+                    "diffuser_sandwich_mm": 0.0,
+                    "dish_base_thickness_mm": 3.0,
+                    "projector_base_thickness_mm": 4.760000228881836,
+                    "wall_height_mm": 3.0
+                },
+                "dish_name": "palm1",
+                "dish_shape": "circular",
+                "dish_type": 3,
+                "materials": {
+                    "air_refractive_index": 1.0,
+                    "base_material": 1,
+                    "base_refractive_index": 1.4900000095367432,
+                    "diffuser_type": "Paper diffuser",
+                    "dish_material": 1,
+                    "dish_refractive_index": 1.4900000095367432,
+                    "water_refractive_index": 1.3329999446868896
+                },
+                "optics": {
+                    "calculated_with_params_hash": 0.0,
+                    "compression_start_radius_mm": 16.94875144958496,
+                    "snell_window_radius_mm": 16.94875144958496,
+                    "z_eff_adult_mm": 14.94233512878418,
+                    "z_eff_current_mm": 14.94233512878418,
+                    "z_eff_larvae_mm": 14.94233512878418
+                }
+            },
+            "dish_shape": "circular",
+            "dot_radius_px": 5.0,
+            "experimental_area_center_x_px": 174.0,
+            "experimental_area_center_y_px": 174.0,
+            "experimental_area_corner_radius_mm": 11.97751522064209,
+            "experimental_area_corner_radius_px": 50.411808013916016,
+            "experimental_area_height_mm": 80.0,
+            "experimental_area_height_px": 336.7096252441406,
+            "experimental_area_radius_mm": 40.5,
+            "experimental_area_radius_px": 170.45925903320313,
+            "experimental_area_shape": "CIRCLE",
+            "experimental_area_width_mm": 80.0,
+            "experimental_area_width_px": 336.7096252441406,
+            "experimental_chamber": "palm1",
+            "grid_cols": 10,
+            "grid_rows": 10,
+            "ipc_frame_trigger_count": 60,
+            "ipc_source_name": "/shm_cam_2010094",
+            "ipc_source_type": "SHAMAN",
+            "ipc_start_trigger": "ON_IPC_FRAME_COUNT",
+            "selected_dish_type": 2,
+            "selected_dish_type_name": "palm1",
+            "shaman_v2_live_state_enabled": true,
+            "shaman_v2_source_name": "/shm_cam_2010094_v2",
+            "tank_design_id": "palm1",
+            "tank_design_spec_filename": "palm1.json"
+        },
+        "arena_3": {
+            "active_camera_id": "2010095",
+            "recording_context": {
+                "schema_id": "citrus.parent_recording_context",
+                "schema_version": 2,
+                "recording_type": "behavior",
+                "behavior_mode": "free",
+                "recording_intent": "stimulus_experiment",
+                "data_origin": "acquired"
+            },
+            "arena_region_height_mm": 83.43346405029297,
+            "arena_region_width_mm": 83.43346405029297,
+            "calculated_z_eff_mm": 16.731597900390625,
+            "calibration_pattern_mask_policy": "experimental_area",
+            "calibration_pattern_mode": "circular_rings",
+            "calibration_ring_chirality_marker_radius_scale": 1.2999999523162842,
+            "calibration_ring_count": 4,
+            "calibration_ring_dots_inner": 8,
+            "calibration_ring_dots_outer": 32,
+            "calibration_ring_include_center_dot": true,
+            "calibration_ring_inner_radius_px": 40.0,
+            "calibration_ring_orientation_marker_angle_deg": 0.0,
+            "calibration_ring_orientation_marker_radius_scale": 1.600000023841858,
+            "calibration_ring_outer_radius_px": 140.0,
+            "calibration_ring_show_chirality_marker": false,
+            "calibration_ring_show_orientation_marker": true,
+            "calibration_verification_include_center_dot": true,
+            "calibration_verification_inner_angle_offset_deg": 45.0,
+            "calibration_verification_inner_point_count": 4,
+            "calibration_verification_inner_radius_fraction": 0.3799999952316284,
+            "calibration_verification_outer_angle_offset_deg": 22.5,
+            "calibration_verification_outer_point_count": 8,
+            "calibration_verification_outer_radius_fraction": 0.7799999713897705,
+            "camera_calibrations": [
+                {
+                    "arena_center_x_px": 1173,
+                    "arena_center_y_px": 329,
+                    "arena_height_px": 352,
+                    "arena_width_px": 352,
+                    "camera_id": "2010095",
+                    "homography_detector_strategy": "",
+                    "homography_fit_inlier_count": 0,
+                    "homography_fit_max_reprojection_error_px": 0.0,
+                    "homography_fit_method": "",
+                    "homography_fit_point_count": 0,
+                    "homography_fit_quality_available": false,
+                    "homography_fit_rms_reprojection_error_px": 0.0,
+                    "homography_image_path": "Cam2010095_arena3_homography.png",
+                    "native_height_px": 4512,
+                    "native_width_px": 4512,
+                    "pixels_per_mm_camera": 52.447689056396484,
+                    "pixels_per_mm_projector": 4.218930721282959,
+                    "real_world_ref_mm": 5.0,
+                    "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010095_arena_3/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                    "scale_models": [
+                        {
+                            "clicked_points_camera_px": [
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                },
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                }
+                            ],
+                            "kind": "projective_local_jacobian_at_target_origin",
+                            "notes": "Loaded from immutable active projected-surface scale pointer",
+                            "pixels_per_mm_camera": 52.447689056396484,
+                            "pixels_per_mm_projector": 4.218930721282959,
+                            "real_world_ref_mm": 5.0,
+                            "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010095_arena_3/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                            "status": "accepted",
+                            "target_plane": "projected_surface"
+                        }
+                    ]
+                }
+            ],
+            "config_name": "arena_3",
+            "dish_config": {
+                "biological": {
+                    "adult_eye_height_mm": 8.0,
+                    "larvae_eye_height_mm": 8.0,
+                    "media_type": "E3 embryo medium",
+                    "water_fill_depth_mm": 5.0
+                },
+                "dimensions": {
+                    "diameter_mm": 80.0,
+                    "diffuser_sandwich_mm": 0.0,
+                    "dish_base_thickness_mm": 5.0,
+                    "projector_base_thickness_mm": 4.760000228881836,
+                    "wall_height_mm": 3.0
+                },
+                "dish_name": "palm2",
+                "dish_shape": "circular",
+                "dish_type": 3,
+                "materials": {
+                    "air_refractive_index": 1.0,
+                    "base_material": 1,
+                    "base_refractive_index": 1.4900000095367432,
+                    "diffuser_type": "Paper diffuser",
+                    "dish_material": 1,
+                    "dish_refractive_index": 1.4900000095367432,
+                    "water_refractive_index": 1.3329999446868896
+                },
+                "optics": {
+                    "calculated_with_params_hash": 0.0,
+                    "compression_start_radius_mm": 18.978271484375,
+                    "snell_window_radius_mm": 18.978271484375,
+                    "z_eff_adult_mm": 16.731597900390625,
+                    "z_eff_current_mm": 16.731597900390625,
+                    "z_eff_larvae_mm": 16.731597900390625
+                }
+            },
+            "dish_shape": "circular",
+            "dot_radius_px": 5.0,
+            "experimental_area_center_x_px": 173.0,
+            "experimental_area_center_y_px": 173.0,
+            "experimental_area_corner_radius_mm": 11.802724838256836,
+            "experimental_area_corner_radius_px": 49.79487991333008,
+            "experimental_area_height_mm": 80.0,
+            "experimental_area_height_px": 337.51446533203125,
+            "experimental_area_radius_mm": 40.5,
+            "experimental_area_radius_px": 170.86669921875,
+            "experimental_area_shape": "CIRCLE",
+            "experimental_area_width_mm": 80.0,
+            "experimental_area_width_px": 337.51446533203125,
+            "experimental_chamber": "palm2",
+            "grid_cols": 10,
+            "grid_rows": 10,
+            "ipc_frame_trigger_count": 60,
+            "ipc_source_name": "/shm_cam_2010095",
+            "ipc_source_type": "SHAMAN",
+            "ipc_start_trigger": "ON_IPC_FRAME_COUNT",
+            "selected_dish_type": 2,
+            "selected_dish_type_name": "palm2",
+            "shaman_v2_live_state_enabled": true,
+            "shaman_v2_source_name": "/shm_cam_2010095_v2",
+            "tank_design_id": "palm2",
+            "tank_design_spec_filename": "palm2.json"
+        },
+        "arena_4": {
+            "active_camera_id": "2010096",
+            "recording_context": {
+                "schema_id": "citrus.parent_recording_context",
+                "schema_version": 2,
+                "recording_type": "behavior",
+                "behavior_mode": "free",
+                "recording_intent": "stimulus_experiment",
+                "data_origin": "acquired"
+            },
+            "arena_region_height_mm": 83.622802734375,
+            "arena_region_width_mm": 83.622802734375,
+            "calculated_z_eff_mm": 16.731597900390625,
+            "calibration_pattern_mask_policy": "experimental_area",
+            "calibration_pattern_mode": "circular_rings",
+            "calibration_ring_chirality_marker_radius_scale": 1.2999999523162842,
+            "calibration_ring_count": 4,
+            "calibration_ring_dots_inner": 8,
+            "calibration_ring_dots_outer": 32,
+            "calibration_ring_include_center_dot": true,
+            "calibration_ring_inner_radius_px": 40.0,
+            "calibration_ring_orientation_marker_angle_deg": 0.0,
+            "calibration_ring_orientation_marker_radius_scale": 1.600000023841858,
+            "calibration_ring_outer_radius_px": 140.0,
+            "calibration_ring_show_chirality_marker": false,
+            "calibration_ring_show_orientation_marker": true,
+            "calibration_verification_include_center_dot": true,
+            "calibration_verification_inner_angle_offset_deg": 45.0,
+            "calibration_verification_inner_point_count": 4,
+            "calibration_verification_inner_radius_fraction": 0.3799999952316284,
+            "calibration_verification_outer_angle_offset_deg": 22.5,
+            "calibration_verification_outer_point_count": 8,
+            "calibration_verification_outer_radius_fraction": 0.7799999713897705,
+            "camera_calibrations": [
+                {
+                    "arena_center_x_px": 1652,
+                    "arena_center_y_px": 320,
+                    "arena_height_px": 354,
+                    "arena_width_px": 354,
+                    "camera_id": "2010096",
+                    "homography_detector_strategy": "",
+                    "homography_fit_inlier_count": 0,
+                    "homography_fit_max_reprojection_error_px": 0.0,
+                    "homography_fit_method": "",
+                    "homography_fit_point_count": 0,
+                    "homography_fit_quality_available": false,
+                    "homography_fit_rms_reprojection_error_px": 0.0,
+                    "homography_image_path": "Cam2010096_arena4_homography.png",
+                    "native_height_px": 4512,
+                    "native_width_px": 4512,
+                    "pixels_per_mm_camera": 52.323482513427734,
+                    "pixels_per_mm_projector": 4.23329496383667,
+                    "real_world_ref_mm": 5.0,
+                    "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010096_arena_4/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                    "scale_models": [
+                        {
+                            "clicked_points_camera_px": [
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                },
+                                {
+                                    "x": -1.0,
+                                    "y": -1.0
+                                }
+                            ],
+                            "kind": "projective_local_jacobian_at_target_origin",
+                            "notes": "Loaded from immutable active projected-surface scale pointer",
+                            "pixels_per_mm_camera": 52.323482513427734,
+                            "pixels_per_mm_projector": 4.23329496383667,
+                            "real_world_ref_mm": 5.0,
+                            "scale_image_path": "/home/jeremy/orange_data/calibrations/sessions/calsess_2026_07_20T16_16_39Z_shadow/artifacts/Cam2010096_arena_4/scale_observations/calgrp_2026_07_20T16_16_38Z_shadow_projected_surface_scale_calibration_projected_surface_g1/observation.json",
+                            "status": "accepted",
+                            "target_plane": "projected_surface"
+                        }
+                    ]
+                }
+            ],
+            "config_name": "arena_4",
+            "dish_config": {
+                "biological": {
+                    "adult_eye_height_mm": 8.0,
+                    "larvae_eye_height_mm": 8.0,
+                    "media_type": "E3 embryo medium",
+                    "water_fill_depth_mm": 5.0
+                },
+                "dimensions": {
+                    "diameter_mm": 80.0,
+                    "diffuser_sandwich_mm": 0.0,
+                    "dish_base_thickness_mm": 5.0,
+                    "projector_base_thickness_mm": 4.760000228881836,
+                    "wall_height_mm": 3.0
+                },
+                "dish_name": "palm2",
+                "dish_shape": "circular",
+                "dish_type": 3,
+                "materials": {
+                    "air_refractive_index": 1.0,
+                    "base_material": 1,
+                    "base_refractive_index": 1.4900000095367432,
+                    "diffuser_type": "Paper diffuser",
+                    "dish_material": 1,
+                    "dish_refractive_index": 1.4900000095367432,
+                    "water_refractive_index": 1.3329999446868896
+                },
+                "optics": {
+                    "calculated_with_params_hash": 0.0,
+                    "compression_start_radius_mm": 18.978271484375,
+                    "snell_window_radius_mm": 18.978271484375,
+                    "z_eff_adult_mm": 16.731597900390625,
+                    "z_eff_current_mm": 16.731597900390625,
+                    "z_eff_larvae_mm": 16.731597900390625
+                }
+            },
+            "dish_shape": "circular",
+            "dot_radius_px": 5.0,
+            "experimental_area_center_x_px": 175.0,
+            "experimental_area_center_y_px": 175.0,
+            "experimental_area_corner_radius_mm": 11.901163101196289,
+            "experimental_area_corner_radius_px": 50.381134033203125,
+            "experimental_area_height_mm": 80.0,
+            "experimental_area_height_px": 338.6636047363281,
+            "experimental_area_radius_mm": 40.5,
+            "experimental_area_radius_px": 171.4484405517578,
+            "experimental_area_shape": "CIRCLE",
+            "experimental_area_width_mm": 80.0,
+            "experimental_area_width_px": 338.6636047363281,
+            "experimental_chamber": "palm2",
+            "grid_cols": 10,
+            "grid_rows": 10,
+            "ipc_frame_trigger_count": 60,
+            "ipc_source_name": "/shm_cam_2010096",
+            "ipc_source_type": "SHAMAN",
+            "ipc_start_trigger": "ON_IPC_FRAME_COUNT",
+            "selected_dish_type": 2,
+            "selected_dish_type_name": "palm2",
+            "shaman_v2_live_state_enabled": true,
+            "shaman_v2_source_name": "/shm_cam_2010096_v2",
+            "tank_design_id": "palm2",
+            "tank_design_spec_filename": "palm2.json"
+        }
+    },
+    "canvas_height_px": 1080,
+    "canvas_name": "shadow",
+    "canvas_width_px": 1920
+}

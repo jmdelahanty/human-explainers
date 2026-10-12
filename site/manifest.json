@@ -1,9 +1,10 @@
 {
-  "locked_at_utc": "2026-10-12T17:17:39Z",
+  "locked_at_utc": "2026-10-12T17:29:44Z",
   "excerpts": {
     "recording-geometry:orange-owns-camera-space": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "orange-citrus/physical_layout_calibration_contract.md",
       "start": 88,
       "end": 99,
@@ -15,6 +16,7 @@
     "recording-geometry:citrus-owns-spatial-interpretation": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "orange-citrus/physical_layout_calibration_contract.md",
       "start": 101,
       "end": 114,
@@ -26,6 +28,7 @@
     "recording-geometry:stable-ids": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "pancake-orange-citrus/rig_canvas_inventory_contract.md",
       "start": 35,
       "end": 45,
@@ -37,6 +40,7 @@
     "recording-geometry:join-invariants": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "pancake-orange-citrus/rig_canvas_inventory_contract.md",
       "start": 111,
       "end": 119,
@@ -48,6 +52,7 @@
     "recording-geometry:frames-overlay-contract": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 32,
       "end": 45,
@@ -59,6 +64,7 @@
     "recording-geometry:frames-calibration-contract": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "orange-citrus/physical_layout_calibration_contract.md",
       "start": 137,
       "end": 183,
@@ -69,7 +75,8 @@
     },
     "recording-geometry:citrus-frame-camera-view": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 32,
       "end": 45,
@@ -80,7 +87,8 @@
     },
     "recording-geometry:citrus-frame-final-display-canvas": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 63,
       "end": 79,
@@ -91,7 +99,8 @@
     },
     "recording-geometry:citrus-frame-arena-relative": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 127,
       "end": 153,
@@ -103,6 +112,7 @@
     "recording-geometry:orange-coordinate-space-enum": {
       "source": "orange",
       "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "file_sha256": null,
       "path": "docs/spatial_layout_schema.md",
       "start": 88,
       "end": 103,
@@ -113,7 +123,8 @@
     },
     "recording-geometry:citrus-transform-chain": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 212,
       "end": 243,
@@ -124,7 +135,8 @@
     },
     "recording-geometry:citrus-camera-to-canvas-mapping": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 155,
       "end": 181,
@@ -136,6 +148,7 @@
     "recording-geometry:overlay-mapping-rule": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 149,
       "end": 174,
@@ -147,6 +160,7 @@
     "recording-geometry:overlay-direct-answers": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 207,
       "end": 215,
@@ -157,7 +171,8 @@
     },
     "recording-geometry:citrus-presentation-reflection": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "docs/coordinate_systems.md",
       "start": 81,
       "end": 97,
@@ -169,6 +184,7 @@
     "recording-geometry:h5-arena-embedding": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 77,
       "end": 96,
@@ -179,7 +195,8 @@
     },
     "recording-geometry:citrus-arena-origin-writer": {
       "source": "citrus",
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
       "path": "src/logging/session_logger.cpp",
       "start": 5677,
       "end": 5706,
@@ -195,6 +212,7 @@
     "recording-geometry:h5-per-camera-homography": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 98,
       "end": 129,
@@ -206,6 +224,7 @@
     "recording-geometry:h5-arena-local-positions": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 49,
       "end": 75,
@@ -217,6 +236,7 @@
     "recording-geometry:h5-raw-camera-tracking": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "citrus-crimson/spatial_overlay_contract.md",
       "start": 131,
       "end": 147,
@@ -228,6 +248,7 @@
     "recording-geometry:orange-crop-meta-contract": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "orange-consumers/output_artifacts_contract.md",
       "start": 125,
       "end": 142,
@@ -239,6 +260,7 @@
     "recording-geometry:orange-crop-meta-header": {
       "source": "orange",
       "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "file_sha256": null,
       "path": "src/crop_and_encode_worker.cpp",
       "start": 228,
       "end": 228,
@@ -254,6 +276,7 @@
     "recording-geometry:orange-crop-meta-row": {
       "source": "orange",
       "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "file_sha256": null,
       "path": "src/crop_and_encode_worker.cpp",
       "start": 312,
       "end": 318,
@@ -269,6 +292,7 @@
     "recording-geometry:palette-coordinate-transform-doc": {
       "source": "palette",
       "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "file_sha256": null,
       "path": "src/fisheye/shared/coordinate_transform.py",
       "start": 1,
       "end": 12,
@@ -284,6 +308,7 @@
     "recording-geometry:palette-apply-homography": {
       "source": "palette",
       "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "file_sha256": null,
       "path": "src/fisheye/shared/coordinate_transform.py",
       "start": 173,
       "end": 243,
@@ -295,6 +320,7 @@
     "recording-geometry:palette-arena-origin": {
       "source": "palette",
       "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "file_sha256": null,
       "path": "src/fisheye/shared/arena_geometry.py",
       "start": 172,
       "end": 181,
@@ -306,6 +332,7 @@
     "recording-geometry:palette-detection-frame-size": {
       "source": "palette",
       "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "file_sha256": null,
       "path": "src/fisheye/shared/arena_geometry.py",
       "start": 150,
       "end": 169,
@@ -317,6 +344,7 @@
     "recording-geometry:bbox-required-arrays": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "palette-crimson/detect_bbox_read.md",
       "start": 58,
       "end": 65,
@@ -328,6 +356,7 @@
     "recording-geometry:bbox-coordinate-conversion": {
       "source": "agent-contracts",
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
       "path": "palette-crimson/detect_bbox_read.md",
       "start": 150,
       "end": 161,
@@ -335,6 +364,390 @@
         "heading": "## Coordinate Conversion"
       },
       "sha256": "58463e4f8c7fe8ea118d8b3fe42d5cb5dcf0d758a159e9565623d6cfbc92e156"
+    },
+    "rig-layouts:canonical-owners": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "pancake-orange-citrus/rig_canvas_inventory_contract.md",
+      "start": 27,
+      "end": 33,
+      "selector": {
+        "heading": "## Canonical Owners"
+      },
+      "sha256": "5a9ee743617932afdd85dda19dbab24b2117ca96eab4982ac0bd3e58b20d3aad"
+    },
+    "rig-layouts:citrus-rig-config-struct": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/core/rig_config.h",
+      "start": 33,
+      "end": 42,
+      "selector": {
+        "lines": [
+          33,
+          42
+        ],
+        "anchor": "projector_mount_rotation_deg_about_optical_axis"
+      },
+      "sha256": "cfcc8d16ec058712d23294c4dc3ebdc93622f7315440fa63ed8b985b3720262a"
+    },
+    "rig-layouts:omnifin0-rig-config": {
+      "source": "omnifin0-rig",
+      "commit": "snapshot",
+      "file_sha256": "d53ccc76eca0eaf04fcc6b3e62a6eb42f48bd34f0021df14ac65bb6c15a2da9a",
+      "path": "omnifin0_config.json",
+      "start": 1,
+      "end": 7,
+      "selector": {
+        "lines": [
+          1,
+          7
+        ],
+        "anchor": "projector_mount_rotation_deg_about_optical_axis"
+      },
+      "sha256": "4cedd66a86e6131da31a387b1b093cbe6c19649dbfaec6140fac548d23ffdf89"
+    },
+    "rig-layouts:citrus-projector-body-frame": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "docs/coordinate_systems.md",
+      "start": 198,
+      "end": 210,
+      "selector": {
+        "heading": "### `projector_body_frame`"
+      },
+      "sha256": "e50e3a07f30f44af85d106213f020e710662401c68ff99178a2864f33ef49479"
+    },
+    "rig-layouts:citrus-display-output-transform": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "docs/coordinate_systems.md",
+      "start": 183,
+      "end": 196,
+      "selector": {
+        "heading": "### `display_output_transform`"
+      },
+      "sha256": "453e6636cda834238f125ce75b21405770c169460b273dbca8cdbff100270a6b"
+    },
+    "rig-layouts:citrus-canvas-size-loader": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/core/Canvas.cpp",
+      "start": 17,
+      "end": 22,
+      "selector": {
+        "lines": [
+          17,
+          22
+        ],
+        "anchor": "canvas_width_px"
+      },
+      "sha256": "7821320aee55d1a08c5a898d831cbd486ab36e1bec9e88644262dd2208f79b3e"
+    },
+    "rig-layouts:citrus-camera-calibration-struct": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/calibration/arena_config.h",
+      "start": 110,
+      "end": 131,
+      "selector": {
+        "lines": [
+          110,
+          131
+        ],
+        "anchor": "arena_center_x_px"
+      },
+      "sha256": "8bc5e50c4e34a7163d0d66ac93d8f1354256408dc1be5e3a2e44c6bf32a57bc6"
+    },
+    "rig-layouts:citrus-arena-origin-accessors": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/calibration/arena_config.h",
+      "start": 308,
+      "end": 350,
+      "selector": {
+        "lines": [
+          308,
+          350
+        ],
+        "anchor": "GetArenaOriginXInCanvasPx"
+      },
+      "sha256": "46478d7695ef7a8ea219c1ac17c6cd88accde8e78ae11bb50ffa5cfaea87f532"
+    },
+    "rig-layouts:citrus-homography-sidecar-loader": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/ui/arena_view_ui.cpp",
+      "start": 783,
+      "end": 798,
+      "selector": {
+        "lines": [
+          783,
+          798
+        ],
+        "anchor": "fs[\"homography_matrix\"]"
+      },
+      "sha256": "152823c547e93b0f2ddcd359b4bc45bb025550ce87f025f25c559c4b5f48f645"
+    },
+    "rig-layouts:citrus-camera-to-canvas-mapping": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "docs/coordinate_systems.md",
+      "start": 155,
+      "end": 181,
+      "selector": {
+        "heading": "### `camera_view_to_canvas_mapping`"
+      },
+      "sha256": "58822bf0e2190fd0db61a3f4a61ede9f276f2d7ea91503ffbce7cc96ca3af443"
+    },
+    "rig-layouts:casper-canvas-size": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "0779e3751af9d4a1dce5554cc488488df72f922c44337f7ba96e4d5449f9efb9",
+      "path": "casper.json",
+      "start": 232,
+      "end": 234,
+      "selector": {
+        "lines": [
+          232,
+          234
+        ],
+        "anchor": "canvas_width_px"
+      },
+      "sha256": "e42e46055028e6e1a7586fa36777b92e3207752b80c4a0d9fdef96afc2b86f13"
+    },
+    "rig-layouts:casper-arena-1": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "0779e3751af9d4a1dce5554cc488488df72f922c44337f7ba96e4d5449f9efb9",
+      "path": "casper.json",
+      "start": 3,
+      "end": 59,
+      "selector": {
+        "lines": [
+          3,
+          59
+        ],
+        "anchor": "arena_center_x_px"
+      },
+      "sha256": "9c34f6474b30c33b84947599ce60efbbf721722c4a573695347a3efba7336cc9"
+    },
+    "rig-layouts:casper-h-2010093": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "fdcc3fc145a4adfdd1e07f19d8e8909c6c7c6d06fc86b1e78556e3c9126cb449",
+      "path": "calibration_artifacts/homography_arena_1_2010093.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "27a0a94f6916522e6672d2a1baf5f150f0f0020761cc922ef57a6991273fec69"
+    },
+    "rig-layouts:casper-h-2010094": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "da86a65a8c18779a6180bfcad0d1fbc5085413abc5ad8cb9a013c535a1b1b7be",
+      "path": "calibration_artifacts/homography_arena_2_2010094.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "d053f142555c12b4ba28b4d15d5e0726c4ca15e4b9ef555fc995af9c00d91d82"
+    },
+    "rig-layouts:casper-h-2010095": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "78d940e9c3d301c228317af0269b0c4e1c86d9096ded5cf13fcb88731d0df011",
+      "path": "calibration_artifacts/homography_arena_3_2010095.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "0ab36930d3e9c7b83c25ecb3de5c2416851948ca19677fbb26c6dc61de5d92d0"
+    },
+    "rig-layouts:casper-h-2010096": {
+      "source": "omnifin0-casper",
+      "commit": "snapshot",
+      "file_sha256": "78287f4af01f3df6468823066e3b0691fae813c1c8df0a50ab102c6d1e697d6b",
+      "path": "calibration_artifacts/homography_arena_4_2010096.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "4b2cc61f2df0a04838a80743f80f4a869603bdc72e897716f9879f0a43676cd8"
+    },
+    "rig-layouts:shadow-canvas-size": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "aa36e307fe2781cd5e441ec66dc5590295ec962ee675824a313b00a4cb16abfe",
+      "path": "shadow.json",
+      "start": 568,
+      "end": 570,
+      "selector": {
+        "lines": [
+          568,
+          570
+        ],
+        "anchor": "canvas_width_px"
+      },
+      "sha256": "0eb80677fdf1d443100e1471bae776df8dff9a2f20059ea91a18063e9e58d559"
+    },
+    "rig-layouts:shadow-arena-1": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "aa36e307fe2781cd5e441ec66dc5590295ec962ee675824a313b00a4cb16abfe",
+      "path": "shadow.json",
+      "start": 3,
+      "end": 81,
+      "selector": {
+        "lines": [
+          3,
+          81
+        ],
+        "anchor": "arena_center_x_px"
+      },
+      "sha256": "33071cd90b0bbb5fb94b060dad39b09a8abff6cfab18533dd2ce51fb05868c0d"
+    },
+    "rig-layouts:shadow-h-2010093": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "64389adc05b8d5edd1c94a82a2643294b5d79c34fb2897abfd94dcb8f87828c8",
+      "path": "calibration_artifacts/homography_arena_1_2010093.yml",
+      "start": 1,
+      "end": 28,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "3810de147fc4d5e3d30bbdaa88f4e85228355b289f83ebed483eb953323bcf28"
+    },
+    "rig-layouts:shadow-h-2010094": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "9ecc6fd22e9daaf6c24c162109a7cfba7f796534b3daa8e3c6c0591b9bb5e163",
+      "path": "calibration_artifacts/homography_arena_2_2010094.yml",
+      "start": 1,
+      "end": 28,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "4a6c734c95a41fa2c32752c8b847dedf2728e564a397422a81a8a86b33e43f7c"
+    },
+    "rig-layouts:shadow-h-2010095": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "5a34ec42fa0f3ff4757ba087f38cdeead495b575ee7eb95ab96a190635fc9fef",
+      "path": "calibration_artifacts/homography_arena_3_2010095.yml",
+      "start": 1,
+      "end": 28,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "b702b147cf1669e88cb29602e8be4bc0960368d69c4044d429bc9bb86cddbf65"
+    },
+    "rig-layouts:shadow-h-2010096": {
+      "source": "omnifin0-shadow",
+      "commit": "snapshot",
+      "file_sha256": "50f5ad5c3b517e2683cdabf3b252e460ff33e234137e45c5b6397a77919233f7",
+      "path": "calibration_artifacts/homography_arena_4_2010096.yml",
+      "start": 1,
+      "end": 28,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "fe99bc67aada50780ca81f4ccfaa88b136f2b6822f5ac9769baa1b34cdc74d76"
+    },
+    "rig-layouts:blindfish-canvas-size": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "1229038c835f09f053b2441b3e7e1338dea36e29abfb7827f7151cb9ac4fa1b4",
+      "path": "blindfish.json",
+      "start": 536,
+      "end": 538,
+      "selector": {
+        "lines": [
+          536,
+          538
+        ],
+        "anchor": "canvas_width_px"
+      },
+      "sha256": "171bcc67104a3f46c7306713caa9729a69e92aab0b0f22a7381801eca1aa5622"
+    },
+    "rig-layouts:blindfish-arena-1": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "1229038c835f09f053b2441b3e7e1338dea36e29abfb7827f7151cb9ac4fa1b4",
+      "path": "blindfish.json",
+      "start": 3,
+      "end": 73,
+      "selector": {
+        "lines": [
+          3,
+          73
+        ],
+        "anchor": "arena_center_x_px"
+      },
+      "sha256": "623c77b269207213d944c53cfdab7e0f123f3ae909f6559734a388baa6fbd060"
+    },
+    "rig-layouts:blindfish-h-2010093": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "0b1c0bccd1369faa4efa60fdd728350b9858be81d8f145198b47e91b1206a2ae",
+      "path": "calibration_artifacts/homography_arena_1_2010093.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "b59172d6acd86dc7bcb485e8eaf546b5141a5c91ea1df51cb96e72bc79ee1c3d"
+    },
+    "rig-layouts:blindfish-h-2010094": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "e00bab2d53140a105d56c6ca332234533e2124d3878ad5fc71d98be3890f6f14",
+      "path": "calibration_artifacts/homography_arena_2_2010094.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "f632342eb24643424f91cde3d9cb032cc8226faadc850fa07b9855cf5c3dcbb2"
+    },
+    "rig-layouts:blindfish-h-2010095": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "cfaf7a25871a448a62637bfdf748afb9c0151093a4292a4ab2e86956a3c37562",
+      "path": "calibration_artifacts/homography_arena_3_2010095.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "b9f2863ce5b2787fc921490a5424d21748c87344743a6c4ae5f85e5560e613cb"
+    },
+    "rig-layouts:blindfish-h-2010096": {
+      "source": "omnifin0-blindfish",
+      "commit": "snapshot",
+      "file_sha256": "5965502a4c77b94e7d096a444fb679a6322d1c608682aff0222920437dc51f1a",
+      "path": "calibration_artifacts/homography_arena_4_2010096.yml",
+      "start": 1,
+      "end": 11,
+      "selector": {
+        "lines": "all"
+      },
+      "sha256": "d6a9b09e59d3d46a057639cbc5434dc47bc8f8b81bebba7a4a57965898e475d1"
     }
   }
 }

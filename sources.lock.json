@@ -1,12 +1,12 @@
 {
-  "locked_at_utc": "2026-10-12T17:17:39Z",
+  "locked_at_utc": "2026-10-12T17:29:44Z",
   "sources": {
     "agent-contracts": {
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
       "branch": "agent/acquisition/orange-contract-202602271136",
       "remote": "git@github.com:jmdelahanty/agent-contracts.git",
       "web": "https://github.com/jmdelahanty/agent-contracts",
-      "commit_on_remote": false,
+      "commit_on_remote": true,
       "working_tree_dirty": true,
       "commit_date": "2026-06-10T03:54:24-04:00"
     },
@@ -20,13 +20,13 @@
       "commit_date": "2026-04-21T00:09:51-04:00"
     },
     "citrus": {
-      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
       "branch": "main",
       "remote": "git@github.com:JohnsonLabJanelia/citrus.git",
       "web": "https://github.com/JohnsonLabJanelia/citrus",
       "commit_on_remote": true,
       "working_tree_dirty": false,
-      "commit_date": "2026-10-11T20:27:31-04:00"
+      "commit_date": "2026-10-12T13:21:22-04:00"
     },
     "palette": {
       "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
@@ -36,6 +36,112 @@
       "commit_on_remote": true,
       "working_tree_dirty": false,
       "commit_date": "2026-08-12T13:54:27-04:00"
+    }
+  },
+  "data": {
+    "omnifin0-rig": {
+      "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0",
+      "role": "Rig-level config for omnifin0 (projector mount, display output)",
+      "files": {
+        "omnifin0_config.json": {
+          "sha256": "d53ccc76eca0eaf04fcc6b3e62a6eb42f48bd34f0021df14ac65bb6c15a2da9a",
+          "bytes": 2406,
+          "mtime_utc": "2026-09-14T15:54:49Z"
+        }
+      }
+    },
+    "omnifin0-casper": {
+      "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/casper",
+      "role": "Canvas \"casper\" (four circular arenas, one camera each) and its homography sidecars",
+      "files": {
+        "casper.json": {
+          "sha256": "0779e3751af9d4a1dce5554cc488488df72f922c44337f7ba96e4d5449f9efb9",
+          "bytes": 10814,
+          "mtime_utc": "2025-10-23T15:40:14Z"
+        },
+        "calibration_artifacts/homography_arena_1_2010093.yml": {
+          "sha256": "fdcc3fc145a4adfdd1e07f19d8e8909c6c7c6d06fc86b1e78556e3c9126cb449",
+          "bytes": 350,
+          "mtime_utc": "2025-09-17T20:18:21Z"
+        },
+        "calibration_artifacts/homography_arena_2_2010094.yml": {
+          "sha256": "da86a65a8c18779a6180bfcad0d1fbc5085413abc5ad8cb9a013c535a1b1b7be",
+          "bytes": 348,
+          "mtime_utc": "2025-09-17T20:02:13Z"
+        },
+        "calibration_artifacts/homography_arena_3_2010095.yml": {
+          "sha256": "78d940e9c3d301c228317af0269b0c4e1c86d9096ded5cf13fcb88731d0df011",
+          "bytes": 366,
+          "mtime_utc": "2025-09-17T19:40:14Z"
+        },
+        "calibration_artifacts/homography_arena_4_2010096.yml": {
+          "sha256": "78287f4af01f3df6468823066e3b0691fae813c1c8df0a50ab102c6d1e697d6b",
+          "bytes": 363,
+          "mtime_utc": "2025-08-07T18:13:24Z"
+        }
+      }
+    },
+    "omnifin0-shadow": {
+      "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow",
+      "role": "Canvas \"shadow\" (four circular arenas on a 1920x1080 canvas)",
+      "files": {
+        "shadow.json": {
+          "sha256": "aa36e307fe2781cd5e441ec66dc5590295ec962ee675824a313b00a4cb16abfe",
+          "bytes": 29610,
+          "mtime_utc": "2026-10-07T00:43:39Z"
+        },
+        "calibration_artifacts/homography_arena_1_2010093.yml": {
+          "sha256": "64389adc05b8d5edd1c94a82a2643294b5d79c34fb2897abfd94dcb8f87828c8",
+          "bytes": 1295,
+          "mtime_utc": "2026-09-14T21:59:05Z"
+        },
+        "calibration_artifacts/homography_arena_2_2010094.yml": {
+          "sha256": "9ecc6fd22e9daaf6c24c162109a7cfba7f796534b3daa8e3c6c0591b9bb5e163",
+          "bytes": 1297,
+          "mtime_utc": "2026-09-14T21:59:05Z"
+        },
+        "calibration_artifacts/homography_arena_3_2010095.yml": {
+          "sha256": "5a34ec42fa0f3ff4757ba087f38cdeead495b575ee7eb95ab96a190635fc9fef",
+          "bytes": 1297,
+          "mtime_utc": "2026-09-14T21:59:05Z"
+        },
+        "calibration_artifacts/homography_arena_4_2010096.yml": {
+          "sha256": "50f5ad5c3b517e2683cdabf3b252e460ff33e234137e45c5b6397a77919233f7",
+          "bytes": 1296,
+          "mtime_utc": "2026-09-14T21:59:05Z"
+        }
+      }
+    },
+    "omnifin0-blindfish": {
+      "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/blindfish",
+      "role": "Canvas \"blindfish\" (four rectangular experimental areas)",
+      "files": {
+        "blindfish.json": {
+          "sha256": "1229038c835f09f053b2441b3e7e1338dea36e29abfb7827f7151cb9ac4fa1b4",
+          "bytes": 27704,
+          "mtime_utc": "2026-08-25T17:08:30Z"
+        },
+        "calibration_artifacts/homography_arena_1_2010093.yml": {
+          "sha256": "0b1c0bccd1369faa4efa60fdd728350b9858be81d8f145198b47e91b1206a2ae",
+          "bytes": 348,
+          "mtime_utc": "2026-04-20T13:53:09Z"
+        },
+        "calibration_artifacts/homography_arena_2_2010094.yml": {
+          "sha256": "e00bab2d53140a105d56c6ca332234533e2124d3878ad5fc71d98be3890f6f14",
+          "bytes": 348,
+          "mtime_utc": "2026-04-20T13:41:24Z"
+        },
+        "calibration_artifacts/homography_arena_3_2010095.yml": {
+          "sha256": "cfaf7a25871a448a62637bfdf748afb9c0151093a4292a4ab2e86956a3c37562",
+          "bytes": 346,
+          "mtime_utc": "2026-04-20T13:31:54Z"
+        },
+        "calibration_artifacts/homography_arena_4_2010096.yml": {
+          "sha256": "5965502a4c77b94e7d096a444fb679a6322d1c608682aff0222920437dc51f1a",
+          "bytes": 346,
+          "mtime_utc": "2026-04-20T13:22:29Z"
+        }
+      }
     }
   }
 }

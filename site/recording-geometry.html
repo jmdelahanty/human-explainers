@@ -21,7 +21,19 @@ pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;l
 .excerpt .body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;font-size:.92rem}
 .excerpt .body th,.excerpt .body td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
 .badge{display:inline-block;padding:1px 8px;border-radius:999px;font-weight:600;color:#fff;font-size:.78rem;letter-spacing:.02em}
-.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}
+.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}.badge-data{background:#5f6368}
+svg.rig{width:100%;height:auto;display:block;color:var(--fg);margin:8px 0}
+svg.rig .frame{fill:var(--code);stroke:var(--fg);stroke-width:1.2}
+svg.rig .arena{fill:none;stroke-width:1.6}
+svg.rig .exp{fill-opacity:.12;stroke-width:1.2}
+svg.rig .cam{fill:none;stroke-width:1.2;stroke-dasharray:5 4}
+svg.rig .axis{stroke:currentColor;stroke-width:1.4}
+svg.rig .title{font:600 13px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+svg.rig .small{font:11px ui-monospace,Menlo,Consolas,monospace;fill:var(--muted);paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round}
+svg.rig .axis-label{font:11px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+table.numbers{border-collapse:collapse;font-size:.82rem;display:block;overflow-x:auto;margin:8px 0}
+table.numbers th,table.numbers td{border:1px solid var(--line);padding:4px 7px;text-align:left;vertical-align:top;white-space:nowrap}
+table.numbers th small{font-weight:400;color:var(--muted)}
 .note{font-size:.9rem;color:var(--muted);margin:-8px 0 14px 2px}
 .diagram{margin:14px 0 6px}.diagram-note{color:var(--muted);font-size:.9rem}
 svg.chain{width:100%;height:auto;display:block;color:var(--fg)}
@@ -106,7 +118,7 @@ truth for Orange camera-space evidence.</p>
 </ul>
 </li>
 </ul>
-</div></section><figure class="diagram"><div class="cards"><div class="card"><h4><code>arena_relative_canvas_px</code></h4><ul><li>local active-arena coordinates</li><li>origin = top-left of arena region</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>final_display_canvas_px</code></h4><ul><li>full Citrus display canvas coordinates</li><li>origin = top-left of fullscreen output canvas</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>camera_view_px</code></h4><ul><li>raw camera image coordinates</li><li>origin = top-left of camera image</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div></div><figcaption class="diagram-note">Derived automatically from the excerpt <a href="#frames-overlay-contract">frames-overlay-contract</a> (agent-contracts: <code>citrus-crimson/spatial_overlay_contract.md</code>).</figcaption></figure><section class="excerpt" id="frames-calibration-contract"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-citrus/physical_layout_calibration_contract.md</span><span>L137–L183</span><span>heading: <code>## Canonical Coordinate Frames</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-citrus/physical_layout_calibration_contract.md#L137-L183">view at e648029cc8</a></header><div class="body"><h2>Canonical Coordinate Frames</h2>
+</div></section><figure class="diagram"><div class="cards"><div class="card"><h4><code>arena_relative_canvas_px</code></h4><ul><li>local active-arena coordinates</li><li>origin = top-left of arena region</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>final_display_canvas_px</code></h4><ul><li>full Citrus display canvas coordinates</li><li>origin = top-left of fullscreen output canvas</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>camera_view_px</code></h4><ul><li>raw camera image coordinates</li><li>origin = top-left of camera image</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div></div><figcaption class="diagram-note">Derived automatically from <a href="#frames-overlay-contract">frames-overlay-contract</a> (agent-contracts: <code>citrus-crimson/spatial_overlay_contract.md</code>).</figcaption></figure><section class="excerpt" id="frames-calibration-contract"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-citrus/physical_layout_calibration_contract.md</span><span>L137–L183</span><span>heading: <code>## Canonical Coordinate Frames</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-citrus/physical_layout_calibration_contract.md#L137-L183">view at e648029cc8</a></header><div class="body"><h2>Canonical Coordinate Frames</h2>
 <p>Every payload must name its pixel frame and, where applicable, physical plane.</p>
 <ul>
 <li>
@@ -163,7 +175,7 @@ shape explicitly.</p>
 </ul>
 <p>Implementations should normalize these aliases deliberately rather than relying
 on loose string matching.</p>
-</div></section><p class="note">This is the cross-repo definition, including the Orange alias camera_native_pixels and the physical plane IDs.</p><section class="excerpt" id="citrus-frame-camera-view"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L32–L45</span><span>heading: <code>### `camera_view_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L32-L45">view at 185624f534</a></header><div class="body"><h3><code>camera_view_px</code></h3>
+</div></section><p class="note">This is the cross-repo definition, including the Orange alias camera_native_pixels and the physical plane IDs.</p><section class="excerpt" id="citrus-frame-camera-view"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L32–L45</span><span>heading: <code>### `camera_view_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L32-L45">view at 48ad93e4d2</a></header><div class="body"><h3><code>camera_view_px</code></h3>
 <p>The camera image coordinate system used by tracking and homography input points.</p>
 <ul>
 <li>Status: <code>Code-defined</code></li>
@@ -178,12 +190,12 @@ on loose string matching.</p>
 </li>
 <li>Evidence:
 <ul>
-<li>Citrus uses incoming bbox image coordinates directly in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
-<li>bbox centers are transformed with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+<li>Citrus uses incoming bbox image coordinates directly in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+<li>bbox centers are transformed with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
 </ul>
 </li>
 </ul>
-</div></section><section class="excerpt" id="citrus-frame-final-display-canvas"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L63–L79</span><span>heading: <code>### `final_display_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L63-L79">view at 185624f534</a></header><div class="body"><h3><code>final_display_canvas_px</code></h3>
+</div></section><section class="excerpt" id="citrus-frame-final-display-canvas"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L63–L79</span><span>heading: <code>### `final_display_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L63-L79">view at 48ad93e4d2</a></header><div class="body"><h3><code>final_display_canvas_px</code></h3>
 <p>The logical full-canvas composition buffer into which Citrus places arena
 textures. The established name is retained for compatibility; <code>display</code> in the
 name does not mean that these indices are already physical projector pixels or
@@ -201,12 +213,12 @@ top-left-oriented GLFW framebuffer pixels.</p>
 </li>
 <li>Evidence:
 <ul>
-<li>arenas are composited by top-left destination coordinates <code>dest_x</code>, <code>dest_y</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
-<li>full-canvas previews use <code>dest_x = 0</code>, <code>dest_y = 0</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
+<li>arenas are composited by top-left destination coordinates <code>dest_x</code>, <code>dest_y</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
+<li>full-canvas previews use <code>dest_x = 0</code>, <code>dest_y = 0</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
 </ul>
 </li>
 </ul>
-</div></section><section class="excerpt" id="citrus-frame-arena-relative"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L127–L153</span><span>heading: <code>### `arena_relative_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L127-L153">view at 185624f534</a></header><div class="body"><h3><code>arena_relative_canvas_px</code></h3>
+</div></section><section class="excerpt" id="citrus-frame-arena-relative"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L127–L153</span><span>heading: <code>### `arena_relative_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L127-L153">view at 48ad93e4d2</a></header><div class="body"><h3><code>arena_relative_canvas_px</code></h3>
 <p>The coordinate system for arena-local geometry inside the active arena region on the stimulus canvas.</p>
 <ul>
 <li>Status: <code>Code-defined</code></li>
@@ -226,8 +238,8 @@ top-left-oriented GLFW framebuffer pixels.</p>
 </li>
 <li>Evidence:
 <ul>
-<li>the UI explicitly labels experimental-area position as <code>Arena-Relative Coordinates</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
-<li>experimental-area center sliders run from <code>0 .. arena_width/height</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
+<li>the UI explicitly labels experimental-area position as <code>Arena-Relative Coordinates</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
+<li>experimental-area center sliders run from <code>0 .. arena_width/height</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
 <li>Citrus now saves this explicitly in <code>/calibration_snapshot/arena_geometry</code></li>
 </ul>
 </li>
@@ -258,7 +270,7 @@ measurements are available.</li>
 <li><code>layout_units</code> is allowed when a stable rig-level template exists but the
 layout has not yet been measured in real millimeters.</li>
 </ul>
-</div></section><h2 id='s3'>The transform chain between frames</h2><section class="excerpt" id="citrus-transform-chain"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L212–L243</span><span>heading: <code>## Current Transform Chain</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L212-L243">view at 185624f534</a></header><div class="body"><h2>Current Transform Chain</h2>
+</div></section><h2 id='s3'>The transform chain between frames</h2><section class="excerpt" id="citrus-transform-chain"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L212–L243</span><span>heading: <code>## Current Transform Chain</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L212-L243">view at 48ad93e4d2</a></header><div class="body"><h2>Current Transform Chain</h2>
 <p>The current intended interpretation is:</p>
 <ol>
 <li>Tracking arrives in <code>camera_view_px</code>.</li>
@@ -286,7 +298,7 @@ p_arena_relative_canvas = p_final_display_canvas - arena_origin_canvas
 map the accepted center through <code>H_camera_to_final_display_canvas</code>, then subtract
 the active arena origin if it needs an <code>arena_relative_canvas_px</code> value. This is
 the correct path for comparing against <code>experimental_area_center_x_px/y_px</code>.</p>
-</div></section><figure class="diagram"><svg class="chain" viewBox="0 0 1128 358" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transform chain parsed from the excerpt above"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs><rect x="24" y="152" width="260" height="54" rx="8" class="node"/><text x="154.0" y="184.0" text-anchor="middle" class="node-label">p_camera_view</text><rect x="434" y="152" width="260" height="54" rx="8" class="node"/><text x="564.0" y="184.0" text-anchor="middle" class="node-label">p_final_display_canvas</text><rect x="844" y="152" width="260" height="54" rx="8" class="node"/><text x="974.0" y="184.0" text-anchor="middle" class="node-label">p_arena_relative_canvas</text><path d="M154.0 152 L154.0 106 L564.0 106 L564.0 152" class="edge" marker-end="url(#arr)"/><text x="359.0" y="98" text-anchor="middle" class="edge-label">p_final_display_canvas ~ H_camera_to_final_display_canvas * p_camera_view</text><path d="M564.0 152 L564.0 42 L974.0 42 L974.0 152" class="edge" marker-end="url(#arr)"/><text x="769.0" y="34" text-anchor="middle" class="edge-label">p_arena_relative_canvas = p_final_display_canvas - arena_origin_canvas</text><path d="M974.0 206 L974.0 252 L564.0 252 L564.0 206" class="edge" marker-end="url(#arr)"/><text x="769.0" y="270" text-anchor="middle" class="edge-label">p_final_display_canvas = p_arena_relative_canvas + arena_origin_canvas</text><path d="M564.0 206 L564.0 316 L154.0 316 L154.0 206" class="edge" marker-end="url(#arr)"/><text x="359.0" y="334" text-anchor="middle" class="edge-label">p_camera_view ~ inverse(H_camera_to_final_display_canvas) * p_final_display_canvas</text></svg><p class='diagram-note'>Also defined in the excerpt: <code>arena_origin_canvas</code>.</p><figcaption class="diagram-note">Derived automatically from the excerpt <a href="#citrus-transform-chain">citrus-transform-chain</a> (citrus: <code>docs/coordinate_systems.md</code>).</figcaption></figure><section class="excerpt" id="citrus-camera-to-canvas-mapping"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L155–L181</span><span>heading: <code>### `camera_view_to_canvas_mapping`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L155-L181">view at 185624f534</a></header><div class="body"><h3><code>camera_view_to_canvas_mapping</code></h3>
+</div></section><figure class="diagram"><svg class="chain" viewBox="0 0 1128 358" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transform chain parsed from the excerpt above"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs><rect x="24" y="152" width="260" height="54" rx="8" class="node"/><text x="154.0" y="184.0" text-anchor="middle" class="node-label">p_camera_view</text><rect x="434" y="152" width="260" height="54" rx="8" class="node"/><text x="564.0" y="184.0" text-anchor="middle" class="node-label">p_final_display_canvas</text><rect x="844" y="152" width="260" height="54" rx="8" class="node"/><text x="974.0" y="184.0" text-anchor="middle" class="node-label">p_arena_relative_canvas</text><path d="M154.0 152 L154.0 106 L564.0 106 L564.0 152" class="edge" marker-end="url(#arr)"/><text x="359.0" y="98" text-anchor="middle" class="edge-label">p_final_display_canvas ~ H_camera_to_final_display_canvas * p_camera_view</text><path d="M564.0 152 L564.0 42 L974.0 42 L974.0 152" class="edge" marker-end="url(#arr)"/><text x="769.0" y="34" text-anchor="middle" class="edge-label">p_arena_relative_canvas = p_final_display_canvas - arena_origin_canvas</text><path d="M974.0 206 L974.0 252 L564.0 252 L564.0 206" class="edge" marker-end="url(#arr)"/><text x="769.0" y="270" text-anchor="middle" class="edge-label">p_final_display_canvas = p_arena_relative_canvas + arena_origin_canvas</text><path d="M564.0 206 L564.0 316 L154.0 316 L154.0 206" class="edge" marker-end="url(#arr)"/><text x="359.0" y="334" text-anchor="middle" class="edge-label">p_camera_view ~ inverse(H_camera_to_final_display_canvas) * p_final_display_canvas</text></svg><p class='diagram-note'>Also defined in the excerpt: <code>arena_origin_canvas</code>.</p><figcaption class="diagram-note">Derived automatically from <a href="#citrus-transform-chain">citrus-transform-chain</a> (citrus: <code>docs/coordinate_systems.md</code>).</figcaption></figure><section class="excerpt" id="citrus-camera-to-canvas-mapping"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L155–L181</span><span>heading: <code>### `camera_view_to_canvas_mapping`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L155-L181">view at 48ad93e4d2</a></header><div class="body"><h3><code>camera_view_to_canvas_mapping</code></h3>
 <p>The effective mapping from <code>camera_view_px</code> into the stimulus canvas, computed from the active homography.</p>
 <ul>
 <li>Status: <code>Calibration-derived</code></li>
@@ -298,8 +310,8 @@ the correct path for comparing against <code>experimental_area_center_x_px/y_px<
 </li>
 <li>Evidence:
 <ul>
-<li>camera points are transformed into stimulus coordinates with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
-<li>direction basis is derived in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/calibration/direction_frame_mapping.h"><code>src/calibration/direction_frame_mapping.h</code></a></li>
+<li>camera points are transformed into stimulus coordinates with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+<li>direction basis is derived in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/calibration/direction_frame_mapping.h"><code>src/calibration/direction_frame_mapping.h</code></a></li>
 <li>saved H5 fields live under <code>/calibration_snapshot/&lt;camera_id&gt;</code> and <code>/calibration_snapshot/arena_geometry</code></li>
 </ul>
 </li>
@@ -344,7 +356,7 @@ sufficient; the arena-origin translation is required first.</li>
 <li>No extra offset should be applied before or after inverse homography beyond
 the explicit arena embedding step above.</li>
 </ul>
-</div></section><section class="excerpt" id="citrus-presentation-reflection"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L81–L97</span><span>heading: <code>### `final_display_canvas_px` to presented display</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L81-L97">view at 185624f534</a></header><div class="body"><h3><code>final_display_canvas_px</code> to presented display</h3>
+</div></section><section class="excerpt" id="citrus-presentation-reflection"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L81–L97</span><span>heading: <code>### `final_display_canvas_px` to presented display</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/docs/coordinate_systems.md#L81-L97">view at 48ad93e4d2</a></header><div class="body"><h3><code>final_display_canvas_px</code> to presented display</h3>
 <p>Presentation is a separate mapping from the logical composition buffer. The
 current implementation uploads the CUDA/PBO rows directly to an OpenGL texture
 and draws a full-screen quad with texture <code>v=0</code> at the bottom. Therefore, before
@@ -377,7 +389,7 @@ have matching signs.</p>
 <li>Overlay consumers should use <code>arena_origin_in_canvas_x_px</code> and
 <code>arena_origin_in_canvas_y_px</code> as the authoritative local-to-global embedding.</li>
 </ul>
-</div></section><section class="excerpt" id="citrus-arena-origin-writer"><header><span class="badge badge-citrus">citrus</span><span class="path">src/logging/session_logger.cpp</span><span>L5677–L5706</span><span>lines: <code>[5677, 5706]</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/logging/session_logger.cpp#L5677-L5706">view at 185624f534</a></header><div class="body"><pre><code class="language-cpp">        float arena_region_center_x_px = static_cast&lt;float&gt;(filtered_config.GetArenaCenterXInCanvasPx());
+</div></section><section class="excerpt" id="citrus-arena-origin-writer"><header><span class="badge badge-citrus">citrus</span><span class="path">src/logging/session_logger.cpp</span><span>L5677–L5706</span><span>lines: <code>[5677, 5706]</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/logging/session_logger.cpp#L5677-L5706">view at 48ad93e4d2</a></header><div class="body"><pre><code class="language-cpp">        float arena_region_center_x_px = static_cast&lt;float&gt;(filtered_config.GetArenaCenterXInCanvasPx());
         float arena_region_center_y_px = static_cast&lt;float&gt;(filtered_config.GetArenaCenterYInCanvasPx());
         float arena_region_width_px = static_cast&lt;float&gt;(filtered_config.GetArenaWidthPx());
         float arena_region_height_px = static_cast&lt;float&gt;(filtered_config.GetArenaHeightPx());
@@ -636,4 +648,4 @@ coordinate authority.
 <li>clip normalized values to <code>[0, 1]</code> before conversion</li>
 <li>then clip pixel bounds to <code>[0, W-1]</code> / <code>[0, H-1]</code></li>
 </ul>
-</div></section><footer>Generated from sources locked at 2026-10-12T17:17:39Z. Every block above is a verbatim excerpt; nothing on this page was written by hand.</footer></main></body></html>
+</div></section><footer>Generated from sources locked at 2026-10-12T17:29:44Z. Every block above is a verbatim excerpt; nothing on this page was written by hand.</footer></main></body></html>
