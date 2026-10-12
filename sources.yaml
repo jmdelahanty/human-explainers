@@ -1,0 +1,18 @@
+# Source repositories that every explainer is derived from.
+#
+# Nothing on the site is written by hand: every block is a verbatim excerpt of
+# a file in one of these repos at the commit recorded in sources.lock.json.
+# Run `python3 tools/explain.py lock` to re-pin to the current local HEADs.
+sources:
+  agent-contracts:
+    local_path: /home/jeremy/agent-contracts
+    role: Cross-repo interface contracts (the shared vocabulary)
+  orange:
+    local_path: /home/jeremy/orange-jeremy
+    role: Acquisition runtime (cameras, recordings, camera-space calibration evidence)
+  citrus:
+    local_path: /home/jeremy/citrus
+    role: Stimulus runtime (rig/canvas/arena geometry, homography, session H5)
+  palette:
+    local_path: /home/jeremy/palette-stimulus-v5
+    role: Analysis pipelines (reads Orange recordings and Citrus H5 into Zarr)

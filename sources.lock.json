@@ -1,0 +1,41 @@
+{
+  "locked_at_utc": "2026-10-12T17:17:39Z",
+  "sources": {
+    "agent-contracts": {
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "branch": "agent/acquisition/orange-contract-202602271136",
+      "remote": "git@github.com:jmdelahanty/agent-contracts.git",
+      "web": "https://github.com/jmdelahanty/agent-contracts",
+      "commit_on_remote": false,
+      "working_tree_dirty": true,
+      "commit_date": "2026-06-10T03:54:24-04:00"
+    },
+    "orange": {
+      "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "branch": "merge/split-gop-into-monotonic",
+      "remote": "git@github.com:jmdelahanty/orange.git",
+      "web": "https://github.com/jmdelahanty/orange",
+      "commit_on_remote": true,
+      "working_tree_dirty": false,
+      "commit_date": "2026-04-21T00:09:51-04:00"
+    },
+    "citrus": {
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "branch": "main",
+      "remote": "git@github.com:JohnsonLabJanelia/citrus.git",
+      "web": "https://github.com/JohnsonLabJanelia/citrus",
+      "commit_on_remote": true,
+      "working_tree_dirty": false,
+      "commit_date": "2026-10-11T20:27:31-04:00"
+    },
+    "palette": {
+      "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "branch": "sun",
+      "remote": "git@github.com:jmdelahanty/palette.git",
+      "web": "https://github.com/jmdelahanty/palette",
+      "commit_on_remote": true,
+      "working_tree_dirty": false,
+      "commit_date": "2026-08-12T13:54:27-04:00"
+    }
+  }
+}

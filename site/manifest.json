@@ -1,0 +1,340 @@
+{
+  "locked_at_utc": "2026-10-12T17:17:39Z",
+  "excerpts": {
+    "recording-geometry:orange-owns-camera-space": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "orange-citrus/physical_layout_calibration_contract.md",
+      "start": 88,
+      "end": 99,
+      "selector": {
+        "heading": "### Orange Owns Camera-Space Evidence"
+      },
+      "sha256": "e6138edf4765a579fa547ea8874caa50b3fc5f8a95379068332a2544cbb06fbb"
+    },
+    "recording-geometry:citrus-owns-spatial-interpretation": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "orange-citrus/physical_layout_calibration_contract.md",
+      "start": 101,
+      "end": 114,
+      "selector": {
+        "heading": "### Citrus Owns Spatial Interpretation"
+      },
+      "sha256": "c91e1f598c6aa742df3f3480946863a673b5803032e8f231c01ddfbb35fc6db2"
+    },
+    "recording-geometry:stable-ids": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "pancake-orange-citrus/rig_canvas_inventory_contract.md",
+      "start": 35,
+      "end": 45,
+      "selector": {
+        "heading": "## Stable IDs"
+      },
+      "sha256": "7c1e9ab7555114d258dbb28dbfa4c5971d0dcb94e2d58ce92c665ddac7ee5a73"
+    },
+    "recording-geometry:join-invariants": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "pancake-orange-citrus/rig_canvas_inventory_contract.md",
+      "start": 111,
+      "end": 119,
+      "selector": {
+        "heading": "## Join Invariants"
+      },
+      "sha256": "022ead5d7f9252c939c6ffabbd6e5e0d85b77af445cf6cb7f35e827bbec133a4"
+    },
+    "recording-geometry:frames-overlay-contract": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 32,
+      "end": 45,
+      "selector": {
+        "heading": "## Canonical Frames"
+      },
+      "sha256": "c5e5664c9feca858171624c5b55f8a2a9c06e32c3e3be80b225b325ae6632083"
+    },
+    "recording-geometry:frames-calibration-contract": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "orange-citrus/physical_layout_calibration_contract.md",
+      "start": 137,
+      "end": 183,
+      "selector": {
+        "heading": "## Canonical Coordinate Frames"
+      },
+      "sha256": "4850f791b46366bba2a8290d2b8b1ec69e53508ae906f84a41ba62e670af13e0"
+    },
+    "recording-geometry:citrus-frame-camera-view": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 32,
+      "end": 45,
+      "selector": {
+        "heading": "### `camera_view_px`"
+      },
+      "sha256": "ad431ba3192dac997e493028d7a1e94e0f4fda655327e23e20b105a2eedefc9d"
+    },
+    "recording-geometry:citrus-frame-final-display-canvas": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 63,
+      "end": 79,
+      "selector": {
+        "heading": "### `final_display_canvas_px`"
+      },
+      "sha256": "62e9cc0996ff73034f583fd40c5227bc0b8ed9f01833dc9ac5a22e12fc0c6d51"
+    },
+    "recording-geometry:citrus-frame-arena-relative": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 127,
+      "end": 153,
+      "selector": {
+        "heading": "### `arena_relative_canvas_px`"
+      },
+      "sha256": "21714f90fbdd1bdbbfd7be3d90262227d984ebe530042582b7ad6ce77f1572b1"
+    },
+    "recording-geometry:orange-coordinate-space-enum": {
+      "source": "orange",
+      "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "path": "docs/spatial_layout_schema.md",
+      "start": 88,
+      "end": 103,
+      "selector": {
+        "heading": "### Coordinate-space enum"
+      },
+      "sha256": "ca070e0846d9884b6f09474f8b8ef19adbcd26532845cd0a7f73854fad31dfd0"
+    },
+    "recording-geometry:citrus-transform-chain": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 212,
+      "end": 243,
+      "selector": {
+        "heading": "## Current Transform Chain"
+      },
+      "sha256": "c5cb205280921a5eead785b9e9bd68b2ef289c8acfc4674f24d7917b3cf59fb4"
+    },
+    "recording-geometry:citrus-camera-to-canvas-mapping": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 155,
+      "end": 181,
+      "selector": {
+        "heading": "### `camera_view_to_canvas_mapping`"
+      },
+      "sha256": "58822bf0e2190fd0db61a3f4a61ede9f276f2d7ea91503ffbce7cc96ca3af443"
+    },
+    "recording-geometry:overlay-mapping-rule": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 149,
+      "end": 174,
+      "selector": {
+        "heading": "## Canonical Mapping Rule"
+      },
+      "sha256": "627bb3b7185632214034ce0c859ebd93c9a347ae7999a2b6a800d3081283258b"
+    },
+    "recording-geometry:overlay-direct-answers": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 207,
+      "end": 215,
+      "selector": {
+        "heading": "## Direct Answers For Consumers"
+      },
+      "sha256": "07366a0c12c79706b03d79d58acc538f5f25b8776a848ea5ad8652b35cd6f079"
+    },
+    "recording-geometry:citrus-presentation-reflection": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "docs/coordinate_systems.md",
+      "start": 81,
+      "end": 97,
+      "selector": {
+        "heading": "### `final_display_canvas_px` to presented display"
+      },
+      "sha256": "4c54418e708bebb2dd7f142ebf7a9fd79af98b63b75bac10f9c662e6caa76aee"
+    },
+    "recording-geometry:h5-arena-embedding": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 77,
+      "end": 96,
+      "selector": {
+        "heading": "### Arena embedding into full display canvas"
+      },
+      "sha256": "33ccd787a42cf39f9f04d1ac0b6697ec03006e29f7855a596d128be6b115cefc"
+    },
+    "recording-geometry:citrus-arena-origin-writer": {
+      "source": "citrus",
+      "commit": "185624f534c24be83e60058691cedb1794016179",
+      "path": "src/logging/session_logger.cpp",
+      "start": 5677,
+      "end": 5706,
+      "selector": {
+        "lines": [
+          5677,
+          5706
+        ],
+        "anchor": "arena_origin_in_canvas_x_px"
+      },
+      "sha256": "2edc8c40ab1878928303c6b50f8f9ed980f748b22278065507eea4b39b2ccc9b"
+    },
+    "recording-geometry:h5-per-camera-homography": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 98,
+      "end": 129,
+      "selector": {
+        "heading": "### Per-camera homography"
+      },
+      "sha256": "0de30878707e17f0462dea5c13f339e88daed0b8e4ffa277aafbeedebfefac94"
+    },
+    "recording-geometry:h5-arena-local-positions": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 49,
+      "end": 75,
+      "selector": {
+        "heading": "### Arena-local tracked positions"
+      },
+      "sha256": "8fe9dd359b0e4bc9bfcffbaf39c56180114ea78ae11fdf30c6b8884ea6e7f4bf"
+    },
+    "recording-geometry:h5-raw-camera-tracking": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 131,
+      "end": 147,
+      "selector": {
+        "heading": "### Raw camera-space tracking"
+      },
+      "sha256": "73cae7cffc7f5a0f9746bfef86fa61751e89bd4e18e7e9ea6adbff285f2edefc"
+    },
+    "recording-geometry:orange-crop-meta-contract": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "orange-consumers/output_artifacts_contract.md",
+      "start": 125,
+      "end": 142,
+      "selector": {
+        "heading": "### Crop Metadata CSV (`Cam<serial>_crop_meta.csv`)"
+      },
+      "sha256": "3e121141e2478a20e0ec79fbb90581dece07c6106c19045e305378ca3779383a"
+    },
+    "recording-geometry:orange-crop-meta-header": {
+      "source": "orange",
+      "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "path": "src/crop_and_encode_worker.cpp",
+      "start": 228,
+      "end": 228,
+      "selector": {
+        "lines": [
+          228,
+          228
+        ],
+        "anchor": "crop_x,crop_y,crop_w,crop_h"
+      },
+      "sha256": "6a7a533d6f17dd28c9610564fef1cc25c1208abd15569073e4475a384d189cf1"
+    },
+    "recording-geometry:orange-crop-meta-row": {
+      "source": "orange",
+      "commit": "b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4",
+      "path": "src/crop_and_encode_worker.cpp",
+      "start": 312,
+      "end": 318,
+      "selector": {
+        "lines": [
+          312,
+          318
+        ],
+        "anchor": "best_detection.rect.x"
+      },
+      "sha256": "74446c5e805bcd2a569f1ce9557d52c6dd76bc1125fdad9a302ea9b363106a24"
+    },
+    "recording-geometry:palette-coordinate-transform-doc": {
+      "source": "palette",
+      "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "path": "src/fisheye/shared/coordinate_transform.py",
+      "start": 1,
+      "end": 12,
+      "selector": {
+        "lines": [
+          1,
+          12
+        ],
+        "anchor": "direction-neutral"
+      },
+      "sha256": "d793b43e7cf3aa7f5e0668070eba879b5b08eac63845fffd35b497ada58a2c42"
+    },
+    "recording-geometry:palette-apply-homography": {
+      "source": "palette",
+      "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "path": "src/fisheye/shared/coordinate_transform.py",
+      "start": 173,
+      "end": 243,
+      "selector": {
+        "symbol": "apply_homography_xy"
+      },
+      "sha256": "209d97a62c7cdad424f318ba1676d47515cdc6cb866cefbf5dac4d2b4f16447c"
+    },
+    "recording-geometry:palette-arena-origin": {
+      "source": "palette",
+      "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "path": "src/fisheye/shared/arena_geometry.py",
+      "start": 172,
+      "end": 181,
+      "selector": {
+        "symbol": "_arena_origin_px"
+      },
+      "sha256": "9048cd576683fd05e37743f9daef3eb1ef341bf9442b7fc546b9418d5b41334e"
+    },
+    "recording-geometry:palette-detection-frame-size": {
+      "source": "palette",
+      "commit": "7ffb8143f54cc54f811e306a1e5be4396ffc1dc3",
+      "path": "src/fisheye/shared/arena_geometry.py",
+      "start": 150,
+      "end": 169,
+      "selector": {
+        "symbol": "detection_frame_size_px"
+      },
+      "sha256": "0115ba1e896193b5dca713f613a2839cd643630bb6f9a68617b2a1768ebedbcc"
+    },
+    "recording-geometry:bbox-required-arrays": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "palette-crimson/detect_bbox_read.md",
+      "start": 58,
+      "end": 65,
+      "selector": {
+        "heading": "## Required Arrays (for any selected detect group)"
+      },
+      "sha256": "032f3ffc467b1849fcd8baf2aaa2926972eeaf4e82cb2dd8a9503b0970b20cab"
+    },
+    "recording-geometry:bbox-coordinate-conversion": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "path": "palette-crimson/detect_bbox_read.md",
+      "start": 150,
+      "end": 161,
+      "selector": {
+        "heading": "## Coordinate Conversion"
+      },
+      "sha256": "58463e4f8c7fe8ea118d8b3fe42d5cb5dcf0d758a159e9565623d6cfbc92e156"
+    }
+  }
+}

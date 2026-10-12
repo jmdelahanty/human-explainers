@@ -1,0 +1,163 @@
+title: How the geometry of a recording is computed
+question: >-
+  Where does a pixel in an Orange recording end up in Citrus and Palette, and
+  which files, fields, and transforms carry it there?
+
+# Curator's selection only. Every item below names a verbatim excerpt of a
+# source file at the commit in sources.lock.json; diagrams are parsed from
+# those excerpts. See README.md for the item kinds.
+
+sections:
+  - title: Who owns which part of the geometry
+    items:
+      - id: orange-owns-camera-space
+        source: agent-contracts
+        path: orange-citrus/physical_layout_calibration_contract.md
+        heading: "### Orange Owns Camera-Space Evidence"
+      - id: citrus-owns-spatial-interpretation
+        source: agent-contracts
+        path: orange-citrus/physical_layout_calibration_contract.md
+        heading: "### Citrus Owns Spatial Interpretation"
+      - id: stable-ids
+        source: agent-contracts
+        path: pancake-orange-citrus/rig_canvas_inventory_contract.md
+        heading: "## Stable IDs"
+      - id: join-invariants
+        source: agent-contracts
+        path: pancake-orange-citrus/rig_canvas_inventory_contract.md
+        heading: "## Join Invariants"
+
+  - title: The three pixel frames
+    items:
+      - id: frames-overlay-contract
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "## Canonical Frames"
+      - diagram:
+          kind: bullet-cards
+          from: frames-overlay-contract
+      - id: frames-calibration-contract
+        source: agent-contracts
+        path: orange-citrus/physical_layout_calibration_contract.md
+        heading: "## Canonical Coordinate Frames"
+        note: >-
+          This is the cross-repo definition, including the Orange alias
+          camera_native_pixels and the physical plane IDs.
+      - id: citrus-frame-camera-view
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `camera_view_px`"
+      - id: citrus-frame-final-display-canvas
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `final_display_canvas_px`"
+      - id: citrus-frame-arena-relative
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `arena_relative_canvas_px`"
+      - id: orange-coordinate-space-enum
+        source: orange
+        path: docs/spatial_layout_schema.md
+        heading: "### Coordinate-space enum"
+
+  - title: The transform chain between frames
+    items:
+      - id: citrus-transform-chain
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "## Current Transform Chain"
+      - diagram:
+          kind: transform-chain
+          from: citrus-transform-chain
+          order: [p_camera_view, p_final_display_canvas, p_arena_relative_canvas]
+      - id: citrus-camera-to-canvas-mapping
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `camera_view_to_canvas_mapping`"
+      - id: overlay-mapping-rule
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "## Canonical Mapping Rule"
+      - id: overlay-direct-answers
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "## Direct Answers For Consumers"
+      - id: citrus-presentation-reflection
+        source: citrus
+        path: docs/coordinate_systems.md
+        heading: "### `final_display_canvas_px` to presented display"
+        note: >-
+          The logical canvas is not the projected image; this is the one
+          reflection in the chain and it is a compatibility constraint.
+
+  - title: Where Citrus writes the numbers (session H5)
+    items:
+      - id: h5-arena-embedding
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Arena embedding into full display canvas"
+      - id: citrus-arena-origin-writer
+        source: citrus
+        path: src/logging/session_logger.cpp
+        lines: [5677, 5706]
+        anchor: arena_origin_in_canvas_x_px
+        note: >-
+          The writer computes arena_origin_in_canvas as center minus half
+          size, exactly the formula in the contract above.
+      - id: h5-per-camera-homography
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Per-camera homography"
+      - id: h5-arena-local-positions
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Arena-local tracked positions"
+      - id: h5-raw-camera-tracking
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Raw camera-space tracking"
+
+  - title: Where Orange writes camera-space geometry (recordings)
+    items:
+      - id: orange-crop-meta-contract
+        source: agent-contracts
+        path: orange-consumers/output_artifacts_contract.md
+        heading: "### Crop Metadata CSV (`Cam<serial>_crop_meta.csv`)"
+      - id: orange-crop-meta-header
+        source: orange
+        path: src/crop_and_encode_worker.cpp
+        lines: [228, 228]
+        anchor: "crop_x,crop_y,crop_w,crop_h"
+      - id: orange-crop-meta-row
+        source: orange
+        path: src/crop_and_encode_worker.cpp
+        lines: [312, 318]
+        anchor: best_detection.rect.x
+
+  - title: How Palette reads the geometry back
+    items:
+      - id: palette-coordinate-transform-doc
+        source: palette
+        path: src/fisheye/shared/coordinate_transform.py
+        lines: [1, 12]
+        anchor: direction-neutral
+      - id: palette-apply-homography
+        source: palette
+        path: src/fisheye/shared/coordinate_transform.py
+        symbol: apply_homography_xy
+      - id: palette-arena-origin
+        source: palette
+        path: src/fisheye/shared/arena_geometry.py
+        symbol: _arena_origin_px
+      - id: palette-detection-frame-size
+        source: palette
+        path: src/fisheye/shared/arena_geometry.py
+        symbol: detection_frame_size_px
+      - id: bbox-required-arrays
+        source: agent-contracts
+        path: palette-crimson/detect_bbox_read.md
+        heading: "## Required Arrays (for any selected detect group)"
+      - id: bbox-coordinate-conversion
+        source: agent-contracts
+        path: palette-crimson/detect_bbox_read.md
+        heading: "## Coordinate Conversion"

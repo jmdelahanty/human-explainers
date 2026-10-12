@@ -1,0 +1,639 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>How the geometry of a recording is computed</title><style>
+:root{--bg:#fafaf8;--fg:#1b1b1b;--muted:#5b5b5b;--line:#d9d6cf;--card:#ffffff;--accent:#2a5db0;--code:#f1efe9;
+ --orange:#c9641b;--citrus:#7a9a01;--palette:#7a3fb5;--contracts:#2a5db0}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15161a;--fg:#e8e6e1;--muted:#a3a39c;--line:#33353c;--card:#1d1f25;--accent:#8ab4ff;--code:#23252c}}
+:root[data-theme=dark]{--bg:#15161a;--fg:#e8e6e1;--muted:#a3a39c;--line:#33353c;--card:#1d1f25;--accent:#8ab4ff;--code:#23252c}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 80px}
+a{color:var(--accent)}
+h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em}h2{font-size:1.35rem;margin:2.2em 0 .6em;padding-top:.4em;border-top:1px solid var(--line)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+code{background:var(--code);padding:.1em .35em;border-radius:4px}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;line-height:1.45}pre code{background:none;padding:0}
+.lede{color:var(--muted);margin:0 0 1em}
+.rule{border:1px dashed var(--line);border-radius:8px;padding:10px 14px;color:var(--muted);font-size:.92rem}
+.excerpt{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:18px 0;overflow:hidden}
+.excerpt>header{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+.excerpt>header .path{font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.excerpt>.body{padding:6px 16px 14px}
+.excerpt .body h1,.excerpt .body h2,.excerpt .body h3,.excerpt .body h4{font-size:1.02rem;margin:1em 0 .4em;border:0;padding:0}
+.excerpt .body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;font-size:.92rem}
+.excerpt .body th,.excerpt .body td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-weight:600;color:#fff;font-size:.78rem;letter-spacing:.02em}
+.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}
+.note{font-size:.9rem;color:var(--muted);margin:-8px 0 14px 2px}
+.diagram{margin:14px 0 6px}.diagram-note{color:var(--muted);font-size:.9rem}
+svg.chain{width:100%;height:auto;display:block;color:var(--fg)}
+svg.chain .node{fill:var(--card);stroke:var(--accent);stroke-width:2}
+svg.chain .node-label{font:600 15px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+svg.chain .edge{fill:none;stroke:currentColor;stroke-width:1.6}
+svg.chain .edge-label{font:12.5px ui-monospace,Menlo,Consolas,monospace;fill:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--card)}
+.card h4{margin:0 0 6px;font-size:1rem}.card p{margin:.3em 0}.card ul{margin:.3em 0 0;padding-left:18px;font-size:.92rem}
+.toc{padding-left:18px}.warn{color:var(--orange)}
+table.lock{border-collapse:collapse;font-size:.9rem;display:block;overflow-x:auto}
+table.lock th,table.lock td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+footer{margin-top:60px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><main><nav><a href='index.html'>All explainers</a></nav><h1>How the geometry of a recording is computed</h1><p class='lede'>Where does a pixel in an Orange recording end up in Citrus and Palette, and which files, fields, and transforms carry it there?</p><p class='rule'>Everything below is quoted verbatim from a source repository at a pinned commit. Section headings are the curator's only words; diagrams are parsed from the quoted text.</p><ol class='toc'><li><a href='#s1'>Who owns which part of the geometry</a></li><li><a href='#s2'>The three pixel frames</a></li><li><a href='#s3'>The transform chain between frames</a></li><li><a href='#s4'>Where Citrus writes the numbers (session H5)</a></li><li><a href='#s5'>Where Orange writes camera-space geometry (recordings)</a></li><li><a href='#s6'>How Palette reads the geometry back</a></li></ol><h2 id='s1'>Who owns which part of the geometry</h2><section class="excerpt" id="orange-owns-camera-space"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-citrus/physical_layout_calibration_contract.md</span><span>L88–L99</span><span>heading: <code>### Orange Owns Camera-Space Evidence</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-citrus/physical_layout_calibration_contract.md#L88-L99">view at e648029cc8</a></header><div class="body"><h3>Orange Owns Camera-Space Evidence</h3>
+<p>Orange is the source of truth for:</p>
+<ul>
+<li>raw or diagnostic camera frames used for dish/tank observation</li>
+<li>detected top-rim circle proposals</li>
+<li>operator-confirmed accepted camera-space mask geometry</li>
+<li>review overlays that show what was accepted</li>
+<li>artifact fingerprints/checksums for the source evidence</li>
+<li>recording snapshots that say which Orange mask was active</li>
+</ul>
+<p>Orange artifacts must remain usable when no Citrus experiment is involved.</p>
+</div></section><section class="excerpt" id="citrus-owns-spatial-interpretation"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-citrus/physical_layout_calibration_contract.md</span><span>L101–L114</span><span>heading: <code>### Citrus Owns Spatial Interpretation</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-citrus/physical_layout_calibration_contract.md#L101-L114">view at e648029cc8</a></header><div class="body"><h3>Citrus Owns Spatial Interpretation</h3>
+<p>Citrus is the source of truth for:</p>
+<ul>
+<li><code>rig_id</code>, <code>canvas_name</code>, and <code>arena_id</code></li>
+<li>rig/canvas/arena geometry</li>
+<li>base homography and display/camera calibration</li>
+<li>previewing Orange evidence against Citrus geometry</li>
+<li>operator acceptance/rejection of a Citrus registration</li>
+<li>accepted <code>citrus.dish_pose_registration</code> artifacts</li>
+<li>Citrus session/H5 calibration snapshots</li>
+</ul>
+<p>Citrus may reference or copy Orange artifacts, but Citrus is not the source of
+truth for Orange camera-space evidence.</p>
+</div></section><section class="excerpt" id="stable-ids"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">pancake-orange-citrus/rig_canvas_inventory_contract.md</span><span>L35–L45</span><span>heading: <code>## Stable IDs</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/pancake-orange-citrus/rig_canvas_inventory_contract.md#L35-L45">view at e648029cc8</a></header><div class="body"><h2>Stable IDs</h2>
+<ul>
+<li><code>host_id</code>: <code>pancakebatter/system_config.yml -&gt; system_info.hostname</code></li>
+<li><code>camera_serial</code>: <code>pancakebatter/system_config.yml -&gt; cameras[*].serial_number</code></li>
+<li><code>rig_id</code>: Citrus rig directory name under <code>targets/rigs/&lt;rig_id&gt;/</code></li>
+<li><code>canvas_name</code>: Citrus canvas directory name and the <code>canvas_name</code> field in the canvas JSON</li>
+<li><code>arena_id</code>: key under <code>arenas</code> in the Citrus canvas JSON</li>
+</ul>
+<p>Important:</p>
+<ul>
+<li>the YAML map key under <code>system_config.yml:cameras</code> is a local inventory key and may remain the camera MAC address</li>
+<li>the cross-repo camera join key is always <code>camera_serial</code></li>
+</ul>
+</div></section><section class="excerpt" id="join-invariants"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">pancake-orange-citrus/rig_canvas_inventory_contract.md</span><span>L111–L119</span><span>heading: <code>## Join Invariants</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/pancake-orange-citrus/rig_canvas_inventory_contract.md#L111-L119">view at e648029cc8</a></header><div class="body"><h2>Join Invariants</h2>
+<p>These invariants are required for cross-repo compatibility:</p>
+<ol>
+<li><code>orange</code> camera config filename stem must equal <code>camera_serial</code>.</li>
+<li><code>citrus</code> <code>camera_calibrations[].camera_id</code> must equal the same <code>camera_serial</code>.</li>
+<li><code>rig_id</code>, <code>canvas_name</code>, and <code>arena_id</code> are Citrus-owned identifiers and must not be redefined elsewhere with conflicting meaning.</li>
+<li>Other repos may reference Citrus IDs, but must not copy Citrus calibration payloads as independent editable sources.</li>
+<li>Other repos may read hardware facts from Pancakebatter, but must not maintain separate hand-edited full copies of that inventory.</li>
+</ol>
+</div></section><h2 id='s2'>The three pixel frames</h2><section class="excerpt" id="frames-overlay-contract"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L32–L45</span><span>heading: <code>## Canonical Frames</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L32-L45">view at e648029cc8</a></header><div class="body"><h2>Canonical Frames</h2>
+<ul>
+<li><code>arena_relative_canvas_px</code>
+<ul>
+<li>local active-arena coordinates</li>
+<li>origin = top-left of arena region</li>
+<li>axes = <code>+x right</code>, <code>+y down</code></li>
+</ul>
+</li>
+<li><code>final_display_canvas_px</code>
+<ul>
+<li>full Citrus display canvas coordinates</li>
+<li>origin = top-left of fullscreen output canvas</li>
+<li>axes = <code>+x right</code>, <code>+y down</code></li>
+</ul>
+</li>
+<li><code>camera_view_px</code>
+<ul>
+<li>raw camera image coordinates</li>
+<li>origin = top-left of camera image</li>
+<li>axes = <code>+x right</code>, <code>+y down</code></li>
+</ul>
+</li>
+</ul>
+</div></section><figure class="diagram"><div class="cards"><div class="card"><h4><code>arena_relative_canvas_px</code></h4><ul><li>local active-arena coordinates</li><li>origin = top-left of arena region</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>final_display_canvas_px</code></h4><ul><li>full Citrus display canvas coordinates</li><li>origin = top-left of fullscreen output canvas</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div><div class="card"><h4><code>camera_view_px</code></h4><ul><li>raw camera image coordinates</li><li>origin = top-left of camera image</li><li>axes = <code>+x right</code>, <code>+y down</code></li></ul></div></div><figcaption class="diagram-note">Derived automatically from the excerpt <a href="#frames-overlay-contract">frames-overlay-contract</a> (agent-contracts: <code>citrus-crimson/spatial_overlay_contract.md</code>).</figcaption></figure><section class="excerpt" id="frames-calibration-contract"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-citrus/physical_layout_calibration_contract.md</span><span>L137–L183</span><span>heading: <code>## Canonical Coordinate Frames</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-citrus/physical_layout_calibration_contract.md#L137-L183">view at e648029cc8</a></header><div class="body"><h2>Canonical Coordinate Frames</h2>
+<p>Every payload must name its pixel frame and, where applicable, physical plane.</p>
+<ul>
+<li>
+<p><code>camera_view_px</code></p>
+<ul>
+<li>Raw camera image coordinates.</li>
+<li>Origin top-left, x right, y down.</li>
+</ul>
+</li>
+<li>
+<p><code>camera_native_pixels</code></p>
+<ul>
+<li>Orange synonym used in existing Orange docs for full native camera image
+coordinates.</li>
+<li>Contract payloads should prefer <code>camera_view_px</code> when crossing into Citrus,
+but Orange-native artifacts may preserve <code>camera_native_pixels</code>.</li>
+</ul>
+</li>
+<li>
+<p><code>final_display_canvas_px</code></p>
+<ul>
+<li>Full Citrus display/projector canvas coordinates.</li>
+<li>Origin top-left, x right, y down.</li>
+</ul>
+</li>
+<li>
+<p><code>arena_relative_canvas_px</code></p>
+<ul>
+<li>Local Citrus active-arena coordinates.</li>
+<li>Origin top-left of active arena region, x right, y down.</li>
+</ul>
+</li>
+</ul>
+<p>Recommended physical plane IDs:</p>
+<ul>
+<li><code>dish_top_rim</code></li>
+<li><code>projected_surface</code></li>
+<li><code>tank_bottom_outer_surface</code></li>
+<li><code>tank_bottom_inner_surface</code></li>
+<li><code>estimated_fish_plane</code></li>
+</ul>
+<p>V0 Orange dish masks target <code>dish_top_rim</code>. They should not claim to describe
+the projection plane, tank bottom, or fish plane.</p>
+<p>Orange-native artifacts may use <code>camera_native_pixels</code>; Citrus-facing payloads
+may use <code>camera_view_px</code>. A consumer must treat these as equivalent only when
+the source image is the full native camera frame. If detection runs on a
+downsampled or cropped array, the artifact must name that array role and image
+shape explicitly.</p>
+<p>Known Citrus implementation aliases:</p>
+<ul>
+<li>Orange <code>coordinate_space</code> maps to Citrus <code>source_frame</code>.</li>
+<li>Orange <code>image_shape_px</code> maps to Citrus <code>image_size_px</code>.</li>
+<li>Orange accepted circle geometry maps to Citrus <code>geometry_camera_px</code>.</li>
+</ul>
+<p>Implementations should normalize these aliases deliberately rather than relying
+on loose string matching.</p>
+</div></section><p class="note">This is the cross-repo definition, including the Orange alias camera_native_pixels and the physical plane IDs.</p><section class="excerpt" id="citrus-frame-camera-view"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L32–L45</span><span>heading: <code>### `camera_view_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L32-L45">view at 185624f534</a></header><div class="body"><h3><code>camera_view_px</code></h3>
+<p>The camera image coordinate system used by tracking and homography input points.</p>
+<ul>
+<li>Status: <code>Code-defined</code></li>
+<li>Units: pixels</li>
+<li>Origin: top-left of the camera image</li>
+<li>Axes: <code>+x = right</code>, <code>+y = down</code></li>
+<li>Typical data:
+<ul>
+<li>bounding-box <code>x_min</code>, <code>y_min</code>, <code>width</code>, <code>height</code></li>
+<li>object centers passed into homography</li>
+</ul>
+</li>
+<li>Evidence:
+<ul>
+<li>Citrus uses incoming bbox image coordinates directly in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+<li>bbox centers are transformed with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+</ul>
+</li>
+</ul>
+</div></section><section class="excerpt" id="citrus-frame-final-display-canvas"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L63–L79</span><span>heading: <code>### `final_display_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L63-L79">view at 185624f534</a></header><div class="body"><h3><code>final_display_canvas_px</code></h3>
+<p>The logical full-canvas composition buffer into which Citrus places arena
+textures. The established name is retained for compatibility; <code>display</code> in the
+name does not mean that these indices are already physical projector pixels or
+top-left-oriented GLFW framebuffer pixels.</p>
+<ul>
+<li>Status: <code>Code-defined</code></li>
+<li>Units: pixels</li>
+<li>Origin: top-left of the logical CUDA composition buffer</li>
+<li>Axes: <code>+x = right</code>, <code>+y = down</code></li>
+<li>Typical data:
+<ul>
+<li>arena destination rectangles</li>
+<li>full-canvas previews such as arena-definition preview and experimental-area preview</li>
+</ul>
+</li>
+<li>Evidence:
+<ul>
+<li>arenas are composited by top-left destination coordinates <code>dest_x</code>, <code>dest_y</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
+<li>full-canvas previews use <code>dest_x = 0</code>, <code>dest_y = 0</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/core/StimulusDisplayManager.cpp"><code>src/core/StimulusDisplayManager.cpp</code></a></li>
+</ul>
+</li>
+</ul>
+</div></section><section class="excerpt" id="citrus-frame-arena-relative"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L127–L153</span><span>heading: <code>### `arena_relative_canvas_px`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L127-L153">view at 185624f534</a></header><div class="body"><h3><code>arena_relative_canvas_px</code></h3>
+<p>The coordinate system for arena-local geometry inside the active arena region on the stimulus canvas.</p>
+<ul>
+<li>Status: <code>Code-defined</code></li>
+<li>Units:
+<ul>
+<li>center and positions in pixels</li>
+<li>sizes in pixels and optionally millimeters</li>
+</ul>
+</li>
+<li>Origin: top-left of the active arena region</li>
+<li>Axes: <code>+x = right</code>, <code>+y = down</code></li>
+<li>Typical data:
+<ul>
+<li>experimental area center</li>
+<li>experimental area width/height/radius</li>
+</ul>
+</li>
+<li>Evidence:
+<ul>
+<li>the UI explicitly labels experimental-area position as <code>Arena-Relative Coordinates</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
+<li>experimental-area center sliders run from <code>0 .. arena_width/height</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ui/arena_view_ui.cpp"><code>src/ui/arena_view_ui.cpp</code></a></li>
+<li>Citrus now saves this explicitly in <code>/calibration_snapshot/arena_geometry</code></li>
+</ul>
+</li>
+</ul>
+<p>Important distinction:</p>
+<ul>
+<li><code>experimental_area_center_x_px</code> and <code>experimental_area_center_y_px</code> are
+arena-relative values in this frame.</li>
+<li><code>arena_center_x_px</code> and <code>arena_center_y_px</code> in the active camera calibration
+are full <code>final_display_canvas_px</code> arena placement values.</li>
+<li>A consumer must not inverse-project <code>experimental_area_center_x_px/y_px</code>
+through the homography directly. Convert arena-relative coordinates to
+<code>final_display_canvas_px</code> first by adding the arena origin.</li>
+</ul>
+</div></section><section class="excerpt" id="orange-coordinate-space-enum"><header><span class="badge badge-orange">orange</span><span class="path">docs/spatial_layout_schema.md</span><span>L88–L103</span><span>heading: <code>### Coordinate-space enum</code></span><a href="https://github.com/jmdelahanty/orange/blob/b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4/docs/spatial_layout_schema.md#L88-L103">view at b3e8aa60bc</a></header><div class="body"><h3>Coordinate-space enum</h3>
+<p>Supported values in v1:</p>
+<ul>
+<li><code>camera_native_pixels</code></li>
+<li><code>layout_mm</code></li>
+<li><code>layout_units</code></li>
+</ul>
+<p>Rules:</p>
+<ul>
+<li><code>camera_native_pixels</code> means raw pixel coordinates in the producer camera's
+native stream resolution.</li>
+<li><code>layout_mm</code> is preferred for canonical layout authoring when physical
+measurements are available.</li>
+<li><code>layout_units</code> is allowed when a stable rig-level template exists but the
+layout has not yet been measured in real millimeters.</li>
+</ul>
+</div></section><h2 id='s3'>The transform chain between frames</h2><section class="excerpt" id="citrus-transform-chain"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L212–L243</span><span>heading: <code>## Current Transform Chain</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L212-L243">view at 185624f534</a></header><div class="body"><h2>Current Transform Chain</h2>
+<p>The current intended interpretation is:</p>
+<ol>
+<li>Tracking arrives in <code>camera_view_px</code>.</li>
+<li>Homography maps those points into Citrus stimulus/display coordinates.</li>
+<li>Arena-local geometry such as the experimental area lives in <code>arena_relative_canvas_px</code>.</li>
+<li>Arenas are composited into logical <code>final_display_canvas_px</code>.</li>
+<li>The established OpenGL presentation mapping converts that buffer to the
+stimulus window, including its vertical reflection.</li>
+<li>Desktop runtime state for the chosen display output is captured separately in <code>/display_snapshot</code>.</li>
+<li>Physical projector-body orientation is recorded separately in <code>/rig_snapshot</code>.</li>
+</ol>
+<p>The concrete mapping formulas are:</p>
+<pre><code class="language-text">arena_origin_canvas = (
+  arena_region_center_in_canvas_x_px - arena_region_width_px / 2,
+  arena_region_center_in_canvas_y_px - arena_region_height_px / 2
+)
+
+p_final_display_canvas = p_arena_relative_canvas + arena_origin_canvas
+p_camera_view ~ inverse(H_camera_to_final_display_canvas) * p_final_display_canvas
+
+p_final_display_canvas ~ H_camera_to_final_display_canvas * p_camera_view
+p_arena_relative_canvas = p_final_display_canvas - arena_origin_canvas
+</code></pre>
+<p>For a daily Orange dish/top-rim observation in full camera pixels, Citrus should
+map the accepted center through <code>H_camera_to_final_display_canvas</code>, then subtract
+the active arena origin if it needs an <code>arena_relative_canvas_px</code> value. This is
+the correct path for comparing against <code>experimental_area_center_x_px/y_px</code>.</p>
+</div></section><figure class="diagram"><svg class="chain" viewBox="0 0 1128 358" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transform chain parsed from the excerpt above"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs><rect x="24" y="152" width="260" height="54" rx="8" class="node"/><text x="154.0" y="184.0" text-anchor="middle" class="node-label">p_camera_view</text><rect x="434" y="152" width="260" height="54" rx="8" class="node"/><text x="564.0" y="184.0" text-anchor="middle" class="node-label">p_final_display_canvas</text><rect x="844" y="152" width="260" height="54" rx="8" class="node"/><text x="974.0" y="184.0" text-anchor="middle" class="node-label">p_arena_relative_canvas</text><path d="M154.0 152 L154.0 106 L564.0 106 L564.0 152" class="edge" marker-end="url(#arr)"/><text x="359.0" y="98" text-anchor="middle" class="edge-label">p_final_display_canvas ~ H_camera_to_final_display_canvas * p_camera_view</text><path d="M564.0 152 L564.0 42 L974.0 42 L974.0 152" class="edge" marker-end="url(#arr)"/><text x="769.0" y="34" text-anchor="middle" class="edge-label">p_arena_relative_canvas = p_final_display_canvas - arena_origin_canvas</text><path d="M974.0 206 L974.0 252 L564.0 252 L564.0 206" class="edge" marker-end="url(#arr)"/><text x="769.0" y="270" text-anchor="middle" class="edge-label">p_final_display_canvas = p_arena_relative_canvas + arena_origin_canvas</text><path d="M564.0 206 L564.0 316 L154.0 316 L154.0 206" class="edge" marker-end="url(#arr)"/><text x="359.0" y="334" text-anchor="middle" class="edge-label">p_camera_view ~ inverse(H_camera_to_final_display_canvas) * p_final_display_canvas</text></svg><p class='diagram-note'>Also defined in the excerpt: <code>arena_origin_canvas</code>.</p><figcaption class="diagram-note">Derived automatically from the excerpt <a href="#citrus-transform-chain">citrus-transform-chain</a> (citrus: <code>docs/coordinate_systems.md</code>).</figcaption></figure><section class="excerpt" id="citrus-camera-to-canvas-mapping"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L155–L181</span><span>heading: <code>### `camera_view_to_canvas_mapping`</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L155-L181">view at 185624f534</a></header><div class="body"><h3><code>camera_view_to_canvas_mapping</code></h3>
+<p>The effective mapping from <code>camera_view_px</code> into the stimulus canvas, computed from the active homography.</p>
+<ul>
+<li>Status: <code>Calibration-derived</code></li>
+<li>Nature:
+<ul>
+<li>point mapping via homography</li>
+<li>local direction mapping via finite differences around the active arena center</li>
+</ul>
+</li>
+<li>Evidence:
+<ul>
+<li>camera points are transformed into stimulus coordinates with <code>cv::perspectiveTransform</code> in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/ipc/ShamanIPCReader.cpp"><code>src/ipc/ShamanIPCReader.cpp</code></a></li>
+<li>direction basis is derived in <a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/calibration/direction_frame_mapping.h"><code>src/calibration/direction_frame_mapping.h</code></a></li>
+<li>saved H5 fields live under <code>/calibration_snapshot/&lt;camera_id&gt;</code> and <code>/calibration_snapshot/arena_geometry</code></li>
+</ul>
+</li>
+</ul>
+<p>The OpenCV sidecar <code>homography_&lt;arena&gt;_&lt;camera&gt;.yml</code> and the H5
+<code>/calibration_snapshot/&lt;camera_id&gt;/homography_matrix</code> represent the same
+direction:</p>
+<pre><code class="language-text">camera_view_px -&gt; final_display_canvas_px
+</code></pre>
+<p>The homography source points are camera-image pixels from the calibration image.
+For current Orange/Citrus workflows these should be full raw camera-frame pixels
+when the source image is the native camera frame. If a future calibration is
+derived from a crop or downsampled image, that source image shape and crop
+transform must be documented in the artifact before Orange can consume it
+safely.</p>
+</div></section><section class="excerpt" id="overlay-mapping-rule"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L149–L174</span><span>heading: <code>## Canonical Mapping Rule</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L149-L174">view at e648029cc8</a></header><div class="body"><h2>Canonical Mapping Rule</h2>
+<p>For the current square-arena overlay use case, consumers should use:</p>
+<pre><code class="language-text">arena_relative_canvas_px
+  -&gt; final_display_canvas_px
+  -&gt; camera_view_px
+</code></pre>
+<p>More explicitly:</p>
+<pre><code class="language-text">p_display = p_arena_local + arena_origin_in_canvas
+p_camera  ~ inverse(H_camera_to_display) * p_display
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>p_arena_local = (x, y)</code> from <code>chaser_states</code></li>
+<li><code>arena_origin_in_canvas = (arena_origin_in_canvas_x_px, arena_origin_in_canvas_y_px)</code></li>
+<li><code>H_camera_to_display</code> is the per-camera homography from
+<code>/calibration_snapshot/&lt;camera_id&gt;/homography_matrix</code></li>
+</ul>
+<p>If a point already exists in <code>final_display_canvas_px</code>, the arena-origin step is
+not needed.</p>
+</div></section><section class="excerpt" id="overlay-direct-answers"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L207–L215</span><span>heading: <code>## Direct Answers For Consumers</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L207-L215">view at e648029cc8</a></header><div class="body"><h2>Direct Answers For Consumers</h2>
+<ul>
+<li>Homography is sufficient for the current square-arena use case if it is
+calibrated correctly and the starting point is already in
+<code>final_display_canvas_px</code>.</li>
+<li>If the starting point comes from <code>chaser_states</code>, homography alone is not
+sufficient; the arena-origin translation is required first.</li>
+<li>No extra offset should be applied before or after inverse homography beyond
+the explicit arena embedding step above.</li>
+</ul>
+</div></section><section class="excerpt" id="citrus-presentation-reflection"><header><span class="badge badge-citrus">citrus</span><span class="path">docs/coordinate_systems.md</span><span>L81–L97</span><span>heading: <code>### `final_display_canvas_px` to presented display</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/docs/coordinate_systems.md#L81-L97">view at 185624f534</a></header><div class="body"><h3><code>final_display_canvas_px</code> to presented display</h3>
+<p>Presentation is a separate mapping from the logical composition buffer. The
+current implementation uploads the CUDA/PBO rows directly to an OpenGL texture
+and draws a full-screen quad with texture <code>v=0</code> at the bottom. Therefore, before
+desktop or projector transforms, the established render path presents:</p>
+<pre><code class="language-text">x_window = x_final_display_canvas
+y_window = (canvas_height - 1) - y_final_display_canvas
+</code></pre>
+<p>This vertical reflection is existing behavior and is a compatibility
+constraint, not a proposed correction. Homographies and orientation receipts
+must measure and preserve the effective optical mapping; they must not assume
+that camera, logical canvas, GLFW window, projector body, and laboratory axes
+have matching signs.</p>
+</div></section><p class="note">The logical canvas is not the projected image; this is the one reflection in the chain and it is a compatibility constraint.</p><h2 id='s4'>Where Citrus writes the numbers (session H5)</h2><section class="excerpt" id="h5-arena-embedding"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L77–L96</span><span>heading: <code>### Arena embedding into full display canvas</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L77-L96">view at e648029cc8</a></header><div class="body"><h3>Arena embedding into full display canvas</h3>
+<p>Group:</p>
+<ul>
+<li><code>/calibration_snapshot/arena_geometry</code></li>
+</ul>
+<p>Authoritative attrs:</p>
+<ul>
+<li><code>arena_region_center_in_canvas_x_px</code></li>
+<li><code>arena_region_center_in_canvas_y_px</code></li>
+<li><code>arena_region_width_px</code></li>
+<li><code>arena_region_height_px</code></li>
+<li><code>arena_origin_in_canvas_x_px</code></li>
+<li><code>arena_origin_in_canvas_y_px</code></li>
+</ul>
+<p>Meaning:</p>
+<ul>
+<li>These place the active arena region inside <code>final_display_canvas_px</code>.</li>
+<li>Overlay consumers should use <code>arena_origin_in_canvas_x_px</code> and
+<code>arena_origin_in_canvas_y_px</code> as the authoritative local-to-global embedding.</li>
+</ul>
+</div></section><section class="excerpt" id="citrus-arena-origin-writer"><header><span class="badge badge-citrus">citrus</span><span class="path">src/logging/session_logger.cpp</span><span>L5677–L5706</span><span>lines: <code>[5677, 5706]</code></span><a href="https://github.com/JohnsonLabJanelia/citrus/blob/185624f534c24be83e60058691cedb1794016179/src/logging/session_logger.cpp#L5677-L5706">view at 185624f534</a></header><div class="body"><pre><code class="language-cpp">        float arena_region_center_x_px = static_cast&lt;float&gt;(filtered_config.GetArenaCenterXInCanvasPx());
+        float arena_region_center_y_px = static_cast&lt;float&gt;(filtered_config.GetArenaCenterYInCanvasPx());
+        float arena_region_width_px = static_cast&lt;float&gt;(filtered_config.GetArenaWidthPx());
+        float arena_region_height_px = static_cast&lt;float&gt;(filtered_config.GetArenaHeightPx());
+        std::string arena_geometry_source = &quot;legacy_sub_arena_fields&quot;;
+
+        if (const auto* active_cam = filtered_config.GetActiveCameraCalibration()) {
+            arena_region_center_x_px =
+                static_cast&lt;float&gt;(filtered_config.GetArenaCenterXInCanvasPx());
+            arena_region_center_y_px =
+                static_cast&lt;float&gt;(filtered_config.GetArenaCenterYInCanvasPx());
+            arena_region_width_px = static_cast&lt;float&gt;(active_cam-&gt;arena_width_px);
+            arena_region_height_px = static_cast&lt;float&gt;(active_cam-&gt;arena_height_px);
+            arena_geometry_source = &quot;active_camera_calibration&quot;;
+        }
+
+        writeStrAttr(arena_geometry_group, &quot;arena_geometry_source&quot;, arena_geometry_source);
+        writeFloatAttr(arena_geometry_group, &quot;arena_region_center_in_canvas_x_px&quot;,
+                       arena_region_center_x_px);
+        writeFloatAttr(arena_geometry_group, &quot;arena_region_center_in_canvas_y_px&quot;,
+                       arena_region_center_y_px);
+        writeFloatAttr(arena_geometry_group, &quot;arena_region_width_px&quot;,
+                       arena_region_width_px);
+        writeFloatAttr(arena_geometry_group, &quot;arena_region_height_px&quot;,
+                       arena_region_height_px);
+        writeFloatAttr(arena_geometry_group, &quot;arena_origin_in_canvas_x_px&quot;,
+                       arena_region_center_x_px - (arena_region_width_px / 2.0f));
+        writeFloatAttr(arena_geometry_group, &quot;arena_origin_in_canvas_y_px&quot;,
+                       arena_region_center_y_px - (arena_region_height_px / 2.0f));
+        arena_geometry_group.close();</code></pre></div></section><p class="note">The writer computes arena_origin_in_canvas as center minus half size, exactly the formula in the contract above.</p><section class="excerpt" id="h5-per-camera-homography"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L98–L129</span><span>heading: <code>### Per-camera homography</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L98-L129">view at e648029cc8</a></header><div class="body"><h3>Per-camera homography</h3>
+<p>Per-camera group:</p>
+<ul>
+<li><code>/calibration_snapshot/&lt;camera_id&gt;</code></li>
+</ul>
+<p>Authoritative dataset:</p>
+<ul>
+<li><code>homography_matrix</code> (<code>3x3</code>, float64)</li>
+</ul>
+<p>Compatibility fallback:</p>
+<ul>
+<li><code>homography_matrix_yml</code></li>
+</ul>
+<p>Required interpretation for both:</p>
+<ul>
+<li><code>source_frame=&quot;camera_view_px&quot;</code></li>
+<li><code>dest_frame=&quot;final_display_canvas_px&quot;</code></li>
+<li><code>coordinate_origin=&quot;top_left&quot;</code></li>
+<li><code>axes=&quot;x_right_y_down&quot;</code></li>
+<li><code>image_space=&quot;raw&quot;</code></li>
+<li><code>camera_id=&lt;camera_id&gt;</code> when present</li>
+</ul>
+<p>Meaning:</p>
+<ul>
+<li>The stored homography direction is:</li>
+</ul>
+<pre><code class="language-text">camera_view_px -&gt; final_display_canvas_px
+</code></pre>
+<ul>
+<li>Consumers that need camera overlay coordinates must invert it.</li>
+</ul>
+</div></section><section class="excerpt" id="h5-arena-local-positions"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L49–L75</span><span>heading: <code>### Arena-local tracked positions</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L49-L75">view at e648029cc8</a></header><div class="body"><h3>Arena-local tracked positions</h3>
+<p>Dataset:</p>
+<ul>
+<li><code>/tracking_data/chaser_states</code></li>
+</ul>
+<p>Position fields:</p>
+<ul>
+<li><code>chaser_pos_x</code></li>
+<li><code>chaser_pos_y</code></li>
+<li><code>target_pos_x</code></li>
+<li><code>target_pos_y</code></li>
+</ul>
+<p>Required interpretation:</p>
+<ul>
+<li>These fields are in <code>arena_relative_canvas_px</code>.</li>
+<li>They are not camera-space fields.</li>
+<li>They are not full-display-canvas fields.</li>
+</ul>
+<p>Dataset attrs consumers should read:</p>
+<ul>
+<li><code>coordinate_frame=&quot;arena_relative_canvas_px&quot;</code></li>
+<li><code>coordinate_origin=&quot;top_left_of_active_arena&quot;</code></li>
+<li><code>x_axis_direction=&quot;right&quot;</code></li>
+<li><code>y_axis_direction=&quot;down&quot;</code></li>
+<li><code>position_fields=&quot;chaser_pos_x,chaser_pos_y,target_pos_x,target_pos_y&quot;</code></li>
+<li><code>camera_id</code> when present</li>
+</ul>
+</div></section><section class="excerpt" id="h5-raw-camera-tracking"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">citrus-crimson/spatial_overlay_contract.md</span><span>L131–L147</span><span>heading: <code>### Raw camera-space tracking</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L131-L147">view at e648029cc8</a></header><div class="body"><h3>Raw camera-space tracking</h3>
+<p>Dataset:</p>
+<ul>
+<li><code>/tracking_data/bounding_boxes</code></li>
+</ul>
+<p>Fields:</p>
+<ul>
+<li><code>x_min</code></li>
+<li><code>y_min</code></li>
+<li><code>width</code></li>
+<li><code>height</code></li>
+</ul>
+<p>Meaning:</p>
+<ul>
+<li>These are already in <code>camera_view_px</code>.</li>
+<li>They do not require homography for camera-space rendering.</li>
+</ul>
+</div></section><h2 id='s5'>Where Orange writes camera-space geometry (recordings)</h2><section class="excerpt" id="orange-crop-meta-contract"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">orange-consumers/output_artifacts_contract.md</span><span>L125–L142</span><span>heading: <code>### Crop Metadata CSV (`Cam&lt;serial&gt;_crop_meta.csv`)</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/orange-consumers/output_artifacts_contract.md#L125-L142">view at e648029cc8</a></header><div class="body"><h3>Crop Metadata CSV (<code>Cam&lt;serial&gt;_crop_meta.csv</code>)</h3>
+<p>Header (exact):</p>
+<pre><code class="language-text">frame_id,timestamp,timestamp_sys,detection_confidence,crop_x,crop_y,crop_w,crop_h
+</code></pre>
+<p>Field semantics:</p>
+<ul>
+<li><code>frame_id</code>: recording-frame counter</li>
+<li><code>timestamp</code>: camera SDK timestamp (<code>uint64</code>, source-native unit)</li>
+<li><code>timestamp_sys</code>: realtime nanoseconds</li>
+<li><code>detection_confidence</code>: float</li>
+<li><code>crop_x,crop_y,crop_w,crop_h</code>: source-frame pixel rect</li>
+</ul>
+<p>Behavior note:</p>
+<ul>
+<li>blank crop frames may be encoded when detection is missing</li>
+<li>metadata row is appended only when detection exists</li>
+</ul>
+</div></section><section class="excerpt" id="orange-crop-meta-header"><header><span class="badge badge-orange">orange</span><span class="path">src/crop_and_encode_worker.cpp</span><span>L228</span><span>lines: <code>[228, 228]</code></span><a href="https://github.com/jmdelahanty/orange/blob/b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4/src/crop_and_encode_worker.cpp#L228-L228">view at b3e8aa60bc</a></header><div class="body"><pre><code class="language-cpp">                *writer_.metadata &lt;&lt; &quot;frame_id,timestamp,timestamp_sys,detection_confidence,crop_x,crop_y,crop_w,crop_h\n&quot;;</code></pre></div></section><section class="excerpt" id="orange-crop-meta-row"><header><span class="badge badge-orange">orange</span><span class="path">src/crop_and_encode_worker.cpp</span><span>L312–L318</span><span>lines: <code>[312, 318]</code></span><a href="https://github.com/jmdelahanty/orange/blob/b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4/src/crop_and_encode_worker.cpp#L312-L318">view at b3e8aa60bc</a></header><div class="body"><pre><code class="language-cpp">                // Write metadata to file
+                if (writer_.metadata &amp;&amp; writer_.metadata-&gt;is_open()) {
+                    *writer_.metadata &lt;&lt; entry-&gt;recording_frame_id &lt;&lt; &#x27;,&#x27; &lt;&lt; entry-&gt;timestamp &lt;&lt; &#x27;,&#x27;
+                                      &lt;&lt; entry-&gt;timestamp_sys &lt;&lt; &#x27;,&#x27; &lt;&lt; best_detection.prob &lt;&lt; &#x27;,&#x27;
+                                      &lt;&lt; best_detection.rect.x &lt;&lt; &#x27;,&#x27; &lt;&lt; best_detection.rect.y &lt;&lt; &#x27;,&#x27;
+                                      &lt;&lt; best_detection.rect.width &lt;&lt; &#x27;,&#x27; &lt;&lt; best_detection.rect.height &lt;&lt; &#x27;\n&#x27;;
+                }</code></pre></div></section><h2 id='s6'>How Palette reads the geometry back</h2><section class="excerpt" id="palette-coordinate-transform-doc"><header><span class="badge badge-palette">palette</span><span class="path">src/fisheye/shared/coordinate_transform.py</span><span>L1–L12</span><span>lines: <code>[1, 12]</code></span><a href="https://github.com/jmdelahanty/palette/blob/7ffb8143f54cc54f811e306a1e5be4396ffc1dc3/src/fisheye/shared/coordinate_transform.py#L1-L12">view at 7ffb8143f5</a></header><div class="body"><pre><code class="language-python">&quot;&quot;&quot;Historical calibration lookup plus direction-neutral homography math.
+
+The lookup helpers in this module are legacy compatibility surfaces.  They do
+not prove a transform direction, selected camera, or reference extent and must
+not authorize a future-normal coordinate publication.  Canonical callers load
+a typed directed-transform record and pass its already validated numerical
+matrix to :func:`apply_homography_xy`.
+
+The historical ``projector_to_camera_*`` names remain for explicit legacy
+inspection callers.  Their names describe the caller&#x27;s assertion; they are not
+coordinate authority.
+&quot;&quot;&quot;</code></pre></div></section><section class="excerpt" id="palette-apply-homography"><header><span class="badge badge-palette">palette</span><span class="path">src/fisheye/shared/coordinate_transform.py</span><span>L173–L243</span><span>symbol: <code>apply_homography_xy</code></span><a href="https://github.com/jmdelahanty/palette/blob/7ffb8143f54cc54f811e306a1e5be4396ffc1dc3/src/fisheye/shared/coordinate_transform.py#L173-L243">view at 7ffb8143f5</a></header><div class="body"><pre><code class="language-python">def apply_homography_xy(
+    points_xy: np.ndarray,
+    matrix: np.ndarray,
+    *,
+    denominator_epsilon: float = 1e-12,
+) -&gt; np.ndarray:
+    &quot;&quot;&quot;Apply one already direction-validated 3x3 homography to XY points.
+
+    This function deliberately has no source/destination space names.  Those
+    semantics belong to the persisted directed-transform authority used by the
+    caller.  Malformed inputs and points whose homogeneous denominator is zero
+    fail closed instead of being coerced to a plausible finite coordinate.
+
+    Parameters
+    ----------
+    points_xy : (N, 2) or (2,) float
+        XY coordinates in the transform record&#x27;s declared source space.
+    matrix : (3, 3) float
+        Homography payload from that exact directed-transform record.
+    denominator_epsilon : float
+        Strict positive absolute threshold below which homogeneous ``w`` is
+        treated as undefined.
+
+    Returns
+    -------
+    transformed_xy : same shape as input, float64
+        XY coordinates in the transform record&#x27;s declared destination space.
+    &quot;&quot;&quot;
+    pts = np.asarray(points_xy, dtype=np.float64)
+    single = pts.ndim == 1
+    if single:
+        if pts.shape != (2,):
+            raise ValueError(&quot;A single homography point must have shape (2,).&quot;)
+        pts = pts.reshape(1, 2)
+    elif pts.ndim != 2 or pts.shape[1] != 2:
+        raise ValueError(&quot;Homography points must have shape (N, 2) or (2,).&quot;)
+
+    transform = np.asarray(matrix, dtype=np.float64)
+    if transform.shape != (3, 3) or not np.isfinite(transform).all():
+        raise ValueError(&quot;Homography matrix must be one finite 3x3 array.&quot;)
+    if (
+        isinstance(denominator_epsilon, (bool, np.bool_))
+        or not np.isscalar(denominator_epsilon)
+        or not np.isfinite(float(denominator_epsilon))
+        or float(denominator_epsilon) &lt;= 0.0
+    ):
+        raise ValueError(&quot;denominator_epsilon must be one finite positive scalar.&quot;)
+
+    if pts.size == 0:
+        return np.empty_like(pts, dtype=np.float64)
+    if not np.isfinite(pts).all():
+        raise ValueError(&quot;Homography points must be finite; select valid rows first.&quot;)
+
+    # Homogeneous coordinates.
+    ones = np.ones((pts.shape[0], 1), dtype=np.float64)
+    homogeneous = np.hstack([pts, ones])  # (N, 3)
+    transformed = (transform @ homogeneous.T).T  # (N, 3)
+
+    # Normalize by w.
+    w = transformed[:, 2:3]
+    if not np.isfinite(transformed).all() or np.any(
+        np.abs(w) &lt;= float(denominator_epsilon)
+    ):
+        raise ValueError(
+            &quot;Homography maps at least one point to an undefined point at infinity.&quot;
+        )
+    result = transformed[:, :2] / w
+
+    if single:
+        return result.ravel()
+    return result</code></pre></div></section><section class="excerpt" id="palette-arena-origin"><header><span class="badge badge-palette">palette</span><span class="path">src/fisheye/shared/arena_geometry.py</span><span>L172–L181</span><span>symbol: <code>_arena_origin_px</code></span><a href="https://github.com/jmdelahanty/palette/blob/7ffb8143f54cc54f811e306a1e5be4396ffc1dc3/src/fisheye/shared/arena_geometry.py#L172-L181">view at 7ffb8143f5</a></header><div class="body"><pre><code class="language-python">def _arena_origin_px(root: zarr.Group, run_group: zarr.Group) -&gt; tuple[float, float] | None:
+    source_path = str(run_group.attrs.get(&quot;source_stimulus_path&quot;) or &quot;&quot;).strip()
+    group = _get_group(root, f&quot;{source_path}/calibration/arena_geometry&quot;) if source_path else None
+    if group is None:
+        return None
+    x = _optional_float(group.attrs.get(&quot;arena_origin_in_canvas_x_px&quot;))
+    y = _optional_float(group.attrs.get(&quot;arena_origin_in_canvas_y_px&quot;))
+    if x is None or y is None:
+        return None
+    return float(x), float(y)</code></pre></div></section><section class="excerpt" id="palette-detection-frame-size"><header><span class="badge badge-palette">palette</span><span class="path">src/fisheye/shared/arena_geometry.py</span><span>L150–L169</span><span>symbol: <code>detection_frame_size_px</code></span><a href="https://github.com/jmdelahanty/palette/blob/7ffb8143f54cc54f811e306a1e5be4396ffc1dc3/src/fisheye/shared/arena_geometry.py#L150-L169">view at 7ffb8143f5</a></header><div class="body"><pre><code class="language-python">def detection_frame_size_px(root: zarr.Group) -&gt; tuple[float, float] | None:
+    &quot;&quot;&quot;(width, height) of the frame the detections were produced in.&quot;&quot;&quot;
+
+    for family in (&quot;detect_runs&quot;, &quot;refined_detect_runs&quot;):
+        parent = root.get(family)
+        if parent is None:
+            continue
+        for key in parent.keys():
+            attrs = parent[key].attrs
+            width = _optional_float(attrs.get(&quot;source_video_width&quot;)) or _optional_float(attrs.get(&quot;source_full_width&quot;))
+            height = _optional_float(attrs.get(&quot;source_video_height&quot;)) or _optional_float(attrs.get(&quot;source_full_height&quot;))
+            if width and height and width &gt; 0 and height &gt; 0:
+                return float(width), float(height)
+    calibration = _get_group(root, &quot;analysis/calibration&quot;)
+    if calibration is not None:
+        width = _optional_float(calibration.attrs.get(&quot;native_width_px&quot;))
+        height = _optional_float(calibration.attrs.get(&quot;native_height_px&quot;))
+        if width and height and width &gt; 0 and height &gt; 0:
+            return float(width), float(height)
+    return None</code></pre></div></section><section class="excerpt" id="bbox-required-arrays"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">palette-crimson/detect_bbox_read.md</span><span>L58–L65</span><span>heading: <code>## Required Arrays (for any selected detect group)</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/palette-crimson/detect_bbox_read.md#L58-L65">view at e648029cc8</a></header><div class="body"><h2>Required Arrays (for any selected detect group)</h2>
+<ul>
+<li><code>frame_indices</code> (<code>int32</code>, shape <code>(N,)</code>)</li>
+<li><code>bbox_norm_coords</code> (<code>float64</code> in current runtime, shape <code>(N, 4)</code>)</li>
+</ul>
+<p><code>bbox_norm_coords</code> ordering is:</p>
+<ul>
+<li><code>[cx, cy, w, h]</code></li>
+<li>normalized to detector input frame dimensions</li>
+</ul>
+</div></section><section class="excerpt" id="bbox-coordinate-conversion"><header><span class="badge badge-agent-contracts">agent-contracts</span><span class="path">palette-crimson/detect_bbox_read.md</span><span>L150–L161</span><span>heading: <code>## Coordinate Conversion</code></span><a href="https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/palette-crimson/detect_bbox_read.md#L150-L161">view at e648029cc8</a></header><div class="body"><h2>Coordinate Conversion</h2>
+<p>Given frame width <code>W</code> and height <code>H</code>:</p>
+<ul>
+<li><code>x1 = (cx - w/2) * W</code></li>
+<li><code>y1 = (cy - h/2) * H</code></li>
+<li><code>x2 = (cx + w/2) * W</code></li>
+<li><code>y2 = (cy + h/2) * H</code></li>
+</ul>
+<p>Recommended safety:</p>
+<ul>
+<li>clip normalized values to <code>[0, 1]</code> before conversion</li>
+<li>then clip pixel bounds to <code>[0, W-1]</code> / <code>[0, H-1]</code></li>
+</ul>
+</div></section><footer>Generated from sources locked at 2026-10-12T17:17:39Z. Every block above is a verbatim excerpt; nothing on this page was written by hand.</footer></main></body></html>

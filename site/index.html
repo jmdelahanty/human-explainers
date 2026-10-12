@@ -1,0 +1,39 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Human explainers</title><style>
+:root{--bg:#fafaf8;--fg:#1b1b1b;--muted:#5b5b5b;--line:#d9d6cf;--card:#ffffff;--accent:#2a5db0;--code:#f1efe9;
+ --orange:#c9641b;--citrus:#7a9a01;--palette:#7a3fb5;--contracts:#2a5db0}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15161a;--fg:#e8e6e1;--muted:#a3a39c;--line:#33353c;--card:#1d1f25;--accent:#8ab4ff;--code:#23252c}}
+:root[data-theme=dark]{--bg:#15161a;--fg:#e8e6e1;--muted:#a3a39c;--line:#33353c;--card:#1d1f25;--accent:#8ab4ff;--code:#23252c}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 80px}
+a{color:var(--accent)}
+h1{font-size:1.9rem;line-height:1.2;margin:.2em 0 .3em}h2{font-size:1.35rem;margin:2.2em 0 .6em;padding-top:.4em;border-top:1px solid var(--line)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+code{background:var(--code);padding:.1em .35em;border-radius:4px}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;line-height:1.45}pre code{background:none;padding:0}
+.lede{color:var(--muted);margin:0 0 1em}
+.rule{border:1px dashed var(--line);border-radius:8px;padding:10px 14px;color:var(--muted);font-size:.92rem}
+.excerpt{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:18px 0;overflow:hidden}
+.excerpt>header{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:8px 14px;border-bottom:1px solid var(--line);font-size:.84rem;color:var(--muted)}
+.excerpt>header .path{font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all}
+.excerpt>.body{padding:6px 16px 14px}
+.excerpt .body h1,.excerpt .body h2,.excerpt .body h3,.excerpt .body h4{font-size:1.02rem;margin:1em 0 .4em;border:0;padding:0}
+.excerpt .body table{border-collapse:collapse;display:block;overflow-x:auto;max-width:100%;font-size:.92rem}
+.excerpt .body th,.excerpt .body td{border:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+.badge{display:inline-block;padding:1px 8px;border-radius:999px;font-weight:600;color:#fff;font-size:.78rem;letter-spacing:.02em}
+.badge-agent-contracts{background:var(--contracts)}.badge-orange{background:var(--orange)}.badge-citrus{background:var(--citrus)}.badge-palette{background:var(--palette)}
+.note{font-size:.9rem;color:var(--muted);margin:-8px 0 14px 2px}
+.diagram{margin:14px 0 6px}.diagram-note{color:var(--muted);font-size:.9rem}
+svg.chain{width:100%;height:auto;display:block;color:var(--fg)}
+svg.chain .node{fill:var(--card);stroke:var(--accent);stroke-width:2}
+svg.chain .node-label{font:600 15px ui-monospace,Menlo,Consolas,monospace;fill:var(--fg)}
+svg.chain .edge{fill:none;stroke:currentColor;stroke-width:1.6}
+svg.chain .edge-label{font:12.5px ui-monospace,Menlo,Consolas,monospace;fill:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--card)}
+.card h4{margin:0 0 6px;font-size:1rem}.card p{margin:.3em 0}.card ul{margin:.3em 0 0;padding-left:18px;font-size:.92rem}
+.toc{padding-left:18px}.warn{color:var(--orange)}
+table.lock{border-collapse:collapse;font-size:.9rem;display:block;overflow-x:auto}
+table.lock th,table.lock td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}
+footer{margin-top:60px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--line);padding-top:12px}
+</style></head><body><main><nav><a href='index.html'>All explainers</a></nav><h1>Human explainers</h1><p class='lede'>Visual explainers generated from the contracts and code that actually run the rigs. No prose is authored here; the pages quote sources at pinned commits.</p><h2>Explainers</h2><ul><li><a href='recording-geometry.html'>How the geometry of a recording is computed</a> <span class='lede'>— Where does a pixel in an Orange recording end up in Citrus and Palette, and which files, fields, and transforms carry it there?</span></li></ul><h2>Pinned sources</h2><table class='lock'><thead><tr><th>Source</th><th>Role</th><th>Commit</th><th>Branch</th><th>Date</th><th>Flags</th></tr></thead><tbody><tr><td><span class='badge badge-agent-contracts'>agent-contracts</span></td><td>Cross-repo interface contracts (the shared vocabulary)</td><td><a href='https://github.com/jmdelahanty/agent-contracts/commit/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39'>e648029cc8c4</a></td><td><code>agent/acquisition/orange-contract-202602271136</code></td><td>2026-06-10</td><td>commit not on remote; local uncommitted changes ignored</td></tr><tr><td><span class='badge badge-orange'>orange</span></td><td>Acquisition runtime (cameras, recordings, camera-space calibration evidence)</td><td><a href='https://github.com/jmdelahanty/orange/commit/b3e8aa60bc8a325ebcc3b5035ec8c3397cea80e4'>b3e8aa60bc8a</a></td><td><code>merge/split-gop-into-monotonic</code></td><td>2026-04-21</td><td></td></tr><tr><td><span class='badge badge-citrus'>citrus</span></td><td>Stimulus runtime (rig/canvas/arena geometry, homography, session H5)</td><td><a href='https://github.com/JohnsonLabJanelia/citrus/commit/185624f534c24be83e60058691cedb1794016179'>185624f534c2</a></td><td><code>main</code></td><td>2026-10-11</td><td></td></tr><tr><td><span class='badge badge-palette'>palette</span></td><td>Analysis pipelines (reads Orange recordings and Citrus H5 into Zarr)</td><td><a href='https://github.com/jmdelahanty/palette/commit/7ffb8143f54cc54f811e306a1e5be4396ffc1dc3'>7ffb8143f54c</a></td><td><code>sun</code></td><td>2026-08-12</td><td></td></tr></tbody></table><h2>Agent context bundles</h2><p>The same excerpts, as plain markdown for agents: <a href='../context/recording-geometry.md'><code>context/recording-geometry.md</code></a>.</p><footer>Generated from sources locked at 2026-10-12T17:17:39Z. Every block above is a verbatim excerpt; nothing on this page was written by hand.</footer></main></body></html>
