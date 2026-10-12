@@ -1,5 +1,5 @@
 {
-  "locked_at_utc": "2026-10-12T17:29:44Z",
+  "locked_at_utc": "2026-10-12T17:36:27Z",
   "excerpts": {
     "recording-geometry:orange-owns-camera-space": {
       "source": "agent-contracts",
@@ -668,6 +668,218 @@
         "lines": "all"
       },
       "sha256": "fe99bc67aada50780ca81f4ccfaa88b136f2b6822f5ac9769baa1b34cdc74d76"
+    },
+    "rig-layouts:h5-arena-embedding-contract": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 77,
+      "end": 96,
+      "selector": {
+        "heading": "### Arena embedding into full display canvas"
+      },
+      "sha256": "33ccd787a42cf39f9f04d1ac0b6697ec03006e29f7855a596d128be6b115cefc"
+    },
+    "rig-layouts:h5-per-camera-homography-contract": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 98,
+      "end": 129,
+      "selector": {
+        "heading": "### Per-camera homography"
+      },
+      "sha256": "0de30878707e17f0462dea5c13f339e88daed0b8e4ffa277aafbeedebfefac94"
+    },
+    "rig-layouts:citrus-h5-direction-writer": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/logging/session_logger.cpp",
+      "start": 5801,
+      "end": 5831,
+      "selector": {
+        "lines": [
+          5801,
+          5831
+        ],
+        "anchor": "camera_view_right_in_canvas_x"
+      },
+      "sha256": "895a102d0d103114b706078d0ad3019aa26c5ecf804e3eaf9d615d4143d53274"
+    },
+    "rig-layouts:citrus-h5-homography-writer": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/logging/session_logger.cpp",
+      "start": 5835,
+      "end": 5849,
+      "selector": {
+        "lines": [
+          5835,
+          5849
+        ],
+        "anchor": "\"homography_matrix\""
+      },
+      "sha256": "ca47ba0398d7948189cfcf008fc23006d3cb0ed7a1d5a12e2adcc9195968de64"
+    },
+    "rig-layouts:shadow-session-root-attrs": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 7,
+      "end": 52,
+      "selector": {
+        "json_path": "root_attrs"
+      },
+      "sha256": "e9e0eb2f1b00101458bdf47c1065ad21d59cbba9e4ecd951332dd012765a7f65"
+    },
+    "rig-layouts:shadow-session-arena-1-geometry": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 231,
+      "end": 254,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.arena_geometry.attrs"
+      },
+      "sha256": "92c4dba2fedf557a4d1164e56d79136f6af4f87a40111f264e43b2f9c477f765"
+    },
+    "rig-layouts:shadow-session-arena-1-direction": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 61,
+      "end": 79,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010093.attrs"
+      },
+      "sha256": "93f7891237f66edf8487a61a31dc88c8e4fb397a8cb8a1e92aa091133de20f88"
+    },
+    "rig-layouts:shadow-session-arena-1-homography": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 132,
+      "end": 184,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010093.datasets.homography_matrix"
+      },
+      "sha256": "da801852b85616f9a020df501ffb855e664e5554f46086b84e9922401bd095f7"
+    },
+    "rig-layouts:shadow-session-arena-2-geometry": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925",
+      "path": "citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json",
+      "start": 231,
+      "end": 254,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.arena_geometry.attrs"
+      },
+      "sha256": "06efba5ceb9506cdaaf054714485d3663351778a06c569d4de84fe7e7e3d4f91"
+    },
+    "rig-layouts:shadow-session-arena-2-direction": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925",
+      "path": "citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json",
+      "start": 61,
+      "end": 79,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010094.attrs"
+      },
+      "sha256": "375a356c5828ca9961ad19b5da8384312473623fb00e267fc38fd29251e1002a"
+    },
+    "rig-layouts:shadow-session-arena-2-homography": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925",
+      "path": "citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json",
+      "start": 132,
+      "end": 184,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010094.datasets.homography_matrix"
+      },
+      "sha256": "4914e21e5c99ebb308aa1e4dcc7640c1d7407ae5851df926ebc412aa13260f98"
+    },
+    "rig-layouts:shadow-session-arena-3-geometry": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c",
+      "path": "citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json",
+      "start": 231,
+      "end": 254,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.arena_geometry.attrs"
+      },
+      "sha256": "d21c6e781d7ec0eaa738f1970ed2cd44cd5d67c62a1af13907184219033f5f9b"
+    },
+    "rig-layouts:shadow-session-arena-3-direction": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c",
+      "path": "citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json",
+      "start": 61,
+      "end": 79,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010095.attrs"
+      },
+      "sha256": "24605a83bf3e7c02cca0e3b56f20e9e9e9dbbacff0fd426bdf899deb125f3b7b"
+    },
+    "rig-layouts:shadow-session-arena-3-homography": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c",
+      "path": "citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json",
+      "start": 132,
+      "end": 184,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010095.datasets.homography_matrix"
+      },
+      "sha256": "29b8c5f193eeb4792e0b89cb6461b8075d593718a3afe4eaa609bf9de15387d0"
+    },
+    "rig-layouts:shadow-session-arena-4-geometry": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a",
+      "path": "citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json",
+      "start": 231,
+      "end": 254,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.arena_geometry.attrs"
+      },
+      "sha256": "44eec772059e08e7e994a1aaa84048893f5e2d91622be37a9c75fc770d500a1b"
+    },
+    "rig-layouts:shadow-session-arena-4-direction": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a",
+      "path": "citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json",
+      "start": 61,
+      "end": 79,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010096.attrs"
+      },
+      "sha256": "bc2478317eb6ebd93b82d915a53e91a4d34c0f200237333dbad25a8cdf57bbf2"
+    },
+    "rig-layouts:shadow-session-arena-4-homography": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a",
+      "path": "citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json",
+      "start": 132,
+      "end": 184,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010096.datasets.homography_matrix"
+      },
+      "sha256": "6cae8c932c6bef85dd865bbb4f94fecd5cbfc699c4b0670a68b539609813df1e"
     },
     "rig-layouts:blindfish-canvas-size": {
       "source": "omnifin0-blindfish",

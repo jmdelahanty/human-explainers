@@ -1,5 +1,5 @@
 {
-  "locked_at_utc": "2026-10-12T17:29:44Z",
+  "locked_at_utc": "2026-10-12T17:36:27Z",
   "sources": {
     "agent-contracts": {
       "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
@@ -42,6 +42,7 @@
     "omnifin0-rig": {
       "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0",
       "role": "Rig-level config for omnifin0 (projector mount, display output)",
+      "kind": "copy",
       "files": {
         "omnifin0_config.json": {
           "sha256": "d53ccc76eca0eaf04fcc6b3e62a6eb42f48bd34f0021df14ac65bb6c15a2da9a",
@@ -53,6 +54,7 @@
     "omnifin0-casper": {
       "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/casper",
       "role": "Canvas \"casper\" (four circular arenas, one camera each) and its homography sidecars",
+      "kind": "copy",
       "files": {
         "casper.json": {
           "sha256": "0779e3751af9d4a1dce5554cc488488df72f922c44337f7ba96e4d5449f9efb9",
@@ -84,6 +86,7 @@
     "omnifin0-shadow": {
       "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow",
       "role": "Canvas \"shadow\" (four circular arenas on a 1920x1080 canvas)",
+      "kind": "copy",
       "files": {
         "shadow.json": {
           "sha256": "aa36e307fe2781cd5e441ec66dc5590295ec962ee675824a313b00a4cb16abfe",
@@ -115,6 +118,7 @@
     "omnifin0-blindfish": {
       "local_path": "/home/jeremy/citrus/targets/rigs/omnifin0/blindfish",
       "role": "Canvas \"blindfish\" (four rectangular experimental areas)",
+      "kind": "copy",
       "files": {
         "blindfish.json": {
           "sha256": "1229038c835f09f053b2441b3e7e1338dea36e29abfb7827f7151cb9ac4fa1b4",
@@ -140,6 +144,49 @@
           "sha256": "5965502a4c77b94e7d096a444fb679a6322d1c608682aff0222920437dc51f1a",
           "bytes": 346,
           "mtime_utc": "2026-04-20T13:22:29Z"
+        }
+      }
+    },
+    "omnifin0-shadow-session-2026-08-25": {
+      "local_path": "/home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus",
+      "role": "Four Citrus session H5 files (one per arena) recorded on canvas shadow; only root attrs and /calibration_snapshot are exported, as JSON",
+      "kind": "h5-calibration-snapshot",
+      "files": {
+        "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json": {
+          "sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+          "bytes": 23992,
+          "mtime_utc": "2026-08-26T03:42:23Z",
+          "extracted_from": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.h5",
+          "source_sha256": "2e01101135134d264fc495579a0bac0873f6118fd842a69a02141cdd6ab70be2",
+          "source_bytes": 89467969,
+          "extractor": "human-explainers.h5_extract.calibration_snapshot.v1"
+        },
+        "citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json": {
+          "sha256": "75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925",
+          "bytes": 23972,
+          "mtime_utc": "2026-08-26T03:42:23Z",
+          "extracted_from": "citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.h5",
+          "source_sha256": "eabe8482272650f0da116a813c20a7a1076f711ea019cb2f79c3df0f286aa2ed",
+          "source_bytes": 89482865,
+          "extractor": "human-explainers.h5_extract.calibration_snapshot.v1"
+        },
+        "citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json": {
+          "sha256": "36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c",
+          "bytes": 23946,
+          "mtime_utc": "2026-08-26T03:42:23Z",
+          "extracted_from": "citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.h5",
+          "source_sha256": "ec87429b2550546db3c66066e5a1f8bf56d31b76868428e151deddd952685235",
+          "source_bytes": 88009598,
+          "extractor": "human-explainers.h5_extract.calibration_snapshot.v1"
+        },
+        "citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json": {
+          "sha256": "816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a",
+          "bytes": 23990,
+          "mtime_utc": "2026-08-26T03:42:23Z",
+          "extracted_from": "citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.h5",
+          "source_sha256": "7c38c241e9e9a3b76450d38dc40522fe34c3c93c75de71bc8feb265d8e4fabae",
+          "source_bytes": 88791588,
+          "extractor": "human-explainers.h5_extract.calibration_snapshot.v1"
         }
       }
     }

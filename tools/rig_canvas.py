@@ -216,7 +216,7 @@ def render_numbers_table(layout: dict[str, Any]) -> str:
     head = (
         "<tr><th>arena_id</th><th>camera_id</th>"
         "<th>arena_center_x_px, arena_center_y_px</th><th>arena_width_px × arena_height_px</th>"
-        "<th>arena origin<br><small>center − size/2</small></th>"
+        f"<th>arena origin<br><small>{html.escape(layout.get('origin_label', 'center − size/2'))}</small></th>"
         "<th>experimental_area_center_x_px, _y_px<br><small>arena_relative_canvas_px</small></th>"
         "<th>same point in final_display_canvas_px<br><small>origin + center</small></th>"
         "<th>same point in camera_view_px<br><small>inverse(H) · p_display</small></th>"
@@ -250,6 +250,134 @@ def render_rig_canvas(canvas_json_text: str, homography_texts: dict[str, str]) -
     layout = build_layout(canvas, homographies)
     return (
         render_rig_canvas_svg(layout)
+        + render_camera_panels_svg(layout)
+        + render_numbers_table(layout)
+    )
+
+
+# ---------------------------------------------------------------------------
+# Layout from Citrus session H5 extracts (numbers as Citrus wrote them)
+# ---------------------------------------------------------------------------
+
+
+def build_layout_from_h5_extracts(extracts: list[dict[str, Any]]) -> dict[str, Any]:
+    """One extract per arena session. Every number is a Citrus-emitted attr or dataset."""
+    if not extracts:
+        raise ValueError("h5-rig-canvas needs at least one extract")
+    widths = {e["root_attrs"]["stimulus_output_width"] for e in extracts}
+    heights = {e["root_attrs"]["stimulus_output_height"] for e in extracts}
+    names = {e["root_attrs"].get("canvas_name") for e in extracts}
+    if len(widths) != 1 or len(heights) != 1 or len(names) != 1:
+        raise ValueError(f"extracts disagree on canvas: widths={widths} heights={heights} names={names}")
+    out: dict[str, Any] = {
+        "canvas_name": names.pop(),
+        "canvas_width_px": widths.pop(),
+        "canvas_height_px": heights.pop(),
+        "origin_label": "arena_origin_in_canvas_x_px, _y_px (as written)",
+        "arenas": [],
+    }
+    for e in sorted(extracts, key=lambda e: str(e["root_attrs"].get("arena_id"))):
+        snap = e["calibration_snapshot"]
+        ag = snap["groups"]["arena_geometry"]["attrs"]
+        cam_groups = {
+            name: g for name, g in snap["groups"].items() if "homography_matrix" in (g.get("datasets") or {})
+        }
+        if len(cam_groups) != 1:
+            raise ValueError(f"expected one camera group with homography_matrix, found {sorted(cam_groups)}")
+        cam_id, cam = next(iter(cam_groups.items()))
+        hds = cam["datasets"]["homography_matrix"]
+        if hds["attrs"].get("source_frame") != "camera_view_px" or hds["attrs"].get("dest_frame") != "final_display_canvas_px":
+            raise ValueError(f"homography_matrix for {cam_id} does not declare camera_view_px -> final_display_canvas_px")
+        native_w = native_h = None
+        acj = snap.get("datasets", {}).get("arena_config_json", {}).get("value")
+        if acj:
+            cfg = json.loads(acj)
+            for cc in cfg.get("camera_calibrations", []):
+                if str(cc.get("camera_id")) == cam_id:
+                    native_w, native_h = cc.get("native_width_px"), cc.get("native_height_px")
+        ca = cam["attrs"]
+        rec = {
+            "arena_id": e["root_attrs"].get("arena_id"),
+            "session_uuid": e["root_attrs"].get("session_uuid"),
+            "camera_id": cam_id,
+            "native_width_px": native_w,
+            "native_height_px": native_h,
+            "arena_center_px": (ag["arena_region_center_in_canvas_x_px"], ag["arena_region_center_in_canvas_y_px"]),
+            "arena_size_px": (ag["arena_region_width_px"], ag["arena_region_height_px"]),
+            "arena_origin_px": (ag["arena_origin_in_canvas_x_px"], ag["arena_origin_in_canvas_y_px"]),
+            "experimental_area_center_arena_px": (ag["experimental_area_center_x_px"], ag["experimental_area_center_y_px"]),
+            "experimental_area_center_canvas_px": (
+                ag["arena_origin_in_canvas_x_px"] + ag["experimental_area_center_x_px"],
+                ag["arena_origin_in_canvas_y_px"] + ag["experimental_area_center_y_px"],
+            ),
+            "experimental_area_shape": ag.get("experimental_area_shape", "CIRCLE"),
+            "experimental_area_radius_px": ag.get("experimental_area_radius_px"),
+            "experimental_area_width_px": ag.get("experimental_area_width_px"),
+            "experimental_area_height_px": ag.get("experimental_area_height_px"),
+            "pixels_per_mm_camera": ca.get("pixels_per_mm_camera"),
+            "pixels_per_mm_projector": ca.get("pixels_per_mm_projector"),
+            "homography": hds["value"],
+            "homography_fit_rms_px": hds["attrs"].get("homography_fit_rms_reprojection_error_px"),
+            "arena_geometry_source": ag.get("arena_geometry_source"),
+            "direction": {
+                "ref_canvas": (ca.get("direction_mapping_ref_canvas_x"), ca.get("direction_mapping_ref_canvas_y")),
+                "right": (ca.get("camera_view_right_in_canvas_x"), ca.get("camera_view_right_in_canvas_y")),
+                "down": (ca.get("camera_view_down_in_canvas_x"), ca.get("camera_view_down_in_canvas_y")),
+                "handedness": ca.get("direction_mapping_handedness"),
+            }
+            if ca.get("camera_view_right_in_canvas_x") is not None
+            else None,
+        }
+        out["arenas"].append(rec)
+    return out
+
+
+def render_direction_glyphs_svg(layout: dict[str, Any]) -> str:
+    """Citrus's own camera-axis directions in canvas space, drawn at its reference point."""
+    arenas = [a for a in layout["arenas"] if a.get("direction")]
+    if not arenas:
+        return ""
+    cw, ch = layout["canvas_width_px"], layout["canvas_height_px"]
+    width, pad = 960, 40
+    s = (width - 2 * pad) / cw
+    height = pad * 2 + ch * s + 30
+    out = [
+        f'<svg class="rig" viewBox="0 0 {width} {height:.0f}" xmlns="http://www.w3.org/2000/svg" role="img" '
+        'aria-label="camera axis directions in canvas space as written by Citrus">',
+        "<defs><marker id='ax2' viewBox='0 0 10 10' refX='9' refY='5' markerWidth='7' markerHeight='7' orient='auto-start-reverse'>"
+        "<path d='M0 0L10 5L0 10z' fill='currentColor'/></marker></defs>",
+        f'<text x="{pad}" y="{pad - 14}" class="title">camera axes in final_display_canvas_px — '
+        f'camera_view_right/down_in_canvas_* drawn at direction_mapping_ref_canvas_*</text>',
+        f'<rect x="{pad}" y="{pad}" width="{cw * s:.1f}" height="{ch * s:.1f}" class="frame"/>',
+    ]
+    L = 90.0  # canvas px length for unit direction vectors, drawn to scale
+    for k, rec in enumerate(arenas):
+        color = ARENA_COLORS[k % len(ARENA_COLORS)]
+        d = rec["direction"]
+        rx, ry = d["ref_canvas"]
+        ox, oy = rec["arena_origin_px"]
+        w, hgt = rec["arena_size_px"]
+        out.append(f'<rect x="{pad + ox * s:.1f}" y="{pad + oy * s:.1f}" width="{w * s:.1f}" height="{hgt * s:.1f}" class="arena" stroke="{color}" opacity=".45"/>')
+        px, py = pad + rx * s, pad + ry * s
+        for label, (vx, vy) in (("camera +x", d["right"]), ("camera +y", d["down"])):
+            ex, ey = px + vx * L * s, py + vy * L * s
+            out.append(f'<line x1="{px:.1f}" y1="{py:.1f}" x2="{ex:.1f}" y2="{ey:.1f}" stroke="{color}" stroke-width="2" marker-end="url(#ax2)" style="color:{color}"/>')
+            out.append(f'<text x="{ex + 4:.1f}" y="{ey + 4:.1f}" class="small" fill="{color}">{label}</text>')
+        out.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="3" fill="{color}"/>')
+        out.append(
+            f'<text x="{pad + ox * s:.1f}" y="{pad + (oy + hgt) * s + 14:.1f}" class="small" fill="{color}">'
+            f'{html.escape(str(rec["camera_id"]))} · handedness={html.escape(str(d["handedness"]))}</text>'
+        )
+    out.append("</svg>")
+    return "".join(out)
+
+
+def render_h5_rig_canvas(extract_texts: list[str]) -> str:
+    extracts = [json.loads(t) for t in extract_texts]
+    layout = build_layout_from_h5_extracts(extracts)
+    return (
+        render_rig_canvas_svg(layout)
+        + render_direction_glyphs_svg(layout)
         + render_camera_panels_svg(layout)
         + render_numbers_table(layout)
     )

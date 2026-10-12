@@ -52,3 +52,14 @@ data:
       - calibration_artifacts/homography_arena_2_2010094.yml
       - calibration_artifacts/homography_arena_3_2010095.yml
       - calibration_artifacts/homography_arena_4_2010096.yml
+  omnifin0-shadow-session-2026-08-25:
+    kind: h5-calibration-snapshot
+    local_path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus
+    role: >-
+      Four Citrus session H5 files (one per arena) recorded on canvas shadow;
+      only root attrs and /calibration_snapshot are exported, as JSON
+    files:
+      - citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.h5
+      - citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.h5
+      - citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.h5
+      - citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.h5

@@ -63,6 +63,11 @@ An explainer YAML lists sections of items. Each item is one of:
   lines: [5677, 5706]            # 1-indexed inclusive
   anchor: arena_origin_in_canvas_x_px   # build fails if this text is not inside the range
 
+- id: shadow-session-arena-1-geometry
+  source: omnifin0-shadow-session-2026-08-25
+  path: citsess_<uuid>_redbat.calibration_snapshot.json
+  json_path: calibration_snapshot.groups.arena_geometry.attrs   # dotted key path into a data JSON file
+
 - diagram:
     kind: transform-chain        # parses `p_<frame> = ...` equations from the named excerpt
     from: citrus-transform-chain
@@ -73,6 +78,7 @@ Diagram kinds:
 
 - `transform-chain`: equations in code fences become nodes and arrows. `order` only arranges nodes; it cannot add any.
 - `bullet-cards`: top-level `` `term` `` bullets with nested bullets become definition cards.
+- `h5-rig-canvas`: `inputs` names quoted extracts of Citrus session H5 files, one per arena. Canvas size, arena region, `arena_origin_in_canvas_*`, experimental area, camera axis directions, and `homography_matrix` are all values Citrus wrote; the only arithmetic left is pushing points through that matrix for the footprints and camera panels.
 - `rig-canvas`: `from` names a quoted Citrus canvas JSON and `homographies` names quoted OpenCV sidecars. Arena rectangles and experimental areas are the JSON fields; the arena origin is `center − size/2` as in `ArenaConfig::GetArenaOriginXInCanvasPx`; camera footprints are the native frame corners pushed through `homography_matrix` in its declared direction, and the camera panels use its inverse. The numbers table names the field each value came from.
 
 ## Local data that is not in git
@@ -82,6 +88,13 @@ exist on the rig machine. `sources.yaml` can declare them under `data:`;
 `lock` copies each file into `data/<name>/` and pins its sha256, `build`
 publishes the copies under `site/data/`, and `verify` fails if a snapshot was
 altered and warns if the original on disk has drifted since the lock.
+
+Session H5 files are too large to copy, so a data source with
+`kind: h5-calibration-snapshot` is exported instead: `tools/h5_extract.py`
+dumps the root attributes and the whole `/calibration_snapshot` tree to JSON,
+copying every attribute and every small dataset verbatim and replacing large
+datasets (embedded PNG buffers) with their shape, byte count, and sha256. The
+lock records the sha256 of both the H5 file and the export.
 
 ## Re-pinning
 

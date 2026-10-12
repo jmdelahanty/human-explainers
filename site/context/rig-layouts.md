@@ -654,6 +654,673 @@ homography_matrix: !!opencv-matrix
        -4.6056798093723558e-07, 1. ]
 ```
 
+## Canvas shadow as Citrus recorded it (session H5, 2026-08-25)
+
+### h5-arena-embedding-contract
+
+source: agent-contracts @ e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39  
+path: citrus-crimson/spatial_overlay_contract.md (lines 77-96)  
+url: https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L77-L96
+
+### Arena embedding into full display canvas
+
+Group:
+
+- `/calibration_snapshot/arena_geometry`
+
+Authoritative attrs:
+
+- `arena_region_center_in_canvas_x_px`
+- `arena_region_center_in_canvas_y_px`
+- `arena_region_width_px`
+- `arena_region_height_px`
+- `arena_origin_in_canvas_x_px`
+- `arena_origin_in_canvas_y_px`
+
+Meaning:
+
+- These place the active arena region inside `final_display_canvas_px`.
+- Overlay consumers should use `arena_origin_in_canvas_x_px` and
+  `arena_origin_in_canvas_y_px` as the authoritative local-to-global embedding.
+
+### h5-per-camera-homography-contract
+
+source: agent-contracts @ e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39  
+path: citrus-crimson/spatial_overlay_contract.md (lines 98-129)  
+url: https://github.com/jmdelahanty/agent-contracts/blob/e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39/citrus-crimson/spatial_overlay_contract.md#L98-L129
+
+### Per-camera homography
+
+Per-camera group:
+
+- `/calibration_snapshot/<camera_id>`
+
+Authoritative dataset:
+
+- `homography_matrix` (`3x3`, float64)
+
+Compatibility fallback:
+
+- `homography_matrix_yml`
+
+Required interpretation for both:
+
+- `source_frame="camera_view_px"`
+- `dest_frame="final_display_canvas_px"`
+- `coordinate_origin="top_left"`
+- `axes="x_right_y_down"`
+- `image_space="raw"`
+- `camera_id=<camera_id>` when present
+
+Meaning:
+
+- The stored homography direction is:
+
+```text
+camera_view_px -> final_display_canvas_px
+```
+
+- Consumers that need camera overlay coordinates must invert it.
+
+### citrus-h5-direction-writer
+
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
+path: src/logging/session_logger.cpp (lines 5801-5831)  
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/logging/session_logger.cpp#L5801-L5831
+
+```cpp
+
+            const auto direction_mapping =
+                BuildDirectionFrameMapping(cam_calib, arena_config.homography_matrix);
+            if (direction_mapping.has_value()) {
+                writeFloatAttr(camGroup, "direction_mapping_ref_camera_x",
+                               direction_mapping->reference_camera_point_px.x);
+                writeFloatAttr(camGroup, "direction_mapping_ref_camera_y",
+                               direction_mapping->reference_camera_point_px.y);
+                writeFloatAttr(camGroup, "direction_mapping_ref_canvas_x",
+                               direction_mapping->reference_canvas_point_px.x);
+                writeFloatAttr(camGroup, "direction_mapping_ref_canvas_y",
+                               direction_mapping->reference_canvas_point_px.y);
+                writeFloatAttr(camGroup, "camera_view_right_in_canvas_x",
+                               direction_mapping->camera_view_right_in_canvas.x);
+                writeFloatAttr(camGroup, "camera_view_right_in_canvas_y",
+                               direction_mapping->camera_view_right_in_canvas.y);
+                writeFloatAttr(camGroup, "camera_view_right_in_canvas_angle_deg",
+                               direction_mapping->camera_view_right_angle_deg);
+                writeFloatAttr(camGroup, "camera_view_down_in_canvas_x",
+                               direction_mapping->camera_view_down_in_canvas.x);
+                writeFloatAttr(camGroup, "camera_view_down_in_canvas_y",
+                               direction_mapping->camera_view_down_in_canvas.y);
+                writeFloatAttr(camGroup, "camera_view_down_in_canvas_angle_deg",
+                               direction_mapping->camera_view_down_angle_deg);
+                writeFloatAttr(camGroup, "direction_mapping_scale_x",
+                               direction_mapping->canvas_px_per_camera_px_x);
+                writeFloatAttr(camGroup, "direction_mapping_scale_y",
+                               direction_mapping->canvas_px_per_camera_px_y);
+                writeStrAttr(camGroup, "direction_mapping_handedness",
+                             direction_mapping->is_mirrored ? "mirrored" : "preserved");
+                writeStrAttr(camGroup, "direction_mapping_canvas_angle_convention",
+```
+
+### citrus-h5-homography-writer
+
+source: citrus @ 48ad93e4d2c84782d0d084a6e3f1352c7c5e3162  
+path: src/logging/session_logger.cpp (lines 5835-5849)  
+url: https://github.com/JohnsonLabJanelia/citrus/blob/48ad93e4d2c84782d0d084a6e3f1352c7c5e3162/src/logging/session_logger.cpp#L5835-L5849
+
+```cpp
+            if (!arena_config.homography_matrix.empty() &&
+                arena_config.homography_matrix.rows == 3 &&
+                arena_config.homography_matrix.cols == 3) {
+                cv::Mat homography_matrix_f64;
+                arena_config.homography_matrix.convertTo(homography_matrix_f64, CV_64F);
+                hsize_t matrix_dims[2] = {3, 3};
+                H5::DataSpace matrix_dspace(2, matrix_dims);
+                H5::DataSet matrix_dset = camGroup.createDataSet(
+                    "homography_matrix",
+                    H5::PredType::NATIVE_DOUBLE,
+                    matrix_dspace);
+                matrix_dset.write(homography_matrix_f64.ptr<double>(), H5::PredType::NATIVE_DOUBLE);
+                WriteHomographyDatasetAttrs(matrix_dset, cam_calib.camera_id);
+                WriteHomographyProvenanceAttrs(matrix_dset,
+                                               homography_provenance,
+```
+
+### shadow-session-root-attrs
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json (lines 7-52)
+curator note: Session identity and the canvas size Citrus actually rendered (stimulus_output_width/height). The other three sessions share canvas_name and rig_id.
+
+```json
+  "root_attrs": {
+    "active_ipc_source": "SHAMAN",
+    "arena_id": "arena_1",
+    "artifact_schema_id": "behavior_v1",
+    "behavior_mode": "free",
+    "canvas_name": "shadow",
+    "display_mode_height_reported_px": 1080,
+    "display_mode_observation_source": "xrandr_selected_output_verbose_current_mode",
+    "display_mode_pixel_clock_reported_mhz": 296.7,
+    "display_mode_width_reported_px": 1920,
+    "display_refresh_rate_reported_hz": 119.88,
+    "display_refresh_rate_source": "xrandr_selected_output_current_mode",
+    "display_submission_rate_source": "citrus_frame_rate_limiter_nominal",
+    "display_submission_rate_target_hz": 120.0,
+    "display_swap_interval": 0,
+    "expected_bounding_boxes_rows": 173563,
+    "expected_chaser_states_rows": 180232,
+    "expected_display_frame_submission_rows": 215977,
+    "expected_events_rows": 152,
+    "expected_frame_metadata_rows": 216232,
+    "expected_independent_motion_grid_states_rows": 0,
+    "expected_moving_grating_states_rows": 0,
+    "expected_runtime_trials_rows": 4,
+    "experimental_chamber": "palm1",
+    "hostname": "pancake0.hhmi.org",
+    "ipc_first_nonzero_frame_id": 1008,
+    "ipc_first_nonzero_frame_timestamp_ns_session": 1388876200,
+    "ipc_reader_init_status": "initialized",
+    "ipc_source_name": "/shm_cam_2010093",
+    "loaded_protocol_filepath": "redbat.json",
+    "protocol_name_from_definition": "redbat",
+    "recording_subtype": "free",
+    "recording_type": "behavior",
+    "rig_id": "omnifin0",
+    "session_output_dir": "/home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus",
+    "session_start_iso8601_utc": "2026-08-26T03-12-19Z",
+    "session_start_ns_epoch": 1787713939114183878,
+    "session_status": "COMPLETE",
+    "session_uuid": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e",
+    "software_version": "",
+    "stimulus_frame_rate_nominal_hz": 120.0,
+    "stimulus_output_height": 1080,
+    "stimulus_output_width": 1920,
+    "tracking_bounding_boxes_rows": 173563,
+    "tracking_chaser_states_rows": 180232
+  },
+```
+
+### shadow-session-arena-1-geometry
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json (lines 231-254)
+
+```json
+        "attrs": {
+          "arena_geometry_source": "active_camera_calibration",
+          "arena_origin_in_canvas_x_px": 90.0,
+          "arena_origin_in_canvas_y_px": 164.0,
+          "arena_region_center_in_canvas_x_px": 264.0,
+          "arena_region_center_in_canvas_y_px": 338.0,
+          "arena_region_height_px": 348.0,
+          "arena_region_width_px": 348.0,
+          "coordinate_frame": "arena_relative_canvas_px",
+          "coordinate_origin": "top_left_of_active_arena",
+          "experimental_area_center_x_px": 173.0,
+          "experimental_area_center_y_px": 173.0,
+          "experimental_area_corner_radius_mm": 11.99231243133545,
+          "experimental_area_corner_radius_px": 50.1770133972168,
+          "experimental_area_height_mm": 80.0,
+          "experimental_area_height_px": 334.72784423828125,
+          "experimental_area_radius_mm": 40.0,
+          "experimental_area_radius_px": 167.36392211914062,
+          "experimental_area_shape": "CIRCLE",
+          "experimental_area_width_mm": 80.0,
+          "experimental_area_width_px": 334.72784423828125,
+          "x_axis_direction": "right",
+          "y_axis_direction": "down"
+        }
+```
+
+### shadow-session-arena-1-direction
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json (lines 61-79)
+
+```json
+        "attrs": {
+          "camera_view_down_in_canvas_angle_deg": -90.35123443603516,
+          "camera_view_down_in_canvas_x": -0.006130152847617865,
+          "camera_view_down_in_canvas_y": -0.999981164932251,
+          "camera_view_right_in_canvas_angle_deg": -0.35421979427337646,
+          "camera_view_right_in_canvas_x": 0.9999808073043823,
+          "camera_view_right_in_canvas_y": -0.0061822617426514626,
+          "direction_mapping_canvas_angle_convention": "0=right,90=down",
+          "direction_mapping_handedness": "mirrored",
+          "direction_mapping_ref_camera_x": 2229.577392578125,
+          "direction_mapping_ref_camera_y": 2245.14892578125,
+          "direction_mapping_ref_canvas_x": 259.0,
+          "direction_mapping_ref_canvas_y": 332.0,
+          "direction_mapping_scale_x": 0.07898100465536118,
+          "direction_mapping_scale_y": 0.07965237647294998,
+          "pixels_per_mm_camera": 52.75507354736328,
+          "pixels_per_mm_projector": 4.184098243713379,
+          "real_world_ref_mm": 5.0
+        },
+```
+
+### shadow-session-arena-1-homography
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json (lines 132-184)
+
+```json
+          "homography_matrix": {
+            "attrs": {
+              "arena_config_name": "arena_1",
+              "axes": "x_right_y_down",
+              "camera_id": "2010093",
+              "canvas_name": "shadow",
+              "coordinate_origin": "top_left",
+              "dest_frame": "final_display_canvas_px",
+              "homography_artifact_checksum_algorithm": "fnv1a64",
+              "homography_artifact_checksum_fnv1a64": "af351bdb2310837d",
+              "homography_artifact_exists": "true",
+              "homography_artifact_filename": "homography_arena_1_2010093.yml",
+              "homography_artifact_mtime_unix_ns": 1786323758019198158,
+              "homography_artifact_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow/calibration_artifacts/homography_arena_1_2010093.yml",
+              "homography_artifact_size_bytes": 1295,
+              "homography_fit_inlier_count": 81,
+              "homography_fit_max_reprojection_error_px": 0.2432277899465086,
+              "homography_fit_point_count": 81,
+              "homography_fit_quality_available": "true",
+              "homography_fit_quality_schema": "citrus.homography_fit_quality.v1",
+              "homography_fit_rms_reprojection_error_px": 0.12110689401871437,
+              "homography_payload_source": "runtime_arena_config.homography_matrix",
+              "homography_provenance_schema": "citrus.homography_provenance.v1",
+              "image_space": "raw",
+              "rig_id": "omnifin0",
+              "runtime_matrix_checksum_algorithm": "sha256",
+              "runtime_matrix_checksum_serialization": "json_row_major_float64_v1",
+              "runtime_matrix_checksum_sha256": "sha256:cfdbbbf45b75226f42cdadeb77831a9cd5fa7b7d31834237f41e18d85c729112",
+              "source_frame": "camera_view_px"
+            },
+            "dtype": "float64",
+            "shape": [
+              3,
+              3
+            ],
+            "value": [
+              [
+                0.07874250445494245,
+                -0.0005856985662148073,
+                84.33456319725997
+              ],
+              [
+                -0.0006186948810984491,
+                -0.07962950658326917,
+                511.62381365417457
+              ],
+              [
+                -3.960271677654378e-07,
+                -3.2541264852901244e-07,
+                1.0
+              ]
+            ]
+          },
+```
+
+### shadow-session-arena-2-geometry
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json (lines 231-254)
+
+```json
+        "attrs": {
+          "arena_geometry_source": "active_camera_calibration",
+          "arena_origin_in_canvas_x_px": 551.0,
+          "arena_origin_in_canvas_y_px": 159.0,
+          "arena_region_center_in_canvas_x_px": 726.0,
+          "arena_region_center_in_canvas_y_px": 334.0,
+          "arena_region_height_px": 350.0,
+          "arena_region_width_px": 350.0,
+          "coordinate_frame": "arena_relative_canvas_px",
+          "coordinate_origin": "top_left_of_active_arena",
+          "experimental_area_center_x_px": 174.0,
+          "experimental_area_center_y_px": 174.0,
+          "experimental_area_corner_radius_mm": 11.97751522064209,
+          "experimental_area_corner_radius_px": 50.25548553466797,
+          "experimental_area_height_mm": 80.0,
+          "experimental_area_height_px": 335.66552734375,
+          "experimental_area_radius_mm": 40.0,
+          "experimental_area_radius_px": 167.832763671875,
+          "experimental_area_shape": "CIRCLE",
+          "experimental_area_width_mm": 80.0,
+          "experimental_area_width_px": 335.66552734375,
+          "x_axis_direction": "right",
+          "y_axis_direction": "down"
+        }
+```
+
+### shadow-session-arena-2-direction
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json (lines 61-79)
+
+```json
+        "attrs": {
+          "camera_view_down_in_canvas_angle_deg": -90.131103515625,
+          "camera_view_down_in_canvas_x": -0.002288323361426592,
+          "camera_view_down_in_canvas_y": -0.9999973773956299,
+          "camera_view_right_in_canvas_angle_deg": -0.2858169376850128,
+          "camera_view_right_in_canvas_x": 0.9999875426292419,
+          "camera_view_right_in_canvas_y": -0.004988425876945257,
+          "direction_mapping_canvas_angle_convention": "0=right,90=down",
+          "direction_mapping_handedness": "mirrored",
+          "direction_mapping_ref_camera_x": 2247.4580078125,
+          "direction_mapping_ref_camera_y": 2261.30322265625,
+          "direction_mapping_ref_canvas_x": 721.0,
+          "direction_mapping_ref_canvas_y": 337.0,
+          "direction_mapping_scale_x": 0.07952979952096939,
+          "direction_mapping_scale_y": 0.08001729846000671,
+          "pixels_per_mm_camera": 52.58562088012695,
+          "pixels_per_mm_projector": 4.195818901062012,
+          "real_world_ref_mm": 5.0
+        },
+```
+
+### shadow-session-arena-2-homography
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 75f3378881b9502c1cb7f9fe4b7c13bbd2acdc934d5894cad028d0feae29c925  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json (lines 132-184)
+
+```json
+          "homography_matrix": {
+            "attrs": {
+              "arena_config_name": "arena_2",
+              "axes": "x_right_y_down",
+              "camera_id": "2010094",
+              "canvas_name": "shadow",
+              "coordinate_origin": "top_left",
+              "dest_frame": "final_display_canvas_px",
+              "homography_artifact_checksum_algorithm": "fnv1a64",
+              "homography_artifact_checksum_fnv1a64": "2106f36756e5fbd8",
+              "homography_artifact_exists": "true",
+              "homography_artifact_filename": "homography_arena_2_2010094.yml",
+              "homography_artifact_mtime_unix_ns": 1786323758055198160,
+              "homography_artifact_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow/calibration_artifacts/homography_arena_2_2010094.yml",
+              "homography_artifact_size_bytes": 1295,
+              "homography_fit_inlier_count": 81,
+              "homography_fit_max_reprojection_error_px": 0.2901524344662282,
+              "homography_fit_point_count": 81,
+              "homography_fit_quality_available": "true",
+              "homography_fit_quality_schema": "citrus.homography_fit_quality.v1",
+              "homography_fit_rms_reprojection_error_px": 0.1147780064519357,
+              "homography_payload_source": "runtime_arena_config.homography_matrix",
+              "homography_provenance_schema": "citrus.homography_provenance.v1",
+              "image_space": "raw",
+              "rig_id": "omnifin0",
+              "runtime_matrix_checksum_algorithm": "sha256",
+              "runtime_matrix_checksum_serialization": "json_row_major_float64_v1",
+              "runtime_matrix_checksum_sha256": "sha256:ffdb4429ed3fe0c3a534960ff15e2a92ea8b57e7cf2fda316f306404867264b2",
+              "source_frame": "camera_view_px"
+            },
+            "dtype": "float64",
+            "shape": [
+              3,
+              3
+            ],
+            "value": [
+              [
+                0.07906860271482405,
+                -0.00047793029202255766,
+                542.9984779325481
+              ],
+              [
+                -0.0005470654070846848,
+                -0.07998867525696146,
+                518.4636429271127
+              ],
+              [
+                -4.5995586459547647e-07,
+                -3.886052250950324e-07,
+                1.0
+              ]
+            ]
+          },
+```
+
+### shadow-session-arena-3-geometry
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json (lines 231-254)
+
+```json
+        "attrs": {
+          "arena_geometry_source": "active_camera_calibration",
+          "arena_origin_in_canvas_x_px": 1012.0,
+          "arena_origin_in_canvas_y_px": 156.0,
+          "arena_region_center_in_canvas_x_px": 1188.0,
+          "arena_region_center_in_canvas_y_px": 332.0,
+          "arena_region_height_px": 352.0,
+          "arena_region_width_px": 352.0,
+          "coordinate_frame": "arena_relative_canvas_px",
+          "coordinate_origin": "top_left_of_active_arena",
+          "experimental_area_center_x_px": 173.0,
+          "experimental_area_center_y_px": 173.0,
+          "experimental_area_corner_radius_mm": 11.802724838256836,
+          "experimental_area_corner_radius_px": 49.67599868774414,
+          "experimental_area_height_mm": 80.0,
+          "experimental_area_height_px": 336.70867919921875,
+          "experimental_area_radius_mm": 40.0,
+          "experimental_area_radius_px": 168.35433959960938,
+          "experimental_area_shape": "CIRCLE",
+          "experimental_area_width_mm": 80.0,
+          "experimental_area_width_px": 336.70867919921875,
+          "x_axis_direction": "right",
+          "y_axis_direction": "down"
+        }
+```
+
+### shadow-session-arena-3-direction
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json (lines 61-79)
+
+```json
+        "attrs": {
+          "camera_view_down_in_canvas_angle_deg": -90.0,
+          "camera_view_down_in_canvas_x": 0.0,
+          "camera_view_down_in_canvas_y": -1.0,
+          "camera_view_right_in_canvas_angle_deg": -0.37119460105895996,
+          "camera_view_right_in_canvas_x": 0.9999789595603943,
+          "camera_view_right_in_canvas_y": -0.006478522438555956,
+          "direction_mapping_canvas_angle_convention": "0=right,90=down",
+          "direction_mapping_handedness": "mirrored",
+          "direction_mapping_ref_camera_x": 2235.46533203125,
+          "direction_mapping_ref_camera_y": 2230.24267578125,
+          "direction_mapping_ref_canvas_x": 1178.0,
+          "direction_mapping_ref_canvas_y": 335.0,
+          "direction_mapping_scale_x": 0.0800798088312149,
+          "direction_mapping_scale_y": 0.080413818359375,
+          "pixels_per_mm_camera": 52.43170166015625,
+          "pixels_per_mm_projector": 4.208858489990234,
+          "real_world_ref_mm": 5.0
+        },
+```
+
+### shadow-session-arena-3-homography
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 36b589f184cb16aafa8f9a708e6b41fb5e45e2577210a74bc2c6ef462551af0c  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json (lines 132-184)
+
+```json
+          "homography_matrix": {
+            "attrs": {
+              "arena_config_name": "arena_3",
+              "axes": "x_right_y_down",
+              "camera_id": "2010095",
+              "canvas_name": "shadow",
+              "coordinate_origin": "top_left",
+              "dest_frame": "final_display_canvas_px",
+              "homography_artifact_checksum_algorithm": "fnv1a64",
+              "homography_artifact_checksum_fnv1a64": "e033634141030c5d",
+              "homography_artifact_exists": "true",
+              "homography_artifact_filename": "homography_arena_3_2010095.yml",
+              "homography_artifact_mtime_unix_ns": 1786323758071198160,
+              "homography_artifact_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow/calibration_artifacts/homography_arena_3_2010095.yml",
+              "homography_artifact_size_bytes": 1296,
+              "homography_fit_inlier_count": 81,
+              "homography_fit_max_reprojection_error_px": 0.2105458119777816,
+              "homography_fit_point_count": 81,
+              "homography_fit_quality_available": "true",
+              "homography_fit_quality_schema": "citrus.homography_fit_quality.v1",
+              "homography_fit_rms_reprojection_error_px": 0.11368694460021456,
+              "homography_payload_source": "runtime_arena_config.homography_matrix",
+              "homography_provenance_schema": "citrus.homography_provenance.v1",
+              "image_space": "raw",
+              "rig_id": "omnifin0",
+              "runtime_matrix_checksum_algorithm": "sha256",
+              "runtime_matrix_checksum_serialization": "json_row_major_float64_v1",
+              "runtime_matrix_checksum_sha256": "sha256:309025e02d4179828304bb2deb0f18c63cdf71c6839c2048cb7c458298bc187a",
+              "source_frame": "camera_view_px"
+            },
+            "dtype": "float64",
+            "shape": [
+              3,
+              3
+            ],
+            "value": [
+              [
+                0.0790050268403753,
+                -0.0006674120271375568,
+                999.5425773946706
+              ],
+              [
+                -0.0007720151510413161,
+                -0.0803815604980243,
+                515.0483915388191
+              ],
+              [
+                -7.216399587149153e-07,
+                -5.452778809885962e-07,
+                1.0
+              ]
+            ]
+          },
+```
+
+### shadow-session-arena-4-geometry
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json (lines 231-254)
+
+```json
+        "attrs": {
+          "arena_geometry_source": "active_camera_calibration",
+          "arena_origin_in_canvas_x_px": 1480.0,
+          "arena_origin_in_canvas_y_px": 152.0,
+          "arena_region_center_in_canvas_x_px": 1657.0,
+          "arena_region_center_in_canvas_y_px": 329.0,
+          "arena_region_height_px": 354.0,
+          "arena_region_width_px": 354.0,
+          "coordinate_frame": "arena_relative_canvas_px",
+          "coordinate_origin": "top_left_of_active_arena",
+          "experimental_area_center_x_px": 175.0,
+          "experimental_area_center_y_px": 175.0,
+          "experimental_area_corner_radius_mm": 11.901163101196289,
+          "experimental_area_corner_radius_px": 50.36293411254883,
+          "experimental_area_height_mm": 80.0,
+          "experimental_area_height_px": 338.541259765625,
+          "experimental_area_radius_mm": 40.0,
+          "experimental_area_radius_px": 169.2706298828125,
+          "experimental_area_shape": "CIRCLE",
+          "experimental_area_width_mm": 80.0,
+          "experimental_area_width_px": 338.541259765625,
+          "x_axis_direction": "right",
+          "y_axis_direction": "down"
+        }
+```
+
+### shadow-session-arena-4-direction
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json (lines 61-79)
+
+```json
+        "attrs": {
+          "camera_view_down_in_canvas_angle_deg": -89.91357421875,
+          "camera_view_down_in_canvas_x": 0.0015082939062267542,
+          "camera_view_down_in_canvas_y": -0.9999988675117493,
+          "camera_view_right_in_canvas_angle_deg": -0.47601136565208435,
+          "camera_view_right_in_canvas_x": 0.9999655485153198,
+          "camera_view_right_in_canvas_y": -0.008307870477437973,
+          "direction_mapping_canvas_angle_convention": "0=right,90=down",
+          "direction_mapping_handedness": "mirrored",
+          "direction_mapping_ref_camera_x": 2251.96240234375,
+          "direction_mapping_ref_camera_y": 2247.328369140625,
+          "direction_mapping_ref_canvas_x": 1654.0,
+          "direction_mapping_ref_canvas_y": 322.0,
+          "direction_mapping_scale_x": 0.08081333339214325,
+          "direction_mapping_scale_y": 0.08093270659446716,
+          "pixels_per_mm_camera": 52.31583786010742,
+          "pixels_per_mm_projector": 4.2317657470703125,
+          "real_world_ref_mm": 5.0
+        },
+```
+
+### shadow-session-arena-4-homography
+
+source: local data snapshot omnifin0-shadow-session-2026-08-25, sha256 816ed7c105e0fb776daa839fb233bcc9992d1280fa5b802164743a07e298185a  
+path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus/citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json (lines 132-184)
+
+```json
+          "homography_matrix": {
+            "attrs": {
+              "arena_config_name": "arena_4",
+              "axes": "x_right_y_down",
+              "camera_id": "2010096",
+              "canvas_name": "shadow",
+              "coordinate_origin": "top_left",
+              "dest_frame": "final_display_canvas_px",
+              "homography_artifact_checksum_algorithm": "fnv1a64",
+              "homography_artifact_checksum_fnv1a64": "f82c955660f61ee8",
+              "homography_artifact_exists": "true",
+              "homography_artifact_filename": "homography_arena_4_2010096.yml",
+              "homography_artifact_mtime_unix_ns": 1786323758083198159,
+              "homography_artifact_path": "/home/jeremy/citrus/targets/rigs/omnifin0/shadow/calibration_artifacts/homography_arena_4_2010096.yml",
+              "homography_artifact_size_bytes": 1296,
+              "homography_fit_inlier_count": 81,
+              "homography_fit_max_reprojection_error_px": 0.26431522471725416,
+              "homography_fit_point_count": 81,
+              "homography_fit_quality_available": "true",
+              "homography_fit_quality_schema": "citrus.homography_fit_quality.v1",
+              "homography_fit_rms_reprojection_error_px": 0.12366124769422783,
+              "homography_payload_source": "runtime_arena_config.homography_matrix",
+              "homography_provenance_schema": "citrus.homography_provenance.v1",
+              "image_space": "raw",
+              "rig_id": "omnifin0",
+              "runtime_matrix_checksum_algorithm": "sha256",
+              "runtime_matrix_checksum_serialization": "json_row_major_float64_v1",
+              "runtime_matrix_checksum_sha256": "sha256:8e4e0b0739547dc6901e0e6f5fe6757f65716e146f2644e660fb72de78e40637",
+              "source_frame": "camera_view_px"
+            },
+            "dtype": "float64",
+            "shape": [
+              3,
+              3
+            ],
+            "value": [
+              [
+                0.07941404014474829,
+                -0.00035544630587712374,
+                1472.08739971268
+              ],
+              [
+                -0.0009073157076933863,
+                -0.08084017897724494,
+                504.9634861168206
+              ],
+              [
+                -7.445148038954546e-07,
+                -2.9615715082307834e-07,
+                1.0
+              ]
+            ]
+          },
+```
+
 ## Canvas blindfish
 
 ### blindfish-canvas-size

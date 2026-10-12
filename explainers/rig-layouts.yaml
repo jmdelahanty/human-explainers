@@ -131,6 +131,87 @@ sections:
           from: shadow-arena-1
           homographies: [shadow-h-2010093, shadow-h-2010094, shadow-h-2010095, shadow-h-2010096]
 
+  - title: Canvas shadow as Citrus recorded it (session H5, 2026-08-25)
+    items:
+      - id: h5-arena-embedding-contract
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Arena embedding into full display canvas"
+      - id: h5-per-camera-homography-contract
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Per-camera homography"
+      - id: citrus-h5-direction-writer
+        source: citrus
+        path: src/logging/session_logger.cpp
+        lines: [5801, 5831]
+        anchor: camera_view_right_in_canvas_x
+      - id: citrus-h5-homography-writer
+        source: citrus
+        path: src/logging/session_logger.cpp
+        lines: [5835, 5849]
+        anchor: '"homography_matrix"'
+      - id: shadow-session-root-attrs
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: root_attrs
+        note: >-
+          Session identity and the canvas size Citrus actually rendered
+          (stimulus_output_width/height). The other three sessions share
+          canvas_name and rig_id.
+      - id: shadow-session-arena-1-geometry
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.arena_geometry.attrs
+      - id: shadow-session-arena-1-direction
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010093.attrs
+      - id: shadow-session-arena-1-homography
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010093.datasets.homography_matrix
+      - id: shadow-session-arena-2-geometry
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.arena_geometry.attrs
+      - id: shadow-session-arena-2-direction
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010094.attrs
+      - id: shadow-session-arena-2-homography
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010094.datasets.homography_matrix
+      - id: shadow-session-arena-3-geometry
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.arena_geometry.attrs
+      - id: shadow-session-arena-3-direction
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010095.attrs
+      - id: shadow-session-arena-3-homography
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010095.datasets.homography_matrix
+      - id: shadow-session-arena-4-geometry
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.arena_geometry.attrs
+      - id: shadow-session-arena-4-direction
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010096.attrs
+      - id: shadow-session-arena-4-homography
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010096.datasets.homography_matrix
+      - diagram:
+          kind: h5-rig-canvas
+          from: shadow-session-arena-1-geometry
+          inputs: [shadow-session-arena-1-geometry, shadow-session-arena-2-geometry, shadow-session-arena-3-geometry, shadow-session-arena-4-geometry]
+
   - title: Canvas blindfish
     items:
       - id: blindfish-canvas-size

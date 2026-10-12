@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from rig_canvas import render_rig_canvas  # noqa: E402
+from rig_canvas import render_h5_rig_canvas, render_rig_canvas  # noqa: E402
 
 try:
     import yaml
@@ -103,19 +103,33 @@ def cmd_lock(_: argparse.Namespace) -> None:
     }
     for name, spec in load_data_sources().items():
         base = Path(spec["local_path"])
+        kind = spec.get("kind", "copy")
         files: dict[str, Any] = {}
         for rel in spec["files"]:
             src = base / rel
             if not src.is_file():
                 sys.exit(f"data source {name}: {src} does not exist")
-            dst = DATA_DIR / name / rel
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(src, dst)
-            files[rel] = {"sha256": _sha256_file(src), "bytes": src.stat().st_size,
-                          "mtime_utc": dt.datetime.fromtimestamp(src.stat().st_mtime, dt.timezone.utc)
-                          .replace(microsecond=0).isoformat().replace("+00:00", "Z")}
-        lock["data"][name] = {"local_path": str(base), "role": spec.get("role", ""), "files": files}
-        print(f"{name:16} snapshot of {len(files)} file(s) from {base}")
+            mtime = (dt.datetime.fromtimestamp(src.stat().st_mtime, dt.timezone.utc)
+                     .replace(microsecond=0).isoformat().replace("+00:00", "Z"))
+            if kind == "copy":
+                dst = DATA_DIR / name / rel
+                dst.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(src, dst)
+                files[rel] = {"sha256": _sha256_file(src), "bytes": src.stat().st_size, "mtime_utc": mtime}
+            elif kind == "h5-calibration-snapshot":
+                # Large session files are not copied; a verbatim JSON export of
+                # root attrs and /calibration_snapshot is snapshotted instead.
+                from h5_extract import EXTRACTOR_ID, write_extract  # noqa: PLC0415
+                out_rel = posixpath.splitext(rel)[0] + ".calibration_snapshot.json"
+                dst = DATA_DIR / name / out_rel
+                rec = write_extract(src, dst)
+                files[out_rel] = {"sha256": _sha256_file(dst), "bytes": dst.stat().st_size, "mtime_utc": mtime,
+                                  "extracted_from": rel, "source_sha256": rec["source_sha256"],
+                                  "source_bytes": rec["source_bytes"], "extractor": EXTRACTOR_ID}
+            else:
+                sys.exit(f"data source {name}: unknown kind {kind!r}")
+        lock["data"][name] = {"local_path": str(base), "role": spec.get("role", ""), "kind": kind, "files": files}
+        print(f"{name:16} {kind} snapshot of {len(files)} file(s) from {base}")
     for name, spec in sources.items():
         repo = Path(spec["local_path"])
         commit = _git(repo, "rev-parse", "HEAD").strip()
@@ -277,6 +291,52 @@ def extract_md_section(reader: SourceReader, source: str, path: str, heading: st
     return idx + 1, end
 
 
+def _json_block_end(lines: list[str], start: int) -> int:
+    """Index of the line closing the JSON value that begins on `start` (brace/bracket matching, string-aware)."""
+    depth = 0
+    in_str = False
+    esc = False
+    opened = False
+    for i in range(start, len(lines)):
+        for ch in lines[i]:
+            if in_str:
+                if esc:
+                    esc = False
+                elif ch == "\\":
+                    esc = True
+                elif ch == '"':
+                    in_str = False
+                continue
+            if ch == '"':
+                in_str = True
+            elif ch in "{[":
+                depth += 1
+                opened = True
+            elif ch in "}]":
+                depth -= 1
+        if opened and depth == 0:
+            return i
+        if not opened and i > start:
+            return start  # scalar value on one line
+    raise ValueError("unterminated JSON block")
+
+
+def extract_json_path(lines: list[str], path: str) -> tuple[int, int]:
+    """Line range of the value at a dotted key path in an indent=2 pretty-printed JSON file."""
+    start, end = 0, len(lines) - 1
+    for depth, key in enumerate(path.split("."), start=1):
+        pat = re.compile(r'^' + ' ' * (2 * depth) + r'"' + re.escape(key) + r'": ')
+        found = None
+        for i in range(start, end + 1):
+            if pat.match(lines[i]):
+                found = i
+                break
+        if found is None:
+            raise KeyError(f"json_path {path!r}: key {key!r} not found at depth {depth}")
+        start, end = found, _json_block_end(lines, found)
+    return start + 1, end + 1
+
+
 def extract_py_symbol(reader: SourceReader, source: str, path: str, symbol: str) -> tuple[int, int]:
     text = "\n".join(reader.lines(source, path)) + "\n"
     tree = ast.parse(text)
@@ -330,6 +390,9 @@ def build_excerpt(reader: SourceReader, spec: dict[str, Any]) -> Excerpt:
     elif "symbol" in spec:
         start, end = extract_py_symbol(reader, source, path, spec["symbol"])
         kind = "code"
+    elif "json_path" in spec:
+        start, end = extract_json_path(lines, spec["json_path"])
+        kind = "code"
     elif "lines" in spec:
         if spec["lines"] == "all":
             start, end = 1, len(lines)
@@ -352,7 +415,7 @@ def build_excerpt(reader: SourceReader, spec: dict[str, Any]) -> Excerpt:
                     f"{source}:{path} lines {start}-{end}; the source moved"
                 )
 
-    selector = {k: v for k, v in spec.items() if k in ("heading", "symbol", "lines", "anchor")}
+    selector = {k: v for k, v in spec.items() if k in ("heading", "symbol", "json_path", "lines", "anchor")}
     return Excerpt(
         id=spec["id"],
         source=source,
@@ -641,6 +704,15 @@ def render_diagram(spec: dict[str, Any], excerpts: dict[str, Excerpt], reader: S
         svg = render_transform_chain_svg(chain, spec.get("order"))
     elif kind == "bullet-cards":
         svg = render_bullet_cards(parse_bullet_cards(src.text))
+    elif kind == "h5-rig-canvas":
+        # One Citrus session extract per arena; each must be quoted on the page.
+        texts = []
+        for eid in spec["inputs"]:
+            x = excerpts[eid]
+            if x is not src:
+                inputs.append(x)
+            texts.append(reader.text(x.source, x.path))
+        svg = render_h5_rig_canvas(texts)
     elif kind == "rig-canvas":
         # The canvas JSON and each homography sidecar must be quoted on the page;
         # the diagram reads those same files in full. Camera id comes from the
