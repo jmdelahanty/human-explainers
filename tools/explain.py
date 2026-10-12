@@ -32,6 +32,7 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from replay import render_tracking_replay  # noqa: E402
 from rig_canvas import render_h5_rig_canvas, render_rig_canvas  # noqa: E402
 
 try:
@@ -126,6 +127,15 @@ def cmd_lock(_: argparse.Namespace) -> None:
                 files[out_rel] = {"sha256": _sha256_file(dst), "bytes": dst.stat().st_size, "mtime_utc": mtime,
                                   "extracted_from": rel, "source_sha256": rec["source_sha256"],
                                   "source_bytes": rec["source_bytes"], "extractor": EXTRACTOR_ID}
+            elif kind == "h5-tracking-window":
+                from h5_extract import TRACKING_EXTRACTOR_ID, write_tracking_window  # noqa: PLC0415
+                out_rel = posixpath.splitext(rel)[0] + ".tracking_window.json"
+                dst = DATA_DIR / name / out_rel
+                rec = write_tracking_window(src, spec["window"], dst)
+                files[out_rel] = {"sha256": _sha256_file(dst), "bytes": dst.stat().st_size, "mtime_utc": mtime,
+                                  "extracted_from": rel, "source_sha256": rec["source_sha256"],
+                                  "source_bytes": rec["source_bytes"], "extractor": TRACKING_EXTRACTOR_ID,
+                                  "window": spec["window"]}
             else:
                 sys.exit(f"data source {name}: unknown kind {kind!r}")
         lock["data"][name] = {"local_path": str(base), "role": spec.get("role", ""), "kind": kind, "files": files}
@@ -704,6 +714,12 @@ def render_diagram(spec: dict[str, Any], excerpts: dict[str, Excerpt], reader: S
         svg = render_transform_chain_svg(chain, spec.get("order"))
     elif kind == "bullet-cards":
         svg = render_bullet_cards(parse_bullet_cards(src.text))
+    elif kind == "tracking-replay":
+        calib = excerpts[spec["calibration"]]
+        inputs.append(calib)
+        svg = render_tracking_replay(
+            reader.text(src.source, src.path), reader.text(calib.source, calib.path), spec.get("player_id", "replay")
+        )
     elif kind == "h5-rig-canvas":
         # One Citrus session extract per arena; each must be quoted on the page.
         texts = []

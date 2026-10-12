@@ -79,6 +79,7 @@ Diagram kinds:
 - `transform-chain`: equations in code fences become nodes and arrows. `order` only arranges nodes; it cannot add any.
 - `bullet-cards`: top-level `` `term` `` bullets with nested bullets become definition cards.
 - `h5-rig-canvas`: `inputs` names quoted extracts of Citrus session H5 files, one per arena. Canvas size, arena region, `arena_origin_in_canvas_*`, experimental area, camera axis directions, and `homography_matrix` are all values Citrus wrote; the only arithmetic left is pushing points through that matrix for the footprints and camera panels.
+- `tracking-replay`: an interactive player. `from` names a quoted tracking-window extract and `calibration` the quoted calibration snapshot of the same session. Real `bounding_boxes` rows are pushed through `homography_matrix` using the rule Citrus declares in `target_point_method` and quotes from `tracking_target_view.cpp`, then shifted by `arena_origin_in_canvas_*`; Citrus's own `target_pos_*` and `chaser_pos_*` are drawn beside them with the per-frame difference.
 - `rig-canvas`: `from` names a quoted Citrus canvas JSON and `homographies` names quoted OpenCV sidecars. Arena rectangles and experimental areas are the JSON fields; the arena origin is `center − size/2` as in `ArenaConfig::GetArenaOriginXInCanvasPx`; camera footprints are the native frame corners pushed through `homography_matrix` in its declared direction, and the camera panels use its inverse. The numbers table names the field each value came from.
 
 ## Local data that is not in git
@@ -95,6 +96,11 @@ dumps the root attributes and the whole `/calibration_snapshot` tree to JSON,
 copying every attribute and every small dataset verbatim and replacing large
 datasets (embedded PNG buffers) with their shape, byte count, and sha256. The
 lock records the sha256 of both the H5 file and the export.
+
+`kind: h5-tracking-window` exports a row slice instead: the `window` block
+names the chaser dataset, a row range and stride, and the fields to keep; every
+`bounding_boxes` row whose `payload_frame_id` lies within the selected rows'
+`target_source_frame_id` span is exported with it. Rows are copied verbatim.
 
 ## Re-pinning
 

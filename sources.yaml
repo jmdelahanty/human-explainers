@@ -63,3 +63,25 @@ data:
       - citsess_dfa15a4b01f45041f60d8bc571389db77000fa9c8d030d300b76f4636f89d021_redbat.h5
       - citsess_8b4b3225db87e46aed185e1358300c839157a13d2d87c6a2ee1d2eb88668221b_redbat.h5
       - citsess_59e779ca13bc9eaa4c11195d0b79ffe6fb3653e854a0d3bc93f95cd166b55b81_redbat.h5
+  omnifin0-shadow-session-2026-08-25-tracking:
+    kind: h5-tracking-window
+    local_path: /home/jeremy/orange_data/exp/unsorted/2026_08_25_23_12_06/citrus
+    role: >-
+      A short window of real tracking rows from the arena_1 session (around a
+      chase), exported verbatim: chaser_states in arena_relative_canvas_px and
+      the bounding_boxes rows they reference in camera_view_px
+    files:
+      - citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.h5
+    window:
+      chaser_dataset: /tracking_data/chaser_states
+      chaser_rows: [88400, 89700]
+      stride: 2
+      chaser_fields: [stimulus_frame_num, timestamp_ns_session, chaser_index, is_chasing,
+                      chaser_pos_x, chaser_pos_y, target_pos_x, target_pos_y,
+                      target_clamped_pos_x, target_clamped_pos_y,
+                      target_source_frame_id, target_source_camera_id, target_source_box_index_in_payload,
+                      target_age_ms, target_freshness_state, target_area_state,
+                      chaser_radius_px, target_radius_px, distance_to_target_px]
+      bbox_dataset: /tracking_data/bounding_boxes
+      bbox_fields: [payload_frame_id, payload_timestamp_ns_epoch, payload_camera_id, box_index_in_payload,
+                    x_min, y_min, width, height, class_id, confidence]

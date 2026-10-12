@@ -1,5 +1,5 @@
 {
-  "locked_at_utc": "2026-10-12T17:36:27Z",
+  "locked_at_utc": "2026-10-12T17:46:11Z",
   "excerpts": {
     "recording-geometry:orange-owns-camera-space": {
       "source": "agent-contracts",
@@ -960,6 +960,166 @@
         "lines": "all"
       },
       "sha256": "d6a9b09e59d3d46a057639cbc5434dc47bc8f8b81bebba7a4a57965898e475d1"
+    },
+    "tracking-replay:contract-raw-camera-tracking": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 131,
+      "end": 147,
+      "selector": {
+        "heading": "### Raw camera-space tracking"
+      },
+      "sha256": "73cae7cffc7f5a0f9746bfef86fa61751e89bd4e18e7e9ea6adbff285f2edefc"
+    },
+    "tracking-replay:contract-arena-local-positions": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 49,
+      "end": 75,
+      "selector": {
+        "heading": "### Arena-local tracked positions"
+      },
+      "sha256": "8fe9dd359b0e4bc9bfcffbaf39c56180114ea78ae11fdf30c6b8884ea6e7f4bf"
+    },
+    "tracking-replay:contract-mapping-rule": {
+      "source": "agent-contracts",
+      "commit": "e648029cc8c4318b17e8c1d97bb7a00d0fe8ca39",
+      "file_sha256": null,
+      "path": "citrus-crimson/spatial_overlay_contract.md",
+      "start": 149,
+      "end": 174,
+      "selector": {
+        "heading": "## Canonical Mapping Rule"
+      },
+      "sha256": "627bb3b7185632214034ce0c859ebd93c9a347ae7999a2b6a800d3081283258b"
+    },
+    "tracking-replay:citrus-target-rule-note": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/core/tracking_target_view.h",
+      "start": 72,
+      "end": 80,
+      "selector": {
+        "lines": [
+          72,
+          80
+        ],
+        "anchor": "bit-identical"
+      },
+      "sha256": "78983627588524efdb23f5ebcc09ba1cfa4b12f63b0147346508a21b28955583"
+    },
+    "tracking-replay:citrus-project-box-rect": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/core/tracking_target_view.cpp",
+      "start": 26,
+      "end": 40,
+      "selector": {
+        "lines": [
+          26,
+          40
+        ],
+        "anchor": "boundingRect"
+      },
+      "sha256": "f787baafb59b3142549cae8fd247d05f2342fed99506b0e3f91e14c7786242e9"
+    },
+    "tracking-replay:citrus-project-camera-point": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/core/tracking_target_view.cpp",
+      "start": 50,
+      "end": 62,
+      "selector": {
+        "lines": [
+          50,
+          62
+        ],
+        "anchor": "h[2][0] * xd"
+      },
+      "sha256": "3019e5939b0ba6a582dcea03aa0ab787331107bf0178b961803535cd1797bf33"
+    },
+    "tracking-replay:citrus-target-point-method-attr": {
+      "source": "citrus",
+      "commit": "48ad93e4d2c84782d0d084a6e3f1352c7c5e3162",
+      "file_sha256": null,
+      "path": "src/logging/session_logger.cpp",
+      "start": 8244,
+      "end": 8247,
+      "selector": {
+        "lines": [
+          8244,
+          8247
+        ],
+        "anchor": "transformed_bbox_corners_bounding_rect_center"
+      },
+      "sha256": "5ae4fc16e32ad2525bf09c0055e78e2b4be153b7efda84d981864e796631eddb"
+    },
+    "tracking-replay:replay-calibration-arena-geometry": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 231,
+      "end": 254,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.arena_geometry.attrs"
+      },
+      "sha256": "92c4dba2fedf557a4d1164e56d79136f6af4f87a40111f264e43b2f9c477f765"
+    },
+    "tracking-replay:replay-calibration-homography": {
+      "source": "omnifin0-shadow-session-2026-08-25",
+      "commit": "snapshot",
+      "file_sha256": "0209571b3f107f2d5bc46ac0e2a86a3f8b28882bdacf6b664d7bcad1f0ab16c3",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json",
+      "start": 132,
+      "end": 184,
+      "selector": {
+        "json_path": "calibration_snapshot.groups.2010093.datasets.homography_matrix"
+      },
+      "sha256": "da801852b85616f9a020df501ffb855e664e5554f46086b84e9922401bd095f7"
+    },
+    "tracking-replay:replay-window-selection": {
+      "source": "omnifin0-shadow-session-2026-08-25-tracking",
+      "commit": "snapshot",
+      "file_sha256": "4d0addf432ccd3dd428dc3a0fcc922e90d2e72697decbc7e6bcaa7b76c8b02bd",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json",
+      "start": 16,
+      "end": 62,
+      "selector": {
+        "json_path": "selection"
+      },
+      "sha256": "539d523d08bdab0a28d0b1a93460a48ac9805ecccae22ffba067824ea93469f8"
+    },
+    "tracking-replay:replay-chaser-states-attrs": {
+      "source": "omnifin0-shadow-session-2026-08-25-tracking",
+      "commit": "snapshot",
+      "file_sha256": "4d0addf432ccd3dd428dc3a0fcc922e90d2e72697decbc7e6bcaa7b76c8b02bd",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json",
+      "start": 65,
+      "end": 87,
+      "selector": {
+        "json_path": "datasets.chaser_states.attrs"
+      },
+      "sha256": "6f04e039c2f0dd065be2326b96faaee38e5577564a9edff5a32960022bf39d69"
+    },
+    "tracking-replay:replay-bbox-fields": {
+      "source": "omnifin0-shadow-session-2026-08-25-tracking",
+      "commit": "snapshot",
+      "file_sha256": "4d0addf432ccd3dd428dc3a0fcc922e90d2e72697decbc7e6bcaa7b76c8b02bd",
+      "path": "citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json",
+      "start": 13802,
+      "end": 13815,
+      "selector": {
+        "json_path": "datasets.bounding_boxes.dtype_fields"
+      },
+      "sha256": "fa5a1fceeaa5c642d865fb456fe604c9db196b44c93a0d7549a67600d794fcf1"
     }
   }
 }

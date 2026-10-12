@@ -1,0 +1,86 @@
+title: Replay of a tracked fish through the three frames
+question: >-
+  Press play and watch one real bounding box from Orange travel from camera
+  pixels through the Citrus homography into the arena, next to the target
+  point Citrus itself logged.
+
+# The player's data are two verbatim extracts of the same Citrus session
+# (arena_1 on canvas shadow, 2026-08-25), both quoted below. The only
+# computation in the player is the target rule Citrus declares and that is
+# quoted from its source.
+
+sections:
+  - title: The two datasets and the mapping between them
+    items:
+      - id: contract-raw-camera-tracking
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Raw camera-space tracking"
+      - id: contract-arena-local-positions
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "### Arena-local tracked positions"
+      - id: contract-mapping-rule
+        source: agent-contracts
+        path: citrus-crimson/spatial_overlay_contract.md
+        heading: "## Canonical Mapping Rule"
+
+  - title: The target rule Citrus applies to a box
+    items:
+      - id: citrus-target-rule-note
+        source: citrus
+        path: src/core/tracking_target_view.h
+        lines: [72, 80]
+        anchor: bit-identical
+      - id: citrus-project-box-rect
+        source: citrus
+        path: src/core/tracking_target_view.cpp
+        lines: [26, 40]
+        anchor: boundingRect
+      - id: citrus-project-camera-point
+        source: citrus
+        path: src/core/tracking_target_view.cpp
+        lines: [50, 62]
+        anchor: "h[2][0] * xd"
+      - id: citrus-target-point-method-attr
+        source: citrus
+        path: src/logging/session_logger.cpp
+        lines: [8244, 8247]
+        anchor: transformed_bbox_corners_bounding_rect_center
+
+  - title: The session's calibration (same values as the rig-layouts page)
+    items:
+      - id: replay-calibration-arena-geometry
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.arena_geometry.attrs
+      - id: replay-calibration-homography
+        source: omnifin0-shadow-session-2026-08-25
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.calibration_snapshot.json
+        json_path: calibration_snapshot.groups.2010093.datasets.homography_matrix
+
+  - title: The tracking rows being replayed
+    items:
+      - id: replay-window-selection
+        source: omnifin0-shadow-session-2026-08-25-tracking
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json
+        json_path: selection
+        note: >-
+          The rows themselves are in the same file (link in the header); the
+          player below embeds all of them.
+      - id: replay-chaser-states-attrs
+        source: omnifin0-shadow-session-2026-08-25-tracking
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json
+        json_path: datasets.chaser_states.attrs
+      - id: replay-bbox-fields
+        source: omnifin0-shadow-session-2026-08-25-tracking
+        path: citsess_45fac0f71f098cf00f44065893c773b7847ab224edba618cb2a1c9744731065e_redbat.tracking_window.json
+        json_path: datasets.bounding_boxes.dtype_fields
+
+  - title: Replay
+    items:
+      - diagram:
+          kind: tracking-replay
+          from: replay-window-selection
+          calibration: replay-calibration-homography
+          player_id: replay-shadow-arena-1
